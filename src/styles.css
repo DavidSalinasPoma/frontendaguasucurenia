@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Acelerando las animaciones */
+.fast {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both
+}
+
+.cursor {
+  cursor: pointer;
+}
