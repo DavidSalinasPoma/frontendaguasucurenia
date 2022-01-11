@@ -108,4 +108,15 @@ export class UsuarioService {
       )
   }
 
+  /**
+   * eliminarUsuario
+   */
+  public eliminarUsuario(id: number) {
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.delete(base_url + '/api/user/' + id, { headers: parameters });
+
+  }
+
 }

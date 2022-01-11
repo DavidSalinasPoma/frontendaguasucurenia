@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 
 // Variables globales
@@ -70,7 +71,6 @@ export class UsuariosComponent implements OnInit {
    * persistenciaPagina
    */
   public persistenciaPagina() {
-    localStorage.setItem('urlPagination', `${base_url}/api/user?page=1`)
     this.primeraPagina = localStorage.getItem('urlPagination')
     if (this.primeraPagina === null) {
       this.cargarUsuario(`${base_url}/api/user?page=1`);
@@ -192,7 +192,52 @@ export class UsuariosComponent implements OnInit {
   /**
    * Eliminar
    */
-  public eliminarUsuario() {
+  public eliminarUsuario(usuario: Usuario, bandera: number) {
+
+    let id: number;
+    let nombre: string;
+
+    console.log(bandera);
+    console.log(bandera);
+
+    if (bandera) {
+      id = Number(usuario.id);
+      nombre = usuario.persona.nombres;
+    } else {
+      nombre = String(usuario.nombres);
+    }
+
+
+    Swal.fire({
+      title: 'Esta Seguro de Eliminar?',
+      text: `Esta a punto de dar de baja a ${nombre}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, Dar de Baja!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+
+        this.usuarioServices.eliminarUsuario(id)
+          .subscribe(resp => {
+            const parametro = String(localStorage.getItem('urlPagination'));
+            if (bandera) {
+              this.cargarUsuario(parametro);
+            } else {
+
+            }
+
+            Swal.fire(
+              'Usuario dado de Baja!',
+              `El usuario ${nombre} fue dado de baja correctamente`,
+              'success'
+            )
+
+          });
+
+      }
+    })
+
 
   }
 
