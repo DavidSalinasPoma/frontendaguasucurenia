@@ -11,6 +11,7 @@ import { ProgressComponent } from './progress/progress.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
 import { PersonasComponent } from './recursoshumanos/personas/personas.component';
 import { CrearPersonaComponent } from './recursoshumanos/personas/crear-persona/crear-persona.component';
+import { UsuariosComponent } from './recursoshumanos/usuarios/usuarios.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
       // Recursos humanos
       { path: 'personas', component: PersonasComponent, data: { titulo: 'Personas del sistema' } },
       { path: 'crearpersonas', component: CrearPersonaComponent, data: { titulo: 'Registro de personas' } },
+      { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Usuarios del sistema' } },
 
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]

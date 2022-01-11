@@ -1,3 +1,4 @@
+import { CargarUsuario } from './../interfaces/cargar-usuarios.interface';
 import { LoginForm } from './../interfaces/login-form.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -21,6 +22,35 @@ export class UsuarioService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
+  // Token de usuario
+  get token() {
+    return localStorage.getItem('token');
+  }
+
+  /**
+   * cargarUsuarios
+   */
+  public cargarUsuarios(params: string) {
+    // console.log(params);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<CargarUsuario>(params, { headers: parameters });
+  }
+
+
+  /**
+   * cargarUsuarios
+   */
+  public cargarUsuariosBuscar(formData: any): Observable<any> {
+    // console.log(formData);
+
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post<CargarUsuario>(formData.url, formData, { headers: parameters });
+  }
+
   /**
    * logout
    */
@@ -28,6 +58,7 @@ export class UsuarioService {
 
     const token = localStorage.getItem('token');
     localStorage.removeItem('token');
+    localStorage.removeItem('urlPagination');
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + token);

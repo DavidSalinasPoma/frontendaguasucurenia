@@ -14,6 +14,7 @@ import { Grafica1Component } from './grafica1/grafica1.component';
 import { PagesComponent } from './pages.component';
 import { PersonasComponent } from './recursoshumanos/personas/personas.component';
 import { CrearPersonaComponent } from './recursoshumanos/personas/crear-persona/crear-persona.component';
+import { UsuariosComponent } from './recursoshumanos/usuarios/usuarios.component';
 
 
 
@@ -24,7 +25,8 @@ import { CrearPersonaComponent } from './recursoshumanos/personas/crear-persona/
     Grafica1Component,
     PagesComponent,
     PersonasComponent,
-    CrearPersonaComponent
+    CrearPersonaComponent,
+    UsuariosComponent
   ],
   imports: [
     CommonModule,
