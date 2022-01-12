@@ -60,7 +60,7 @@ export class UsuariosComponent implements OnInit {
 
     // console.log(this.textoBuscar);
     const nameBuscar = localStorage.getItem('usuario');
-    console.log(nameBuscar);
+    // console.log(nameBuscar);
 
     if (nameBuscar) {
       (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
@@ -71,9 +71,6 @@ export class UsuariosComponent implements OnInit {
       this.persistenciaPagina();
 
     }
-
-
-
   }
 
   /**
@@ -81,7 +78,7 @@ export class UsuariosComponent implements OnInit {
    */
   public persistenciaPagina() {
     this.primeraPagina = localStorage.getItem('urlPagination')
-    console.log(this.primeraPagina);
+    // console.log(this.primeraPagina);
 
     if (this.primeraPagina === null) {
       this.cargarUsuario(`${base_url}/api/user?page=1`);
@@ -213,8 +210,8 @@ export class UsuariosComponent implements OnInit {
     let id: number;
     let nombre: string;
 
-    console.log(usuario.id);
-    console.log(bandera);
+    // console.log(usuario.id);
+    // console.log(bandera);
 
     if (bandera) {
       id = Number(usuario.id);
@@ -234,7 +231,6 @@ export class UsuariosComponent implements OnInit {
       confirmButtonText: 'Si, dar de Baja!'
     }).then((result) => {
       if (result.isConfirmed) {
-
 
         this.usuarioServices.eliminarUsuario(id)
           .subscribe(resp => {

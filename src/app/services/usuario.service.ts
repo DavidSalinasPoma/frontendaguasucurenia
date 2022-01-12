@@ -1,3 +1,4 @@
+import { Usuario } from './../models/usuario.model';
 import { CargarUsuario } from './../interfaces/cargar-usuarios.interface';
 import { LoginForm } from './../interfaces/login-form.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -18,6 +19,8 @@ const base_url = environment.base_url;
   providedIn: 'root'
 })
 export class UsuarioService {
+
+  // public usuario: Usuario;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -59,6 +62,8 @@ export class UsuarioService {
     const token = localStorage.getItem('token');
     localStorage.removeItem('token');
     localStorage.removeItem('urlPagination');
+    localStorage.removeItem('paramsUrl');
+    localStorage.removeItem('usuario');
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + token);
@@ -78,6 +83,8 @@ export class UsuarioService {
       }
     }).pipe(
       tap((resp: any) => {
+        console.log(resp);
+
         localStorage.setItem('token', resp.token);
       }),
       map(resp => true),
