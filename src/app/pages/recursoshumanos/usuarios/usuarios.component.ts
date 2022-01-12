@@ -59,11 +59,20 @@ export class UsuariosComponent implements OnInit {
   ngOnInit(): void {
 
     // console.log(this.textoBuscar);
+    const nameBuscar = localStorage.getItem('usuario');
+    console.log(nameBuscar);
 
-    if (!this.textoBuscar) {
-      // console.log('Hola adentro');
+    if (nameBuscar) {
+      (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
+      const urlBuscar = String(localStorage.getItem('urlPagination'));
+      this.cargarUsuarioBuscar(nameBuscar, urlBuscar)
+
+    } else {
       this.persistenciaPagina();
+
     }
+
+
 
   }
 
@@ -72,6 +81,8 @@ export class UsuariosComponent implements OnInit {
    */
   public persistenciaPagina() {
     this.primeraPagina = localStorage.getItem('urlPagination')
+    console.log(this.primeraPagina);
+
     if (this.primeraPagina === null) {
       this.cargarUsuario(`${base_url}/api/user?page=1`);
     } else {
@@ -83,14 +94,18 @@ export class UsuariosComponent implements OnInit {
   /**
    * cargarUsuarioBuscar
    */
-  public cargarUsuarioBuscar(texto: any, url?: string) {
+  public cargarUsuarioBuscar(texto: any, url?: string, band?: number) {
 
-    // console.log(texto);
-    // console.log(url);
-
+    if (band) {
+      localStorage.setItem('usuario', texto);
+    }
 
     if (texto === '' && url === '') {
+      const urlParams = String(localStorage.getItem('paramsUrl'));
       this.mostrar = true;
+      this.cargarUsuario(urlParams)
+
+
     } else {
 
       let urls;
@@ -163,6 +178,7 @@ export class UsuariosComponent implements OnInit {
 
         // Persistencia de pagina
         localStorage.setItem('urlPagination', `${base_url}/api/user?page=${this.currentPage}`);
+        localStorage.setItem('paramsUrl', `${base_url}/api/user?page=${this.currentPage}`)
 
         // loading
         this.cargando = false;
@@ -197,7 +213,7 @@ export class UsuariosComponent implements OnInit {
     let id: number;
     let nombre: string;
 
-    console.log(bandera);
+    console.log(usuario.id);
     console.log(bandera);
 
     if (bandera) {
@@ -205,6 +221,7 @@ export class UsuariosComponent implements OnInit {
       nombre = usuario.persona.nombres;
     } else {
       nombre = String(usuario.nombres);
+      id = Number(usuario.id);
     }
 
 
@@ -213,7 +230,8 @@ export class UsuariosComponent implements OnInit {
       text: `Esta a punto de dar de baja a ${nombre}`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Si, Dar de Baja!'
+      cancelButtonText: 'Cancelar!',
+      confirmButtonText: 'Si, dar de Baja!'
     }).then((result) => {
       if (result.isConfirmed) {
 
@@ -224,7 +242,9 @@ export class UsuariosComponent implements OnInit {
             if (bandera) {
               this.cargarUsuario(parametro);
             } else {
-
+              const urlUser = String(localStorage.getItem('urlPagination'));
+              const nameUsuario = localStorage.getItem('usuario');
+              this.cargarUsuarioBuscar(nameUsuario, urlUser);
             }
 
             Swal.fire(
