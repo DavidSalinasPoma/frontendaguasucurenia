@@ -10,9 +10,12 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+  public accesUser: any = {};
+
   constructor(private usuarioServices: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
+    this.accesUser = JSON.parse(String(localStorage.getItem('acces')));
   }
 
   /**

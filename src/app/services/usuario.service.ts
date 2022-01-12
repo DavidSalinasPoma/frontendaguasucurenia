@@ -2,7 +2,7 @@ import { Usuario } from './../models/usuario.model';
 import { CargarUsuario } from './../interfaces/cargar-usuarios.interface';
 import { LoginForm } from './../interfaces/login-form.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 
 // El tap dispara un efecto secundario
 import { tap, map, catchError } from "rxjs/operators";
@@ -20,7 +20,7 @@ const base_url = environment.base_url;
 })
 export class UsuarioService {
 
-  // public usuario: Usuario;
+  public nombreEvento = new EventEmitter<{}>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -64,6 +64,7 @@ export class UsuarioService {
     localStorage.removeItem('urlPagination');
     localStorage.removeItem('paramsUrl');
     localStorage.removeItem('usuario');
+    localStorage.removeItem('acces');
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + token);
@@ -83,8 +84,6 @@ export class UsuarioService {
       }
     }).pipe(
       tap((resp: any) => {
-        console.log(resp);
-
         localStorage.setItem('token', resp.token);
       }),
       map(resp => true),

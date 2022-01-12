@@ -38,6 +38,19 @@ export class LoginComponent implements OnInit {
       .subscribe(resp => {
         console.log(resp);
 
+        // Usuarios del sistema
+        const userSistema: any = {
+          id: resp.users.id,
+          nombre: resp.users.persona.nombres,
+          paterno: resp.users.persona.ap_paterno,
+          materno: resp.users.persona.ap_materno,
+          email: resp.users.email,
+          fecha: resp.users.created_at
+        }
+
+        // Variables local de usuario autenticado
+        localStorage.setItem('acces', JSON.stringify(userSistema));
+
         // remember
         if (this.loginForm.get('remember')?.value) {
           localStorage.setItem('email', this.loginForm.get('email')?.value)

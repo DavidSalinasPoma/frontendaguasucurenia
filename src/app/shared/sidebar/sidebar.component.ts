@@ -9,8 +9,13 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class SidebarComponent implements OnInit {
 
+  // Mensaje del servicio
+  public mensaje: any = {};
+
   // public usuario: Usuario;
   public menuItems: any[];
+
+  public accesUser: any = {};
 
   constructor(
     private sidebarServices: SidebarService,
@@ -23,6 +28,15 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+
+    this.accesUser = JSON.parse(String(localStorage.getItem('acces')));
+
+    this.usuarioServices.nombreEvento
+      .subscribe(texto => {
+        this.mensaje = texto;
+      })
+
   }
 
 
