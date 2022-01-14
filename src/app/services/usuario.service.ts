@@ -31,6 +31,26 @@ export class UsuarioService {
   }
 
   /**
+   * updateUsuarios
+   */
+  public updateUsuarios(formData: any, id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.put(base_url + `/api/user/${id}`, formData, { headers: parameters });
+  }
+
+  /**
+   * cargarUsuarios
+   */
+  public showUsuarios(id: number) {
+    // console.log(params);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/user/${id}`, { headers: parameters });
+  }
+
+  /**
    * cargarUsuarios
    */
   public cargarUsuarios(params: string) {
@@ -93,12 +113,9 @@ export class UsuarioService {
 
   // Servicio para crear un usuario
   crearUsuario(formData: any) {
-    return this.http.post(`${base_url}/api/register`, formData)
-      .pipe(
-        tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
-        })
-      );
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post(base_url + '/api/register', formData, { headers: parameters });
   }
 
   // Servicio para el login

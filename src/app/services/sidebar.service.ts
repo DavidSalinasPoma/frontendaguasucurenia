@@ -17,13 +17,22 @@ export class SidebarService {
       ]
     },
     {
+      titulo: 'Cunsumo',
+      icono: 'mdi mdi-folder-lock-open',
+      submenu: [
+        { titulo: 'Crear comsumo', url: 'servicio' },
+        { titulo: 'ver todo', url: 'lista' },
+      ]
+    },
+    {
       titulo: 'RR. HH.',
       icono: 'mdi mdi-account-multiple-plus',
       submenu: [
-        { titulo: 'Usuarios', url: 'usuarios' },
         { titulo: 'Personas', url: 'personas' },
+        { titulo: 'Usuarios', url: 'usuarios' },
         { titulo: 'Socios', url: 'socios' },
         { titulo: 'Empleados', url: 'empleados' },
+        { titulo: 'Barrio', url: 'barrios' },
       ]
     },
     {
@@ -47,14 +56,6 @@ export class SidebarService {
       icono: 'mdi mdi-folder-lock-open',
       submenu: [
         { titulo: 'Crear servicio', url: 'servicio' },
-        { titulo: 'ver todo', url: 'lista' },
-      ]
-    },
-    {
-      titulo: 'Cunsumo',
-      icono: 'mdi mdi-folder-lock-open',
-      submenu: [
-        { titulo: 'Crear comsumo', url: 'servicio' },
         { titulo: 'ver todo', url: 'lista' },
       ]
     }

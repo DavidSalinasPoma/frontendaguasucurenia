@@ -205,7 +205,14 @@ export class UsuariosComponent implements OnInit {
   /**
    * Eliminar
    */
-  public eliminarUsuario(usuario: Usuario, bandera: number) {
+  public eliminarUsuario(usuario: Usuario, bandera: number): any {
+
+    // No puedes darte de baja asi mismo
+    const idUserLogin = JSON.parse(String(localStorage.getItem('acces')));
+    if (usuario.id === idUserLogin.id) {
+      return Swal.fire('Error', 'No puedes darte de baja a si mismo', 'error');
+    }
+
 
     let id: number;
     let nombre: string;

@@ -7,6 +7,9 @@ import { SharedModule } from '../shared/shared.module';
 // import { AppRoutingModule } from '../app-routing.module';
 import { RouterModule } from '@angular/router';
 
+// Angular Material
+import { MaterialModule } from '../material/material.module';
+
 // componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -15,6 +18,9 @@ import { PagesComponent } from './pages.component';
 import { PersonasComponent } from './recursoshumanos/personas/personas.component';
 import { CrearPersonaComponent } from './recursoshumanos/personas/crear-persona/crear-persona.component';
 import { UsuariosComponent } from './recursoshumanos/usuarios/usuarios.component';
+import { CrearUsuariosComponent } from './recursoshumanos/usuarios/crear-usuarios/crear-usuarios.component';
+import { EditarUsuariosComponent } from './recursoshumanos/usuarios/editar-usuarios/editar-usuarios.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -26,13 +32,18 @@ import { UsuariosComponent } from './recursoshumanos/usuarios/usuarios.component
     PagesComponent,
     PersonasComponent,
     CrearPersonaComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    CrearUsuariosComponent,
+    EditarUsuariosComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     // AppRoutingModule,
-    RouterModule
+    RouterModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [ // Es para que otros modulos puedan utilizar estos componentes
     DashboardComponent,

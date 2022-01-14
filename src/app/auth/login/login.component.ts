@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   public login() {
     this.usuarioServices.login(this.loginForm.value)
       .subscribe(resp => {
-        console.log(resp);
+        // console.log(resp);
 
         // Usuarios del sistema
         const userSistema: any = {

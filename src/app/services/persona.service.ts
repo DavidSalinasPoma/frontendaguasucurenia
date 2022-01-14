@@ -29,4 +29,15 @@ export class PersonaService {
     parameters = parameters.set('Authorization', "Bearer " + this.token);
     return this.http.get<any[]>(base_url + '/api/persona', { headers: parameters });
   }
+
+  /**
+  * cargarUsuarios
+  */
+  public buscarPersonas(formData: any): Observable<any> {
+    // console.log(formData);
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post<any>(base_url + '/api/buscar/personas', formData, { headers: parameters });
+  }
+
 }

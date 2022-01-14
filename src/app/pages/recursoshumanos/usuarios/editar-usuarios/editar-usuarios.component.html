@@ -1,0 +1,138 @@
+  <!-- Start Page Content -->
+  <!-- ============================================================== -->
+
+  <!-- Loading -->
+  <div *ngIf="this.cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="alert alert-info text-center">
+        <h4 class="alert-heading">Cargando</h4>
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+        <p class="mb-0">Por favor espere</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!this.cargando" class=" row animated fadeIn fast ">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="col-md-7 border ">
+            <div class="card card-body">
+              <div class="row">
+                <div class="col-8">
+                  <h3 class="box-title m-b-0 text-danger">Modificar de Usuarios</h3>
+                  <p class="text-muted m-b-30 font-13"> Sistema de registro de usuarios </p>
+                </div>
+                <div class="col">
+                  <button routerLink='/dashboard/usuarios' type="button" class="btn btn-primary"><i
+                      class="fa fa-list-alt"></i>
+                    Listar
+                    usuarios</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-xs-12">
+
+                  <!-- Registro de ususarios -->
+                  <form [formGroup]="this.formulario" (submit)="this.onSubmit($event)">
+
+                    <!-- Form Persona -->
+                    <div class="form-group">
+                      <h5 class="m-t-30">Seleccionar persona</h5>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Seleccionar</mat-label>
+                        <input type="text" placeholder="Buscar" aria-label="Number" matInput [formControl]="myControl"
+                          [matAutocomplete]="auto" formControlName="persona" #text (keyup)="buscarPersona(text.value)">
+                        <mat-icon matSuffix>expand_more</mat-icon>
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                          <mat-option *ngFor="let option of options" [value]="option">
+                            {{option}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <!-- Validacion -->
+                      <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                      <div *ngIf="this.persona?.invalid && (this.persona?.dirty || this.persona?.touched)">
+                        <!-- Errores con expresiones regulares -->
+                        <div *ngIf="this.persona?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                          Este campo es requerido.
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form Email -->
+                    <div class="form-group">
+                      <h5 class="m-t-30">Usuario</h5>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Correo electronico</mat-label>
+                        <input type="email" matInput formControlName="email" autocomplete="off" spellcheck="false">
+                      </mat-form-field>
+                      <!-- Validacion -->
+                      <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                      <div *ngIf="this.email?.invalid && (this.email?.dirty || this.email?.touched)">
+                        <!-- Errores con expresiones regulares -->
+                        <div *ngIf="this.email?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                          Este campo es requerido.
+                        </div>
+                        <div *ngIf="this.email?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                          Email no valido.
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form Contraseña -->
+                    <div class="form-group">
+                      <h5 class="m-t-30">Contraseña</h5>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input type="text" matInput formControlName="password" autocomplete="off" spellcheck="false">
+                      </mat-form-field>
+                      <!-- Validacion -->
+                      <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                      <div *ngIf="this.password?.invalid && (this.password?.dirty || this.password?.touched)">
+                        <!-- Errores con expresiones regulares -->
+                        <div *ngIf="this.password?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                          Este campo es requerido.
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form Esdtado -->
+                    <div class="form-group">
+                      <h5 class="m-t-30">Estado</h5>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Estado usuario</mat-label>
+                        <input type="text" matInput formControlName="estado" autocomplete="off" spellcheck="false">
+                      </mat-form-field>
+                      <!-- Validacion -->
+                      <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                      <div *ngIf="this.estado?.invalid && (this.estado?.dirty || this.estado?.touched)">
+                        <!-- Errores con expresiones regulares -->
+                        <div *ngIf="this.estado?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                          Este campo es requerido.
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="mt-5">
+                      <button [disabled]="this.formulario.invalid" type="submit"
+                        class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                      <button (click)="this.limpiar()" type="button"
+                        class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- End PAge Content -->
+  <!-- ============================================================== -->
