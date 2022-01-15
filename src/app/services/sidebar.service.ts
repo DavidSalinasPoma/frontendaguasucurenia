@@ -44,22 +44,13 @@ export class SidebarService {
       ]
     },
     {
-      titulo: 'Eventos',
-      icono: 'mdi mdi-folder-lock-open',
+      titulo: 'Eventos y servicios',
+      icono: 'mdi mdi-clipboard-text',
       submenu: [
-        { titulo: 'Crear evento', url: 'evento' },
-        { titulo: 'ver todo', url: 'lista' },
+        { titulo: 'Eventos', url: 'eventos' },
+        { titulo: 'Servicios', url: 'servicios' },
       ]
     },
-    {
-      titulo: 'Servicios',
-      icono: 'mdi mdi-folder-lock-open',
-      submenu: [
-        { titulo: 'Crear servicio', url: 'servicio' },
-        { titulo: 'ver todo', url: 'lista' },
-      ]
-    }
-
   ];
 
   constructor() { }

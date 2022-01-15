@@ -14,6 +14,12 @@ import { CrearPersonaComponent } from './recursoshumanos/personas/crear-persona/
 import { UsuariosComponent } from './recursoshumanos/usuarios/usuarios.component';
 import { CrearUsuariosComponent } from './recursoshumanos/usuarios/crear-usuarios/crear-usuarios.component';
 import { EditarUsuariosComponent } from './recursoshumanos/usuarios/editar-usuarios/editar-usuarios.component';
+import { EventosComponent } from './cobros/eventos/eventos.component';
+import { CrearEventosComponent } from './cobros/eventos/crear-eventos/crear-eventos.component';
+import { EditarEventosComponent } from './cobros/eventos/editar-eventos/editar-eventos.component';
+import { ServiciosComponent } from './cobros/servicios/servicios.component';
+import { CrearServiciosComponent } from './cobros/servicios/crear-servicios/crear-servicios.component';
+import { EditarServiciosComponent } from './cobros/servicios/editar-servicios/editar-servicios.component';
 
 
 const routes: Routes = [
@@ -36,6 +42,15 @@ const routes: Routes = [
       { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Usuarios del sistema' } },
       { path: 'crearusuarios', component: CrearUsuariosComponent, data: { titulo: 'Registro de usuarios del sistema' } },
       { path: 'editarusuarios/:id', component: EditarUsuariosComponent, data: { titulo: 'Modificar Usuario' } },
+
+      // Eventos y servicios
+      { path: 'eventos', component: EventosComponent, data: { titulo: 'Eventos' } },
+      { path: 'creareventos', component: CrearEventosComponent, data: { titulo: 'Registrar Eventos' } },
+      { path: 'editareventos/:id', component: EditarEventosComponent, data: { titulo: 'Modificar evento' } },
+
+      { path: 'servicios', component: ServiciosComponent, data: { titulo: 'Servicios' } },
+      { path: 'crearservicios', component: CrearServiciosComponent, data: { titulo: 'Registro de Servicios' } },
+      { path: 'editarservicios/:id', component: EditarServiciosComponent, data: { titulo: 'Modificar Servicios' } },
 
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]

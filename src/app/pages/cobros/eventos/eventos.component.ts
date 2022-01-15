@@ -1,25 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
+// Sericios
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { EventosService } from './../../../services/eventos.service';
+import { Eventos } from 'src/app/models/eventos.models';
 
 // Variables globales
 const base_url = environment.base_url;
 
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+  selector: 'app-eventos',
+  templateUrl: './eventos.component.html',
+  styleUrls: ['./eventos.component.css']
 })
-export class UsuariosComponent implements OnInit {
+export class EventosComponent implements OnInit {
 
   public totalUsuarios: number = 0;
   public totalUsuarios2: number = 0;
 
-  public usuarios: Usuario[] = [];
-  public usuarios2: Usuario[] = [];
+  public eventos: Eventos[] = [];
+  public eventos2: Eventos[] = [];
 
   public pagination: any;
 
@@ -54,10 +57,11 @@ export class UsuariosComponent implements OnInit {
   // Mostra 
   public mostrar: boolean = true;
 
-  constructor(private usuarioServices: UsuarioService) { }
+  constructor(
+    private eventosServices: EventosService
+  ) { }
 
   ngOnInit(): void {
-
     this.eliminarLocalstorage();
 
     // console.log(this.textoBuscar);
@@ -67,7 +71,7 @@ export class UsuariosComponent implements OnInit {
     if (nameBuscar) {
       (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
       const urlBuscar = String(localStorage.getItem('urlPagination'));
-      this.cargarUsuarioBuscar(nameBuscar, urlBuscar)
+      this.buscarEventos(nameBuscar, urlBuscar)
 
     } else {
       this.persistenciaPagina();
@@ -83,17 +87,19 @@ export class UsuariosComponent implements OnInit {
     // console.log(this.primeraPagina);
 
     if (this.primeraPagina === null) {
-      this.cargarUsuario(`${base_url}/api/user?page=1`);
+      this.cargarEvento(`${base_url}/api/evento?page=1`);
+      // console.log('hola');
+
     } else {
       this.primeraPagina = localStorage.getItem('urlPagination')
-      this.cargarUsuario(this.primeraPagina);
+      this.cargarEvento(this.primeraPagina);
     }
   }
 
   /**
    * cargarUsuarioBuscar
    */
-  public cargarUsuarioBuscar(texto: any, url?: string, band?: number) {
+  public buscarEventos(texto: any, url?: string, band?: number) {
 
     if (band) {
       localStorage.setItem('usuario', texto);
@@ -102,7 +108,7 @@ export class UsuariosComponent implements OnInit {
     if (texto === '' && url === '') {
       const urlParams = String(localStorage.getItem('paramsUrl'));
       this.mostrar = true;
-      this.cargarUsuario(urlParams)
+      this.cargarEvento(urlParams)
 
 
     } else {
@@ -112,7 +118,7 @@ export class UsuariosComponent implements OnInit {
       if (texto != '' || this.textoBuscar === '') {
 
         this.textoBuscar = texto
-        urls = `${base_url}/api/buscar/usuario?page=1`
+        urls = `${base_url}/api/buscar/eventos?page=1`
 
       }
       if (url != '') {
@@ -130,20 +136,20 @@ export class UsuariosComponent implements OnInit {
         this.mostrar = false;
         this.cargando = true;
 
-        this.usuarioServices.cargarUsuariosBuscar(formDatos)
-          .subscribe(({ user }) => {
+        this.eventosServices.buscarEventos(formDatos)
+          .subscribe(({ evento }) => {
 
-            this.totalUsuarios2 = user.total;
-            this.usuarios2 = user.data;
+            this.totalUsuarios2 = evento.total;
+            this.eventos2 = evento.data;
 
-            this.paginaSiguiente2 = user.next_page_url;
-            this.paginaAnterior2 = user.prev_page_url;
+            this.paginaSiguiente2 = evento.next_page_url;
+            this.paginaAnterior2 = evento.prev_page_url;
 
-            this.cantPaginas2 = user.last_page;
-            this.currentPage2 = user.current_page;
+            this.cantPaginas2 = evento.last_page;
+            this.currentPage2 = evento.current_page;
 
             // Persistencia de pagina
-            localStorage.setItem('urlPagination', `${base_url}/api/buscar/usuario?page=${this.currentPage2}`);
+            localStorage.setItem('urlPagination', `${base_url}/api/buscar/eventos?page=${this.currentPage2}`);
 
             // loading
             this.cargando = false;
@@ -157,17 +163,20 @@ export class UsuariosComponent implements OnInit {
   /**
    * cargarUsuario
    */
-  public cargarUsuario(params: string) {
+  public cargarEvento(params: string) {
 
     // Loading
     this.cargando = true;
 
-    this.usuarioServices.cargarUsuarios(params)
-      .subscribe(({ total, usuario, paginate, user }) => {
-        this.totalUsuarios = total;
-        this.usuarios = usuario;
+    this.eventosServices.cargarEventos(params)
+      .subscribe(({ evento }) => {
 
-        this.setPaginator(user);
+        // console.log(evento);
+        this.totalUsuarios = evento.total;
+
+        this.eventos = evento.data;
+
+        this.setPaginator(evento);
 
         this.paginaSiguiente = this.pagination.next_page_url;
         this.paginaAnterior = this.pagination.prev_page_url;
@@ -176,8 +185,8 @@ export class UsuariosComponent implements OnInit {
         this.currentPage = this.pagination.current_page;
 
         // Persistencia de pagina
-        localStorage.setItem('urlPagination', `${base_url}/api/user?page=${this.currentPage}`);
-        localStorage.setItem('paramsUrl', `${base_url}/api/user?page=${this.currentPage}`)
+        localStorage.setItem('urlPagination', `${base_url}/api/evento?page=${this.currentPage}`);
+        localStorage.setItem('paramsUrl', `${base_url}/api/evento?page=${this.currentPage}`)
 
         // loading
         this.cargando = false;
@@ -203,37 +212,29 @@ export class UsuariosComponent implements OnInit {
   }
 
 
+
   // Darde baja al los usuarios
   /**
    * Eliminar
    */
-  public eliminarUsuario(usuario: Usuario, bandera: number): any {
-
-    // No puedes darte de baja asi mismo
-    const idUserLogin = JSON.parse(String(localStorage.getItem('acces')));
-    if (usuario.id === idUserLogin.id) {
-      return Swal.fire('Error', 'No puedes darte de baja a si mismo', 'error');
-    }
+  public eliminarEvento(evento: Eventos, bandera: number): any {
 
 
     let id: number;
     let nombre: string;
 
-    // console.log(usuario.id);
-    // console.log(bandera);
-
     if (bandera) {
-      id = Number(usuario.id);
-      nombre = usuario.persona.nombres;
+      id = Number(evento.id);
+      nombre = evento.evento;
     } else {
-      nombre = String(usuario.nombres);
-      id = Number(usuario.id);
+      nombre = String(evento.evento);
+      id = Number(evento.id);
     }
 
 
     Swal.fire({
       title: 'Esta Seguro de Eliminar?',
-      text: `Esta a punto de dar de baja a ${nombre}`,
+      text: `Esta a punto de eliminar el evento ${nombre}`,
       icon: 'question',
       showCancelButton: true,
       cancelButtonText: 'Cancelar!',
@@ -241,20 +242,20 @@ export class UsuariosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.usuarioServices.eliminarUsuario(id)
+        this.eventosServices.eliminarEvento(id)
           .subscribe(resp => {
             const parametro = String(localStorage.getItem('urlPagination'));
             if (bandera) {
-              this.cargarUsuario(parametro);
+              this.cargarEvento(parametro);
             } else {
               const urlUser = String(localStorage.getItem('urlPagination'));
-              const nameUsuario = localStorage.getItem('usuario');
-              this.cargarUsuarioBuscar(nameUsuario, urlUser);
+              const nameEvento = localStorage.getItem('usuario');
+              this.buscarEventos(nameEvento, urlUser);
             }
 
             Swal.fire(
-              'Usuario dado de Baja!',
-              `El usuario ${nombre} fue dado de baja correctamente`,
+              'Evento dado de Baja!',
+              `El evento ${nombre} fue dado de baja correctamente`,
               'success'
             )
 
@@ -268,8 +269,8 @@ export class UsuariosComponent implements OnInit {
 
 
   /**
-  * eliminarLocalstorage
-  */
+   * eliminarLocalstorage
+   */
   public eliminarLocalstorage() {
     localStorage.removeItem('urlPagination');
     localStorage.removeItem('paramsUrl');
