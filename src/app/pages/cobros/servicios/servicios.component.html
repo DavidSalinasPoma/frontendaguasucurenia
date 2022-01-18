@@ -1,1 +1,213 @@
-<p>servicios works!</p>
+  <div class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <input id="textBuscar" type="text" class="form-control" placeholder="Buscar servicio..." #text
+            (keyup)="buscarServicios(text.value, '',1)" autocomplete="off">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="this.cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="alert alert-info text-center">
+        <h4 class="alert-heading">Cargando</h4>
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+        <p class="mb-0">Por favor espere</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!this.cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="card">
+
+        <!-- Primera Parte -->
+        <div *ngIf="this.mostrar, else showTablaOpcion" class="card-body  animated fadeIn fast">
+
+          <!-- Boton de crear Usuarios -->
+          <div class="row">
+
+            <div class="col-8">
+              <h4 class="card-title">Total Servicios: ({{ this.totalServicios }})</h4>
+              <h6 class="card-subtitle">Servicios Registrados en el Sistema</h6>
+            </div>
+            <div class="col text-right">
+              <button routerLink='/dashboard/crearservicios' type="button" class="btn btn-primary"><i
+                  class="fa fa-apple"></i>
+                Crear
+                Servicios</button>
+            </div>
+
+          </div>
+
+
+          <!-- Taabla para limpiar y mostrar buscados -->
+          <div class="table-responsive">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Descripcion</th>
+                  <th class="w100">Precio</th>
+                  <th class="w100">Estado</th>
+                  <th>Fecha de registro</th>
+                  <th class="text-nowrap w100">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+
+
+                <tr *ngFor="let item of this.servicios">
+                  <td>{{ item.nombre }} </td>
+                  <td>{{ item.descripcion }}</td>
+                  <td>{{ item.costo }}</td>
+                  <td *ngIf="item.estado; else notShow">
+                    <div class="label label-table label-success">Activado</div>
+                  </td>
+                  <ng-template #notShow>
+                    <td>
+                      <div class="label label-table label-danger">Desactivado</div>
+                    </td>
+                  </ng-template>
+                  <td>{{ item.created_at | date:'medium' }}</td>
+
+
+
+                  <td class="text-nowrap text-center">
+                    <a [routerLink]="[ '/dashboard/editarservicios', item.id ]" ng-route data-toggle="tooltip"
+                      title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                    &nbsp;
+                    <a (click)="this.eliminarServicio(item,1)" data-toggle="tooltip" title="Borrar"> <i
+                        class="fa fa-close text-danger cursor"></i> </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+          <div class="mt-3">
+            <button *ngIf="this.currentPage!=1; else notShowAnteriorl" class="btn btn-dark"
+              (click)="this.cargarServicio(this.paginaAnterior)">anterior</button>
+
+            <ng-template #notShowAnteriorl>
+              <button disabled class="btn btn-dark"
+                (click)="this.cargarServicio(this.paginaAnterior) ">Anterior</button>
+            </ng-template>
+            &nbsp;
+
+            <button *ngIf="this.currentPage!=this.cantPaginas; else notShowTablasp" class="btn btn-dark"
+              (click)="this.cargarServicio(this.paginaSiguiente)">Siguiente</button>
+
+            <ng-template #notShowTablasp>
+              <button disabled class="btn btn-dark"
+                (click)="this.cargarServicio(this.paginaSiguiente) ">Siguiente</button>
+            </ng-template>
+
+            &nbsp;
+            &nbsp;
+
+            <span>{{ this.currentPage }} de {{ this.cantPaginas }} Páginas.</span>
+          </div>
+        </div>
+
+        <!-- Segunda parte -->
+        <ng-template #showTablaOpcion>
+          <div class="card-body  animated fadeIn fast">
+
+            <div class="row">
+              <div class="col-8">
+
+                <h4 class="card-title text-success">Total de servicios encontrados: ({{ this.totalServicios2 }})</h4>
+                <h6 class="card-subtitle">Servicios Registrados en el Sistema</h6>
+              </div>
+              <div class="col text-right">
+                <button routerLink='/dashboard/crearservicios' type="button" class="btn btn-primary"><i
+                    class="fa fa-apple"></i>
+                  Crear
+                  Servicios</button>
+              </div>
+            </div>
+
+            <!-- Taabla para limpiar y mostrar buscados -->
+            <div class="table-responsive">
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Servicio</th>
+                    <th>Descripcion</th>
+                    <th class="w100">Precio</th>
+                    <th class="w100">Estado</th>
+                    <th>Fecha de registro</th>
+                    <th class="text-nowrap w100">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+
+                  <tr *ngFor="let item of this.servicios2">
+                    <td>{{ item.nombre }} </td>
+                    <td>{{ item.descripcion }}</td>
+                    <td>{{ item.costo }}</td>
+                    <td *ngIf="item.estado; else notShowd">
+                      <div class="label label-table label-success">Activado</div>
+                    </td>
+                    <ng-template #notShowd>
+                      <td>
+                        <div class="label label-table label-danger">Desactivado</div>
+                      </td>
+                    </ng-template>
+                    <td>{{ item.created_at | date:'medium' }}</td>
+
+
+
+                    <td class="text-nowrap text-center">
+                      <a [routerLink]="[ '/dashboard/editarservicios', item.id ]" href="#" data-toggle="tooltip"
+                        title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i>
+                      </a>
+                      &nbsp;
+                      <a (click)="this.eliminarServicio(item,0)" data-toggle="tooltip" title="Borrar"> <i
+                          class="fa fa-close text-danger cursor"></i> </a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+
+            <div class="mt-3">
+              <button *ngIf="this.currentPage2!=1; else notShowAnteriorTabla" class="btn btn-dark"
+                (click)="this.buscarServicios('',this.paginaAnterior2,0)">anterior</button>
+
+              <ng-template #notShowAnteriorTabla>
+                <button disabled class="btn btn-dark"
+                  (click)="this.buscarServicios('',this.paginaAnterior2,0) ">Anterior</button>
+              </ng-template>
+              &nbsp;
+
+              <button *ngIf="this.currentPage2!=this.cantPaginas2; else notShowTablas" class="btn btn-dark"
+                (click)="this.buscarServicios('',this.paginaSiguiente2,0)">Siguiente</button>
+
+              <ng-template #notShowTablas>
+                <button disabled class="btn btn-dark"
+                  (click)="this.buscarServicios('',this.paginaSiguiente2,0) ">Siguiente</button>
+              </ng-template>
+
+              &nbsp;
+              &nbsp;
+
+              <span>{{ this.currentPage2 }} de {{ this.cantPaginas2 }} Páginas.</span>
+            </div>
+          </div>
+        </ng-template>
+
+
+      </div>
+    </div>
+  </div>
