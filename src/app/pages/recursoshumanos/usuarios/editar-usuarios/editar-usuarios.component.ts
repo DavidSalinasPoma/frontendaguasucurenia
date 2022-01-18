@@ -17,6 +17,11 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class EditarUsuariosComponent implements OnInit {
 
+  public estados = [
+    { value: 1, estado: 'Activado' },
+    { value: 0, estado: 'Desactivado' }
+  ];
+
   public idUsuario: number;
 
   // Angular Material

@@ -89,12 +89,16 @@
                       </div>
                     </div>
 
-                    <!-- Form Esdtado -->
+
+                    <!-- Estado -->
                     <div class="form-group">
                       <h5 class="m-t-30">Estado</h5>
                       <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Estado del servicio</mat-label>
-                        <input type="text" matInput formControlName="estado" autocomplete="off" spellcheck="false">
+                        <mat-label>Seleccione un estado</mat-label>
+                        <mat-select formControlName="estado">
+                          <mat-option *ngFor="let item of this.estados" [value]="item.value">{{ item.estado }}
+                          </mat-option>
+                        </mat-select>
                       </mat-form-field>
                       <!-- Validacion -->
                       <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
@@ -105,7 +109,6 @@
                         </div>
                       </div>
                     </div>
-
 
                     <div class="mt-5">
                       <button [disabled]="this.formulario.invalid" type="submit"

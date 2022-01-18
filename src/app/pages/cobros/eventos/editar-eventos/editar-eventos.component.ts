@@ -18,6 +18,11 @@ import { EventosService } from 'src/app/services/eventos.service';
 })
 export class EditarEventosComponent implements OnInit {
 
+  public estados = [
+    { value: 1, estado: 'Activado' },
+    { value: 0, estado: 'Desactivado' }
+  ];
+
   public idEvento: number;
 
   // Angular Material

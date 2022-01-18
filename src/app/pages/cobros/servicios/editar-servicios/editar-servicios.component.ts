@@ -15,6 +15,11 @@ import { ServiciosService } from 'src/app/services/servicios.service';
 })
 export class EditarServiciosComponent implements OnInit {
 
+  public estados = [
+    { value: 1, estado: 'Activado' },
+    { value: 0, estado: 'Desactivado' }
+  ];
+
   public idServicio: number;
 
   // Angular Material
@@ -81,7 +86,7 @@ export class EditarServiciosComponent implements OnInit {
     this.servicioServices.showServicios(this.idServicio)
       .subscribe(({ servicio }) => {
 
-        this.formulario.patchValue({
+        this.formulario.setValue({
           servicio: servicio.nombre,
           descripcion: servicio.descripcion,
           precio: servicio.costo,
