@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from 'src/app/models/usuario.model';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 // Sericios
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { EventosService } from './../../../services/eventos.service';
-import { Eventos } from 'src/app/models/eventos.models';
+
+import { Barrios } from 'src/app/models/barrio.models';
+import { BarriosService } from 'src/app/services/barrios.service';
 
 // Variables globales
 const base_url = environment.base_url;
 
+
 @Component({
-  selector: 'app-eventos',
-  templateUrl: './eventos.component.html',
-  styleUrls: ['./eventos.component.css']
+  selector: 'app-barrios',
+  templateUrl: './barrios.component.html',
+  styleUrls: ['./barrios.component.css']
 })
-export class EventosComponent implements OnInit {
+export class BarriosComponent implements OnInit {
 
-  public totalUsuarios: number = 0;
-  public totalUsuarios2: number = 0;
+  public totalBarrios: number = 0;
+  public totalBarrios2: number = 0;
 
-  public eventos: Eventos[] = [];
-  public eventos2: Eventos[] = [];
+  public barrios: Barrios[] = [];
+  public barrios2: Barrios[] = [];
 
   public pagination: any;
 
@@ -58,10 +58,11 @@ export class EventosComponent implements OnInit {
   public mostrar: boolean = true;
 
   constructor(
-    private eventosServices: EventosService
+    private barrioServices: BarriosService
   ) { }
 
   ngOnInit(): void {
+
 
     const cambioRuta = Number(localStorage.getItem('guardarRuta'));
     localStorage.removeItem('guardarRuta');
@@ -71,19 +72,18 @@ export class EventosComponent implements OnInit {
       this.persistenciaPagina();
     } else {
       const nameBuscar = localStorage.getItem('usuario');
-      // console.log(nameBuscar);
       if (nameBuscar) {
         (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
         const urlBuscar = String(localStorage.getItem('urlPagination'));
-        this.buscarEventos(nameBuscar, urlBuscar)
+        this.buscarBarrios(nameBuscar, urlBuscar)
+        // console.log('hola');
 
       } else {
+
         this.persistenciaPagina();
+
       }
     }
-
-
-
 
   }
 
@@ -95,19 +95,19 @@ export class EventosComponent implements OnInit {
     // console.log(this.primeraPagina);
 
     if (this.primeraPagina === null) {
-      this.cargarEvento(`${base_url}/api/evento?page=1`);
+      this.cargarBarrios(`${base_url}/api/barrio?page=1`);
       // console.log('hola');
 
     } else {
       this.primeraPagina = localStorage.getItem('urlPagination')
-      this.cargarEvento(this.primeraPagina);
+      this.cargarBarrios(this.primeraPagina);
     }
   }
 
   /**
    * cargarUsuarioBuscar
    */
-  public buscarEventos(texto: any, url?: string, band?: number) {
+  public buscarBarrios(texto: any, url?: string, band?: number) {
 
     if (band) {
       localStorage.setItem('usuario', texto);
@@ -116,7 +116,7 @@ export class EventosComponent implements OnInit {
     if (texto === '' && url === '') {
       const urlParams = String(localStorage.getItem('paramsUrl'));
       this.mostrar = true;
-      this.cargarEvento(urlParams)
+      this.cargarBarrios(urlParams)
 
 
     } else {
@@ -126,7 +126,7 @@ export class EventosComponent implements OnInit {
       if (texto != '' || this.textoBuscar === '') {
 
         this.textoBuscar = texto
-        urls = `${base_url}/api/buscar/eventos?page=1`
+        urls = `${base_url}/api/buscar/barrios?page=1`
 
       }
       if (url != '') {
@@ -144,20 +144,20 @@ export class EventosComponent implements OnInit {
         this.mostrar = false;
         this.cargando = true;
 
-        this.eventosServices.buscarEventos(formDatos)
-          .subscribe(({ evento }) => {
+        this.barrioServices.buscarBarrios(formDatos)
+          .subscribe(({ barrio }) => {
 
-            this.totalUsuarios2 = evento.total;
-            this.eventos2 = evento.data;
+            this.totalBarrios2 = barrio.total;
+            this.barrios2 = barrio.data;
 
-            this.paginaSiguiente2 = evento.next_page_url;
-            this.paginaAnterior2 = evento.prev_page_url;
+            this.paginaSiguiente2 = barrio.next_page_url;
+            this.paginaAnterior2 = barrio.prev_page_url;
 
-            this.cantPaginas2 = evento.last_page;
-            this.currentPage2 = evento.current_page;
+            this.cantPaginas2 = barrio.last_page;
+            this.currentPage2 = barrio.current_page;
 
             // Persistencia de pagina
-            localStorage.setItem('urlPagination', `${base_url}/api/buscar/eventos?page=${this.currentPage2}`);
+            localStorage.setItem('urlPagination', `${base_url}/api/buscar/barrios?page=${this.currentPage2}`);
 
             // loading
             this.cargando = false;
@@ -171,20 +171,20 @@ export class EventosComponent implements OnInit {
   /**
    * cargarUsuario
    */
-  public cargarEvento(params: string) {
+  public cargarBarrios(params: string) {
 
     // Loading
     this.cargando = true;
 
-    this.eventosServices.cargarEventos(params)
-      .subscribe(({ evento }) => {
+    this.barrioServices.cargarBarrios(params)
+      .subscribe(({ barrio }) => {
 
-        // console.log(evento);
-        this.totalUsuarios = evento.total;
+        // console.log(barrio);
+        this.totalBarrios = barrio.total;
 
-        this.eventos = evento.data;
+        this.barrios = barrio.data;
 
-        this.setPaginator(evento);
+        this.setPaginator(barrio);
 
         this.paginaSiguiente = this.pagination.next_page_url;
         this.paginaAnterior = this.pagination.prev_page_url;
@@ -193,9 +193,8 @@ export class EventosComponent implements OnInit {
         this.currentPage = this.pagination.current_page;
 
         // Persistencia de pagina
-        localStorage.setItem('urlPagination', `${base_url}/api/evento?page=${this.currentPage}`);
-        localStorage.setItem('paramsUrl', `${base_url}/api/evento?page=${this.currentPage}`)
-
+        localStorage.setItem('urlPagination', `${base_url}/api/barrio?page=${this.currentPage}`);
+        localStorage.setItem('paramsUrl', `${base_url}/api/barrio?page=${this.currentPage}`);
         // loading
         this.cargando = false;
 
@@ -225,24 +224,24 @@ export class EventosComponent implements OnInit {
   /**
    * Eliminar
    */
-  public eliminarEvento(evento: Eventos, bandera: number): any {
+  public eliminarBarrio(barrio: Barrios, bandera: number): any {
 
 
     let id: number;
     let nombre: string;
 
     if (bandera) {
-      id = Number(evento.id);
-      nombre = evento.evento;
+      id = Number(barrio.id);
+      nombre = barrio.nombre;
     } else {
-      nombre = String(evento.evento);
-      id = Number(evento.id);
+      nombre = String(barrio.nombre);
+      id = Number(barrio.id);
     }
 
 
     Swal.fire({
       title: 'Esta Seguro de Eliminar?',
-      text: `Esta a punto de eliminar el evento ${nombre}`,
+      text: `Esta a punto de eliminar el barrio ${nombre}`,
       icon: 'question',
       showCancelButton: true,
       cancelButtonText: 'Cancelar!',
@@ -250,20 +249,20 @@ export class EventosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.eventosServices.eliminarEvento(id)
-          .subscribe(resp => {
+        this.barrioServices.eliminarBarrio(id)
+          .subscribe(() => {
             const parametro = String(localStorage.getItem('urlPagination'));
             if (bandera) {
-              this.cargarEvento(parametro);
+              this.cargarBarrios(parametro);
             } else {
               const urlUser = String(localStorage.getItem('urlPagination'));
               const nameEvento = localStorage.getItem('usuario');
-              this.buscarEventos(nameEvento, urlUser);
+              this.buscarBarrios(nameEvento, urlUser);
             }
 
             Swal.fire(
-              'Evento dado de Baja!',
-              `El evento ${nombre} fue dado de baja correctamente`,
+              'Barrio dado de Baja!',
+              `El barrio ${nombre} fue dado de baja correctamente`,
               'success'
             )
 

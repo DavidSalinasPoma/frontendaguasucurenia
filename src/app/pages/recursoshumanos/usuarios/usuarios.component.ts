@@ -58,21 +58,28 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.eliminarLocalstorage();
 
-    // console.log(this.textoBuscar);
-    const nameBuscar = localStorage.getItem('usuario');
-    // console.log(nameBuscar);
+    const cambioRuta = Number(localStorage.getItem('guardarRuta'));
+    localStorage.removeItem('guardarRuta');
 
-    if (nameBuscar) {
-      (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
-      const urlBuscar = String(localStorage.getItem('urlPagination'));
-      this.cargarUsuarioBuscar(nameBuscar, urlBuscar)
-
-    } else {
+    if (cambioRuta) {
+      this.eliminarLocalstorage();
       this.persistenciaPagina();
+    } else {
+      const nameBuscar = localStorage.getItem('usuario');
+      // console.log(nameBuscar);
+
+      if (nameBuscar) {
+        (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
+        const urlBuscar = String(localStorage.getItem('urlPagination'));
+        this.cargarUsuarioBuscar(nameBuscar, urlBuscar)
+      } else {
+        this.persistenciaPagina();
+      }
+
 
     }
+
   }
 
   /**
@@ -85,7 +92,7 @@ export class UsuariosComponent implements OnInit {
     if (this.primeraPagina === null) {
       this.cargarUsuario(`${base_url}/api/user?page=1`);
     } else {
-      this.primeraPagina = localStorage.getItem('urlPagination')
+      this.primeraPagina = localStorage.getItem('urlPagination');
       this.cargarUsuario(this.primeraPagina);
     }
   }
@@ -161,11 +168,15 @@ export class UsuariosComponent implements OnInit {
 
     // Loading
     this.cargando = true;
+    // console.log(params);
 
     this.usuarioServices.cargarUsuarios(params)
       .subscribe(({ total, usuario, paginate, user }) => {
         this.totalUsuarios = total;
         this.usuarios = usuario;
+        // console.log(this.usuarios);
+
+        // console.log(user);
 
         this.setPaginator(user);
 

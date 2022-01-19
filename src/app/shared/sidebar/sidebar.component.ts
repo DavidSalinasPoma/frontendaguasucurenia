@@ -39,5 +39,13 @@ export class SidebarComponent implements OnInit {
 
   }
 
+  /**
+   * guardarRuta
+   */
+  public guardarRuta() {
+    localStorage.setItem('guardarRuta', '1');
+    localStorage.removeItem('usuario');
+  }
+
 
 }

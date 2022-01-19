@@ -20,6 +20,9 @@ import { EditarEventosComponent } from './cobros/eventos/editar-eventos/editar-e
 import { ServiciosComponent } from './cobros/servicios/servicios.component';
 import { CrearServiciosComponent } from './cobros/servicios/crear-servicios/crear-servicios.component';
 import { EditarServiciosComponent } from './cobros/servicios/editar-servicios/editar-servicios.component';
+import { BarriosComponent } from './recursoshumanos/barrios/barrios.component';
+import { CrearBarrioComponent } from './recursoshumanos/barrios/crear-barrio/crear-barrio.component';
+import { EditarBarrioComponent } from './recursoshumanos/barrios/editar-barrio/editar-barrio.component';
 
 
 const routes: Routes = [
@@ -51,6 +54,10 @@ const routes: Routes = [
       { path: 'servicios', component: ServiciosComponent, data: { titulo: 'Servicios' } },
       { path: 'crearservicios', component: CrearServiciosComponent, data: { titulo: 'Registro de Servicios' } },
       { path: 'editarservicios/:id', component: EditarServiciosComponent, data: { titulo: 'Modificar Servicios' } },
+
+      { path: 'barrios', component: BarriosComponent, data: { titulo: 'Barrios' } },
+      { path: 'crearbarrios', component: CrearBarrioComponent, data: { titulo: 'Registro de Barrios' } },
+      { path: 'editarbarrios/:id', component: EditarBarrioComponent, data: { titulo: 'Modificar Barrios' } },
 
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]

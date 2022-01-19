@@ -27,6 +27,9 @@ import { CrearEventosComponent } from './cobros/eventos/crear-eventos/crear-even
 import { EditarEventosComponent } from './cobros/eventos/editar-eventos/editar-eventos.component';
 import { EditarServiciosComponent } from './cobros/servicios/editar-servicios/editar-servicios.component';
 import { CrearServiciosComponent } from './cobros/servicios/crear-servicios/crear-servicios.component';
+import { BarriosComponent } from './recursoshumanos/barrios/barrios.component';
+import { CrearBarrioComponent } from './recursoshumanos/barrios/crear-barrio/crear-barrio.component';
+import { EditarBarrioComponent } from './recursoshumanos/barrios/editar-barrio/editar-barrio.component';
 
 
 
@@ -46,7 +49,10 @@ import { CrearServiciosComponent } from './cobros/servicios/crear-servicios/crea
     CrearEventosComponent,
     EditarEventosComponent,
     EditarServiciosComponent,
-    CrearServiciosComponent
+    CrearServiciosComponent,
+    BarriosComponent,
+    CrearBarrioComponent,
+    EditarBarrioComponent
   ],
   imports: [
     CommonModule,

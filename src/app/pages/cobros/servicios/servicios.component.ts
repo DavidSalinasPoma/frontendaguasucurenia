@@ -66,21 +66,28 @@ export class ServiciosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.eliminarLocalstorage();
 
-    // console.log(this.textoBuscar);
-    const nameBuscar = localStorage.getItem('usuario');
-    // console.log(nameBuscar);
+    const cambioRuta = Number(localStorage.getItem('guardarRuta'));
+    localStorage.removeItem('guardarRuta');
 
-    if (nameBuscar) {
-      (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
-      const urlBuscar = String(localStorage.getItem('urlPagination'));
-      this.buscarServicios(nameBuscar, urlBuscar)
 
-    } else {
+    if (cambioRuta) {
+      this.eliminarLocalstorage();
       this.persistenciaPagina();
+    } else {
+      // console.log(this.textoBuscar);
+      const nameBuscar = localStorage.getItem('usuario');
+      // console.log(nameBuscar);
 
+      if (nameBuscar) {
+        (document.getElementById('textBuscar') as HTMLInputElement).value = nameBuscar;
+        const urlBuscar = String(localStorage.getItem('urlPagination'));
+        this.buscarServicios(nameBuscar, urlBuscar)
+      } else {
+        this.persistenciaPagina();
+      }
     }
+
   }
 
   /**
@@ -175,7 +182,7 @@ export class ServiciosComponent implements OnInit {
     this.serciciosServices.cargarServicios(params)
       .subscribe(({ servicio }) => {
 
-        // console.log(evento);
+        // console.log(servicio);
         this.totalServicios = servicio.total;
 
         this.servicios = servicio.data;
