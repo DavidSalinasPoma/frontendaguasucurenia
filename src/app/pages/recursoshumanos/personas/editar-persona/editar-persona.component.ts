@@ -1,18 +1,28 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
 import Swal from 'sweetalert2';
 
+import { BarriosService } from 'src/app/services/barrios.service';
+
+// Angular Router
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ServiciosService } from 'src/app/services/servicios.service';
 import { PersonaService } from 'src/app/services/persona.service';
 
 @Component({
-  selector: 'app-crear-persona',
-  templateUrl: './crear-persona.component.html',
-  styleUrls: ['./crear-persona.component.css']
+  selector: 'app-editar-persona',
+  templateUrl: './editar-persona.component.html',
+  styleUrls: ['./editar-persona.component.css']
 })
-export class CrearPersonaComponent implements OnInit {
+export class EditarPersonaComponent implements OnInit {
 
   // Select
+  public estados = [
+    { value: 1, estado: 'Activado' },
+    { value: 0, estado: 'Desactivado' }
+  ];
+
   public expeditos = [
     { value: 'CH', ciudad: 'Chuquisaca' },
     { value: 'LP', ciudad: 'La Paz' },
@@ -35,17 +45,29 @@ export class CrearPersonaComponent implements OnInit {
     { value: 'Femenino', sexo: 'Femenino' }
   ];
 
+
+
+  public idPersona: number;
+
   // Angular Material
   myControl = new FormControl();
-  public options: any[] = [];
+  options: string[] = [];
 
   // Formularios
   public formulario!: FormGroup;
 
+  // loading
+  public cargando: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
+    private rutaActiva: ActivatedRoute,
+
     private personaServices: PersonaService
   ) {
+
+    // Recibiendo el parametro
+    this.idPersona = this.rutaActiva.snapshot.params.id;
 
     this.crearFormulario();
 
@@ -53,11 +75,12 @@ export class CrearPersonaComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.showPersonas();
   }
 
   /**
-  * formulario
-  */
+   * formulario
+   */
   public crearFormulario() {
     this.formulario = this.formBuilder.group({
       nombres: ['', [Validators.required]],
@@ -72,6 +95,7 @@ export class CrearPersonaComponent implements OnInit {
       celularF: ['', [Validators.required]],
       nacimiento: ['', [Validators.required]],
       ecivil: ['', [Validators.required]],
+      estado: ['', Validators.required],
     });
   }
 
@@ -112,13 +136,43 @@ export class CrearPersonaComponent implements OnInit {
   get ecivil() {
     return this.formulario.get('ecivil');
   }
+  get estado(): any {
+    return this.formulario.get('estado');
+  }
+
+  /**
+   * showUsuario
+   */
+  public showPersonas(): any {
+
+    this.cargando = true;
+    this.personaServices.showPersonas(this.idPersona)
+      .subscribe(({ persona }) => {
+
+        this.formulario.setValue({
+          nombres: persona.nombres,
+          paterno: persona.ap_paterno,
+          materno: persona.ap_materno,
+          carnet: persona.carnet,
+          expedito: persona.expedito,
+          sexo: persona.sexo,
+          direccion: persona.direccion,
+          email: persona.email,
+          celular: persona.celular,
+          celularF: persona.celular_familiar,
+          nacimiento: persona.nacimiento,
+          ecivil: persona.estado_civil,
+          estado: persona.estado,
+        });
+        this.cargando = false;
+      });
+  }
+
+
   /**
    * ngSubmit
    */
   public onSubmit(event: any) {
-
-    // console.log(this.formulario.value);
-
 
     const formData = {
       carnet: this.carnet?.value,
@@ -132,27 +186,31 @@ export class CrearPersonaComponent implements OnInit {
       celular: this.celular?.value,
       celular_familiar: this.celularF?.value,
       nacimiento: this.nacimiento?.value,
-      estado_civil: this.ecivil?.value
+      estado_civil: this.ecivil?.value,
+      estado: this.estado.value
     }
 
     // console.log(formData);
 
-    this.personaServices.crearPersonas(formData)
-      .subscribe(() => {
 
+    this.personaServices.updatePersonas(formData, this.idPersona)
+      .subscribe(() => {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: '¡Registro Correcto!',
-          text: `La persona fue registrada correctamente!`,
+          title: '¡Modificación Correcta!',
+          text: `La persona fue modificado correctamente!`,
           showConfirmButton: false,
           timer: 3000
         })
-        this.limpiar();
+        this.showPersonas();
       }, (err) => {
+        console.log(err);
+
         Swal.fire('Error', err.error.message, 'error')
       }
       );
+
   }
 
   /**

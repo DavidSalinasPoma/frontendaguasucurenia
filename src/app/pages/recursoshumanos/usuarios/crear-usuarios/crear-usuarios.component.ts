@@ -102,14 +102,15 @@ export class CrearUsuariosComponent implements OnInit {
    */
   public cargarPersonas() {
 
-    this.personaServices.cargarPersonas()
+    this.usuarioServices.cargarPersonas()
       .subscribe(resp => {
         const arrayPersona = resp.persona.data;
         // console.log(arrayPersona);
         this.options = [];
         arrayPersona.forEach((element: any) => {
-          // console.log(element);
-          this.options.push(`${element.id}: ${element.nombres} ${element.ap_paterno} ${element.ap_materno}`);
+          if (element.estado === 1 || element.estado === '1') {
+            this.options.push(`${element.id}: ${element.nombres} ${element.ap_paterno} ${element.ap_materno}`);
+          }
         });
 
         // console.log(this.options);

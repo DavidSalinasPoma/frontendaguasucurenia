@@ -23,6 +23,7 @@ import { EditarServiciosComponent } from './cobros/servicios/editar-servicios/ed
 import { BarriosComponent } from './recursoshumanos/barrios/barrios.component';
 import { CrearBarrioComponent } from './recursoshumanos/barrios/crear-barrio/crear-barrio.component';
 import { EditarBarrioComponent } from './recursoshumanos/barrios/editar-barrio/editar-barrio.component';
+import { EditarPersonaComponent } from './recursoshumanos/personas/editar-persona/editar-persona.component';
 
 
 const routes: Routes = [
@@ -39,8 +40,9 @@ const routes: Routes = [
       { path: 'grafica1', component: Grafica1Component, data: { titulo: 'Gráfica' } },
 
       // Recursos humanos
-      { path: 'personas', component: PersonasComponent, data: { titulo: 'Personas del sistema' } },
+      { path: 'personas', component: PersonasComponent, data: { titulo: 'Lista de personas registradas' } },
       { path: 'crearpersonas', component: CrearPersonaComponent, data: { titulo: 'Registro de personas' } },
+      { path: 'editarpersonas/:id', component: EditarPersonaComponent, data: { titulo: 'Modificar Persona' } },
 
       { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Usuarios del sistema' } },
       { path: 'crearusuarios', component: CrearUsuariosComponent, data: { titulo: 'Registro de usuarios del sistema' } },

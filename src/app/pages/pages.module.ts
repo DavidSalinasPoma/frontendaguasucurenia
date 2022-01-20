@@ -30,6 +30,7 @@ import { CrearServiciosComponent } from './cobros/servicios/crear-servicios/crea
 import { BarriosComponent } from './recursoshumanos/barrios/barrios.component';
 import { CrearBarrioComponent } from './recursoshumanos/barrios/crear-barrio/crear-barrio.component';
 import { EditarBarrioComponent } from './recursoshumanos/barrios/editar-barrio/editar-barrio.component';
+import { EditarPersonaComponent } from './recursoshumanos/personas/editar-persona/editar-persona.component';
 
 
 
@@ -52,7 +53,8 @@ import { EditarBarrioComponent } from './recursoshumanos/barrios/editar-barrio/e
     CrearServiciosComponent,
     BarriosComponent,
     CrearBarrioComponent,
-    EditarBarrioComponent
+    EditarBarrioComponent,
+    EditarPersonaComponent
   ],
   imports: [
     CommonModule,

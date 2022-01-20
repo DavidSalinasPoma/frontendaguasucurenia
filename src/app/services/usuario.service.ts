@@ -142,4 +142,16 @@ export class UsuarioService {
 
   }
 
+
+  /**
+   * cargarUsuarios
+   */
+  public cargarPersonas() {
+    // console.log(params);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + '/api/persona', { headers: parameters });
+  }
+
 }

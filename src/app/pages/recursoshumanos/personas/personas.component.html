@@ -2,12 +2,15 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <input type="text" class="form-control" placeholder="Buscar usuario...">
+          <input id="textBuscar" type="text" class="form-control" placeholder="Buscar Personas..." #text
+            (keyup)="buscarPersonas(text.value, '',1)" autocomplete="off">
         </div>
       </div>
     </div>
   </div>
-  <div class="row animated fadeIn fast">
+
+  <!-- Loading -->
+  <div *ngIf="this.cargando" class="row animated fadeIn fast">
     <div class="col-12">
       <div class="alert alert-info text-center">
         <h4 class="alert-heading">Cargando</h4>
@@ -17,65 +20,202 @@
     </div>
   </div>
 
-  <div class="row animated fadeIn fast">
+  <div *ngIf="!this.cargando" class="row animated fadeIn fast">
     <div class="col-12">
       <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Personas</h4>
-          <h6 class="card-subtitle">Personas Registradas en el sistema</h6>
-          <button routerLink='/dashboard/crearpersonas' type="button" class="btn btn-primary"><i class="fa fa-plus"></i>
-            Crear
-            persona</button>
+
+        <!-- Primera Parte -->
+        <div *ngIf="this.mostrar, else showTablaOpcion" class="card-body  animated fadeIn fast">
+
+          <!-- Boton de crear Usuarios -->
+          <div class="row">
+
+            <div class="col-8">
+              <h4 class="card-title">Total Personas: ({{ this.totalPersonas }})</h4>
+              <h6 class="card-subtitle">Personas Registrados en el Sistema</h6>
+            </div>
+            <div class="col text-right">
+              <button routerLink='/dashboard/crearpersonas' type="button" class="btn btn-primary"><i
+                  class="fa fa-apple"></i>
+                Crear
+                Persona</button>
+            </div>
+
+          </div>
+
+
+          <!-- Taabla para limpiar y mostrar buscados -->
           <div class="table-responsive">
+
             <table class="table table-bordered">
               <thead>
                 <tr>
+                  <th>Persona</th>
                   <th>Carnet</th>
-                  <th>Expedito</th>
-                  <th>Nombre completo</th>
-                  <th>sexo</th>
-                  <th>dirección</th>
-                  <th>Email</th>
-                  <th>Celular</th>
-                  <th>Cel. familiar</th>
-                  <th>lugar de Nacimiento</th>
-                  <th>Estado civil</th>
-                  <th>Estado</th>
-                  <th class="text-nowrap">Acciones</th>
+                  <th>direccion</th>
+                  <th class="w100">Celular</th>
+                  <th>Celular-Familiar</th>
+                  <th class="w100">Estado</th>
+                  <th>Fecha de registro</th>
+                  <th class="text-nowrap w100">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of this.personasdata">
-                  <td>{{ item.carnet }}</td>
-                  <td>{{ item.expedito }}</td>
-                  <td>{{ item.nombres }} {{ item.ap_paterno }} {{ item.ap_materno }}</td>
-                  <td>{{ item.sexo }}</td>
+
+
+                <tr *ngFor="let item of this.personas">
+                  <td>{{ item.nombres }} {{ item.ap_paterno }} {{ item.ap_materno }} </td>
+                  <td>{{ item.carnet }} {{ item.expedito }}</td>
                   <td>{{ item.direccion }}</td>
-                  <td>{{ item.email }}</td>
                   <td>{{ item.celular }}</td>
                   <td>{{ item.celular_familiar }}</td>
-                  <td>{{ item.nacimiento }}</td>
-                  <td>{{ item.estado_civil }}</td>
-                  <td>{{ item.estado }}</td>
+                  <td *ngIf=" item.estado; else notShow">
+                    <div class="label label-table label-success">Activado</div>
+                  </td>
+                  <ng-template #notShow>
+                    <td>
+                      <div class="label label-table label-danger">Desactivado</div>
+                    </td>
+                  </ng-template>
+                  <td>{{ item.created_at | date:'medium' }}</td>
 
 
-                  <td class="text-nowrap">
-                    <a href="#" data-toggle="tooltip" data-original-title="Editar"> <i
-                        class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                    <a href="#" data-toggle="tooltip" data-original-title="Borrar"> <i
-                        class="fa fa-close text-danger"></i> </a>
+
+                  <td class="text-nowrap text-center">
+                    <a [routerLink]="[ '/dashboard/editarpersonas', item.id ]" ng-route data-toggle="tooltip"
+                      title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                    &nbsp;
+                    <a (click)="this.eliminarPersona(item,1)" data-toggle="tooltip" title="Borrar"> <i
+                        class="fa fa-close text-danger cursor"></i> </a>
                   </td>
                 </tr>
-
               </tbody>
             </table>
+
           </div>
+
           <div class="mt-3">
-            <button class="btn btn-secondary">Anterior</button>
+            <button *ngIf="this.currentPage!=1; else notShowAnteriorl" class="btn btn-dark"
+              (click)="this.cargarPersonas(this.paginaAnterior)">anterior</button>
+
+            <ng-template #notShowAnteriorl>
+              <button disabled class="btn btn-dark"
+                (click)="this.cargarPersonas(this.paginaAnterior) ">Anterior</button>
+            </ng-template>
             &nbsp;
-            <button class="btn btn-secondary">Siguiente</button>
+
+            <button *ngIf="this.currentPage!=this.cantPaginas; else notShowTablasp" class="btn btn-dark"
+              (click)="this.cargarPersonas(this.paginaSiguiente)">Siguiente</button>
+
+            <ng-template #notShowTablasp>
+              <button disabled class="btn btn-dark"
+                (click)="this.cargarPersonas(this.paginaSiguiente) ">Siguiente</button>
+            </ng-template>
+
+            &nbsp;
+            &nbsp;
+
+            <span>{{ this.currentPage }} de {{ this.cantPaginas }} Páginas.</span>
           </div>
         </div>
+
+        <!-- Segunda parte -->
+        <ng-template #showTablaOpcion>
+          <div class="card-body  animated fadeIn fast">
+
+            <div class="row">
+              <div class="col-8">
+
+                <h4 class="card-title text-success">Total de personas encontrados: ({{ this.totalPersonas2 }})</h4>
+                <h6 class="card-subtitle">Personas Registrados en el Sistema</h6>
+              </div>
+              <div class="col text-right">
+                <button routerLink='/dashboard/crearpersonas' type="button" class="btn btn-primary"><i
+                    class="fa fa-apple"></i>
+                  Crear
+                  Personas</button>
+              </div>
+            </div>
+
+            <!-- Taabla para limpiar y mostrar buscados -->
+            <div class="table-responsive">
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Persona</th>
+                    <th>Carnet</th>
+                    <th>direccion</th>
+                    <th class="w100">Celular</th>
+                    <th>Celular-Familiar</th>
+                    <th class="w100">Estado</th>
+                    <th>Fecha de registro</th>
+                    <th class="text-nowrap w100">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+
+                  <tr *ngFor="let item of this.personas2">
+                    <td>{{ item.nombres }} {{ item.ap_paterno }} {{ item.ap_materno }} </td>
+                    <td>{{ item.carnet }} {{ item.expedito }}</td>
+                    <td>{{ item.direccion }}</td>
+                    <td>{{ item.celular }}</td>
+                    <td>{{ item.celular_familiar }}</td>
+                    <td *ngIf="item.estado; else notShowd">
+                      <div class="label label-table label-success">Activado</div>
+                    </td>
+                    <ng-template #notShowd>
+                      <td>
+                        <div class="label label-table label-danger">Desactivado</div>
+                      </td>
+                    </ng-template>
+                    <td>{{ item.created_at | date:'medium' }}</td>
+
+
+
+                    <td class="text-nowrap text-center">
+                      <a [routerLink]="[ '/dashboard/editarpersonas', item.id ]" href="#" data-toggle="tooltip"
+                        title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i>
+                      </a>
+                      &nbsp;
+                      <a (click)="this.eliminarPersona(item,0)" data-toggle="tooltip" title="Borrar"> <i
+                          class="fa fa-close text-danger cursor"></i> </a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+
+            <div class="mt-3">
+              <button *ngIf="this.currentPage2!=1; else notShowAnteriorTabla" class="btn btn-dark"
+                (click)="this.buscarPersonas('',this.paginaAnterior2,0)">anterior</button>
+
+              <ng-template #notShowAnteriorTabla>
+                <button disabled class="btn btn-dark"
+                  (click)="this.buscarPersonas('',this.paginaAnterior2,0) ">Anterior</button>
+              </ng-template>
+              &nbsp;
+
+              <button *ngIf="this.currentPage2!=this.cantPaginas2; else notShowTablas" class="btn btn-dark"
+                (click)="this.buscarPersonas('',this.paginaSiguiente2,0)">Siguiente</button>
+
+              <ng-template #notShowTablas>
+                <button disabled class="btn btn-dark"
+                  (click)="this.buscarPersonas('',this.paginaSiguiente2,0) ">Siguiente</button>
+              </ng-template>
+
+              &nbsp;
+              &nbsp;
+
+              <span>{{ this.currentPage2 }} de {{ this.cantPaginas2 }} Páginas.</span>
+            </div>
+          </div>
+        </ng-template>
+
+
       </div>
     </div>
   </div>

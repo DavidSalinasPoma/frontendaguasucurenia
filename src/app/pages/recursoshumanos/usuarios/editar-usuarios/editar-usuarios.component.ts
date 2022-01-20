@@ -160,14 +160,16 @@ export class EditarUsuariosComponent implements OnInit {
    * indexPersonas
    */
   public cargarPersonas() {
-    this.personaServices.cargarPersonas()
+    this.usuarioServices.cargarPersonas()
       .subscribe(resp => {
         const arrayPersona = resp.persona.data;
         // console.log(arrayPersona);
 
         arrayPersona.forEach((element: any) => {
-          // console.log(element);
+          console.log(element);
+
           this.options.push(`${element.id}: ${element.nombres} ${element.ap_paterno} ${element.ap_materno}`);
+
         });
 
         // console.log(this.options);
