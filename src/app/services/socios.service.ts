@@ -16,7 +16,7 @@ const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root'
 })
-export class PersonaService {
+export class SociosService {
 
   public nombreEvento = new EventEmitter<{}>();
 
@@ -31,27 +31,27 @@ export class PersonaService {
   /**
    * updateUsuarios
    */
-  public updatePersonas(formData: any, id: number) {
+  public updateSocios(formData: any, id: number) {
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.put(base_url + `/api/persona/${id}`, formData, { headers: parameters });
+    return this.http.put(base_url + `/api/socio/${id}`, formData, { headers: parameters });
   }
 
   /**
    * cargarUsuarios
    */
-  public showPersonas(id: number) {
+  public showEventos(id: number) {
     // console.log(params);
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.get<any>(base_url + `/api/persona/${id}`, { headers: parameters });
+    return this.http.get<any>(base_url + `/api/Socio/${id}`, { headers: parameters });
   }
 
   /**
    * cargarUsuarios
    */
-  public cargarPersonas(params: string) {
+  public cargarSocios(params: string) {
     // console.log(params);
 
     let parameters = new HttpHeaders();
@@ -63,7 +63,7 @@ export class PersonaService {
   /**
    * cargar eventos
    */
-  public buscarPersonas(formData: any): Observable<any> {
+  public buscarSocios(formData: any): Observable<any> {
     // console.log(formData);
 
 
@@ -72,34 +72,47 @@ export class PersonaService {
     return this.http.post<any>(formData.url, formData, { headers: parameters });
   }
 
-  /**
- * cargar eventos
- */
-  public buscarPersonasCrear(formData: any): Observable<any> {
-    // console.log(formData);
-    let parameters = new HttpHeaders();
-    parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.post<any>(base_url + '/api/buscar/personas', formData, { headers: parameters });
-  }
+
 
   // Servicio para crear un usuario
-  crearPersonas(formData: any) {
-    // console.log(formData);
-
+  crearSocio(formData: any) {
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.post(base_url + '/api/persona', formData, { headers: parameters });
+    return this.http.post(base_url + '/api/socio', formData, { headers: parameters });
   }
 
   /**
    * eliminar Evento
    */
-  public eliminarPersona(id: number) {
+  public eliminarSocio(id: number) {
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.delete(base_url + '/api/persona/' + id, { headers: parameters });
+    return this.http.delete(base_url + '/api/socio/' + id, { headers: parameters });
 
   }
+
+  /**
+  * cargarPersonas
+  */
+  public cargarPersonas() {
+    // console.log(params);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + '/api/persona', { headers: parameters });
+  }
+
+  /**
+  * cargarBarrios
+  */
+  public cargarBarrios() {
+    // console.log(params);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + '/api/barrio', { headers: parameters });
+  }
+
 
 }

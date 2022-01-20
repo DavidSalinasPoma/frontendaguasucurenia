@@ -75,7 +75,7 @@ export class CrearBarrioComponent implements OnInit {
           position: 'center',
           icon: 'success',
           title: '¡Registro Correcto!',
-          text: `El barrio fue creado corectamente!`,
+          text: `El barrio fue creado correctamente!`,
           showConfirmButton: false,
           timer: 3000
         })

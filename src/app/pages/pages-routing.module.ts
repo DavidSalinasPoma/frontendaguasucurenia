@@ -24,6 +24,9 @@ import { BarriosComponent } from './recursoshumanos/barrios/barrios.component';
 import { CrearBarrioComponent } from './recursoshumanos/barrios/crear-barrio/crear-barrio.component';
 import { EditarBarrioComponent } from './recursoshumanos/barrios/editar-barrio/editar-barrio.component';
 import { EditarPersonaComponent } from './recursoshumanos/personas/editar-persona/editar-persona.component';
+import { SociosComponent } from './recursoshumanos/socios/socios.component';
+import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/editar-socio.component';
+import { CrearSocioComponent } from './recursoshumanos/socios/crear-socio/crear-socio.component';
 
 
 const routes: Routes = [
@@ -60,6 +63,10 @@ const routes: Routes = [
       { path: 'barrios', component: BarriosComponent, data: { titulo: 'Barrios' } },
       { path: 'crearbarrios', component: CrearBarrioComponent, data: { titulo: 'Registro de Barrios' } },
       { path: 'editarbarrios/:id', component: EditarBarrioComponent, data: { titulo: 'Modificar Barrios' } },
+
+      { path: 'socios', component: SociosComponent, data: { titulo: 'Socios' } },
+      { path: 'crearsocios', component: CrearSocioComponent, data: { titulo: 'Registro de Socios' } },
+      { path: 'editarsocios/:id', component: EditarSocioComponent, data: { titulo: 'Modificar Socios' } },
 
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]

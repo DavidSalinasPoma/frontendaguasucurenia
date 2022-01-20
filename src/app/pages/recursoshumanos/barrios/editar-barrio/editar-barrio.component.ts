@@ -117,7 +117,7 @@ export class EditarBarrioComponent implements OnInit {
           position: 'center',
           icon: 'success',
           title: '¡Modificación Correcta!',
-          text: `El barrio fue modificado corectamente!`,
+          text: `El barrio fue modificado correctamente!`,
           showConfirmButton: false,
           timer: 3000
         })

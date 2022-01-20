@@ -74,6 +74,15 @@ export class BarriosService {
     return this.http.post<any>(formData.url, formData, { headers: parameters });
   }
 
+  /**
+* cargar eventos
+*/
+  public buscarBarriosCrear(formData: any): Observable<any> {
+    // console.log(formData);
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post<any>(base_url + '/api/buscar/barrios', formData, { headers: parameters });
+  }
 
 
   // Servicio para crear un usuario
