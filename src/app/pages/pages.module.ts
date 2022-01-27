@@ -34,7 +34,8 @@ import { EditarPersonaComponent } from './recursoshumanos/personas/editar-person
 import { SociosComponent } from './recursoshumanos/socios/socios.component';
 import { CrearSocioComponent } from './recursoshumanos/socios/crear-socio/crear-socio.component';
 import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/editar-socio.component';
-
+import { ConsumoComponent } from './consumos/consumo/consumo.component';
+import { LecturaComponent } from './consumos/lectura/lectura.component';
 
 
 @NgModule({
@@ -60,7 +61,9 @@ import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/edit
     EditarPersonaComponent,
     SociosComponent,
     CrearSocioComponent,
-    EditarSocioComponent
+    EditarSocioComponent,
+    ConsumoComponent,
+    LecturaComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +72,7 @@ import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/edit
     RouterModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [ // Es para que otros modulos puedan utilizar estos componentes
     DashboardComponent,

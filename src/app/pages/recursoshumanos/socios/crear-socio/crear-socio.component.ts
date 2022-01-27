@@ -89,7 +89,10 @@ export class CrearSocioComponent implements OnInit {
           timer: 3000
         })
         this.limpiar();
+        this.cargarPersonas();
       }, (err) => {
+        console.log(err);
+
         Swal.fire('Error', err.error.message, 'error')
       }
       );
@@ -163,12 +166,12 @@ export class CrearSocioComponent implements OnInit {
         // console.log(arrayPersona);
         this.options = [];
         arrayPersona.forEach((element: any) => {
-          if (element.estado === 1 || element.estado === '1') {
+          if ((element.estado === 1 || element.estado === '1') && (element.socio === 0 || element.socio === '0')) {
             this.options.push(`${element.id}: ${element.nombres} ${element.ap_paterno} ${element.ap_materno}`);
           }
         });
 
-        console.log(this.options);
+        // console.log(this.options);
       });
   }
 
@@ -189,13 +192,16 @@ export class CrearSocioComponent implements OnInit {
 
       this.personaServices.buscarPersonasCrear(formDatos)
         .subscribe(resp => {
-          console.log(resp);
+          // console.log(resp);
           this.options = [];
           const arrayPersona = resp.persona.data;
           // console.log(arrayPersona);
 
           arrayPersona.forEach((element: any) => {
-            if (element.estado === 1 || element.estado === "1") {
+
+            // console.log(element);
+
+            if ((element.estado === 1 || element.estado === '1') && (element.socio === 0 || element.socio === '0')) {
               this.options.push(`${element.id}: ${element.nombres} ${element.ap_paterno} ${element.ap_materno}`);
             }
           });

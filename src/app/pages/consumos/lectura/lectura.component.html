@@ -1,0 +1,123 @@
+         <!-- Loading -->
+         <div *ngIf="this.cargando" class="row animated fadeIn fast">
+           <div class="col-12">
+             <div class="alert alert-info text-center">
+               <h4 class="alert-heading">Cargando</h4>
+               <i class="fa fa-spin fa-refresh fa-2x"></i>
+               <p class="mb-0">Por favor espere</p>
+             </div>
+           </div>
+         </div>
+
+         <div *ngIf="!this.cargando" class="row animated fadeIn fast">
+           <div class="col-12">
+             <div class="card">
+               <div class="card-body">
+                 <h4 class="card-title text-primary">Datos del socio</h4>
+                 <div class="table-responsive m-t-40">
+                   <table class="table stylish-table">
+                     <thead>
+                       <tr>
+                         <th colspan="1">Codigo</th>
+                         <th>Socio</th>
+                         <th>Carnet</th>
+                         <th>Barrio</th>
+                         <th>Periodo actual</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <tr *ngFor="let item of this.socioDatos" class="active" class="animated fadeIn fast">
+                         <td>{{ item.id }}</td>
+                         <td>
+                           {{ item.nombres }} {{ item.ap_paterno }}
+                           {{ item.ap_materno }}
+                         </td>
+                         <td>{{ item.carnet }}</td>
+                         <td>{{ item.nombre }}</td>
+                         <td>{{ item.mes| date:'LLLL' }}</td>
+                       </tr>
+                     </tbody>
+                   </table>
+                 </div>
+
+
+                 <h4 class="card-title mt-3 text-primary">Datos técnicos</h4>
+
+                 <div class="row">
+                   <div class="col-12 col-md-5">
+                     <table class="table no-border">
+                       <tbody class="animated fadeIn fast">
+                         <tr>
+                           <td class="ancho">Lectura anterior ( <span
+                               class="text-danger">{{ this.datosConsumo?.mes || 'Pendiente' }}</span> )</td>
+                           <td class="font-medium">{{ this.datosConsumo?.lecturaActual || this.lectAnterior }} m3</td>
+                         </tr>
+                         <tr>
+                           <td class="ancho">Lectura actual</td>
+                           <td class="font-medium">{{ this.lectActual || 0 }} m3</td>
+                         </tr>
+                         <tr>
+                           <td class="ancho">Consumo cubos</td>
+                           <td class="font-medium">{{ this.consumo || 0 }} m3</td>
+                         </tr>
+                         <tr>
+                           <td class="ancho">Precio total</td>
+                           <td class="font-medium">{{ this.total || 0 }} Bs.</td>
+                         </tr>
+                       </tbody>
+                     </table>
+                   </div>
+                   <div class="col-12 col-md-8">
+                     <form [formGroup]="this.formulario" (submit)="this.onSubmit($event)">
+
+                       <!-- Form lectura anterior -->
+                       <div *ngIf="this.mostraAnterior" class="form-group animated fadeIn fast">
+                         <h5 class="m-t-30">Lectura anterior</h5>
+                         <mat-form-field class="example-full-width" appearance="outline">
+                           <mat-label>Lectura anterior</mat-label>
+                           <input type="number" matInput formControlName="anterior" autocomplete="off"
+                             spellcheck="false" #anterior (keyup)="cuboAnterior(anterior.value)">
+                         </mat-form-field>
+                         <div class="mt-3">
+                           <button (click)="this.subirAnterior()" type="button" class="btn btn-info">Subir</button>
+                           &nbsp;
+                           <a routerLink='/dashboard/consumos' class="btn btn-danger">Salir</a>
+                         </div>
+                       </div>
+
+                       <!-- Form Lectura actual -->
+                       <div *ngIf="this.mostraActual" class="form-group animated fadeIn fast">
+                         <h5 class="m-t-30">Lectura Actual</h5>
+                         <mat-form-field class="example-full-width" appearance="outline">
+                           <mat-label>Lectura actual</mat-label>
+                           <input type="number" matInput formControlName="lectura" autocomplete="off" spellcheck="false"
+                             #cubos (keyup)="cuboPrecio(cubos.value)">
+                         </mat-form-field>
+                         <!-- Validacion -->
+                         <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                         <div *ngIf="this.lectura?.invalid && (this.lectura?.dirty || this.lectura?.touched)">
+                           <!-- Errores con expresiones regulares -->
+                           <div *ngIf="this.lectura?.hasError('required')" class="animated fadeIn fast text-danger"
+                             id="">
+                             Este campo es requerido.
+                           </div>
+                         </div>
+                       </div>
+
+                       <div *ngIf="this.mostraActual" class="mt-5 animated fadeIn fast">
+                         <button [disabled]="this.formulario.invalid" type="submit"
+                           class="btn btn-success">Guardar</button>
+                         &nbsp;
+                         <button routerLink='/dashboard/consumos' type="button" class="btn btn-danger">Cerrar</button>
+                       </div>
+                     </form>
+
+                   </div>
+                 </div>
+
+                 <hr>
+
+               </div>
+             </div>
+           </div>
+         </div>

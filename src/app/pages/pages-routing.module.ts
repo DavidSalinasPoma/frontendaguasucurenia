@@ -27,6 +27,8 @@ import { EditarPersonaComponent } from './recursoshumanos/personas/editar-person
 import { SociosComponent } from './recursoshumanos/socios/socios.component';
 import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/editar-socio.component';
 import { CrearSocioComponent } from './recursoshumanos/socios/crear-socio/crear-socio.component';
+import { ConsumoComponent } from './consumos/consumo/consumo.component';
+import { LecturaComponent } from './consumos/lectura/lectura.component';
 
 
 const routes: Routes = [
@@ -67,6 +69,10 @@ const routes: Routes = [
       { path: 'socios', component: SociosComponent, data: { titulo: 'Socios' } },
       { path: 'crearsocios', component: CrearSocioComponent, data: { titulo: 'Registro de Socios' } },
       { path: 'editarsocios/:id', component: EditarSocioComponent, data: { titulo: 'Modificar Socios' } },
+
+      { path: 'consumos', component: ConsumoComponent, data: { titulo: 'Consumo de agua potable' } },
+      { path: 'lecturas/:id', component: LecturaComponent, data: { titulo: 'Lectura medidor' } },
+
 
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]

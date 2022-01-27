@@ -1,0 +1,194 @@
+<!-- <div *ngIf="this.sLectura === 0" class="alert alert-success animated fadeIn fast mt-5">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span>
+  </button>
+  <h3 class="text-success"><i class="fa fa-check-circle"></i> Exito</h3>
+  Se ha completado el resistro de lecturas de consumo con exito!
+</div> -->
+
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input id="textBuscar" type="text" class="form-control" placeholder="Buscar socio" #text
+          (keyup)="buscarSocios(text.value, '',1)" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Loading -->
+<div *ngIf="this.cargando" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!this.cargando" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card">
+
+      <!-- Primera Parte -->
+      <div *ngIf="this.mostrar, else showTablaOpcion" class="card-body  animated fadeIn fast">
+
+        <!-- Boton de crear Usuarios -->
+        <h4 class="card-title">Lista de socios</h4>
+        <div class="row">
+
+          <div class="col-8 d-flex justify-content-between">
+            <h6 class="card-title"><span class="text-primary text-">Total Socios:
+                ({{ this.totalSocios }})</span></h6>
+            <h6 class="card-title"><span class="text-danger text-">Total Socios sin lectura:
+                ({{ this.sLectura }})</span></h6>
+            <h6 class="card-title"><span class="text-success">Total Socios con lectura:
+                ({{ this.cLectura }})</span></h6>
+          </div>
+
+        </div>
+
+
+        <!-- Taabla para limpiar y mostrar buscados -->
+        <div class="table-responsive">
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w100">Codigo</th>
+                <th>Socio</th>
+                <th>Carnet</th>
+                <th>Barrio</th>
+                <th>Periodo consumo</th>
+                <th class="text-nowrap w100">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+              <tr *ngFor="let item of this.options">
+                <td>{{ item.id }}</td>
+                <td>{{ item.nombres }} {{ item.ap_paterno }}
+                  {{ item.ap_materno }} </td>
+                <td>{{ item.carnet }}</td>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.mes | date:'LLLL'}}</td>
+
+                <td class="text-nowrap text-center">
+                  <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
+                    data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-check"></i> </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div class="mt-3">
+          <button *ngIf="this.currentPage!=1; else notShowAnteriorl" class="btn btn-dark"
+            (click)="this.cargarSocio(this.paginaAnterior)">anterior</button>
+
+          <ng-template #notShowAnteriorl>
+            <button disabled class="btn btn-dark" (click)="this.cargarSocio(this.paginaAnterior) ">Anterior</button>
+          </ng-template>
+          &nbsp;
+
+          <button *ngIf="this.currentPage!=this.cantPaginas; else notShowTablasp" class="btn btn-dark"
+            (click)="this.cargarSocio(this.paginaSiguiente)">Siguiente</button>
+
+          <ng-template #notShowTablasp>
+            <button disabled class="btn btn-dark" (click)="this.cargarSocio(this.paginaSiguiente) ">Siguiente</button>
+          </ng-template>
+
+          &nbsp;
+          &nbsp;
+
+          <span>{{ this.currentPage }} de {{ this.cantPaginas }} Páginas.</span>
+        </div>
+      </div>
+
+      <!-- Segunda parte -->
+      <ng-template #showTablaOpcion>
+        <div class="card-body  animated fadeIn fast">
+          <h4 class="card-title">Lista de socios</h4>
+          <div class="row">
+            <div class="col-8 d-flex justify-content-between">
+              <h6 class="card-title"><span class="text-primary text-">Total Socios:
+                  ({{ this.totalSocios }})</span></h6>
+              <h6 class="card-title"><span class="text-danger text-">Total Socios sin lectura:
+                  ({{ this.sLectura }})</span></h6>
+              <h6 class="card-title"><span class="text-success">Total Socios con lectura:
+                  ({{ this.cLectura }})</span></h6>
+            </div>
+
+          </div>
+
+          <!-- Taabla para limpiar y mostrar buscados -->
+          <div class="table-responsive">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="w100">Codigo</th>
+                  <th>Socio</th>
+                  <th>Carnet</th>
+                  <th>Barrio</th>
+                  <th>Periodo consumo</th>
+                  <th class="text-nowrap w100">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+
+
+                <tr *ngFor="let item of this.options">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nombres }} {{ item.ap_paterno }}
+                    {{ item.ap_materno }} </td>
+                  <td>{{ item.carnet }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.mes | date:'LLLL'}}</td>
+
+                  <td class="text-nowrap text-center">
+                    <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
+                      data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-check"></i> </a>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+
+          <div class="mt-3">
+            <button *ngIf="this.currentPage2!=1; else notShowAnteriorTabla" class="btn btn-dark"
+              (click)="this.buscarSocios('',this.paginaAnterior2,0)">anterior</button>
+
+            <ng-template #notShowAnteriorTabla>
+              <button disabled class="btn btn-dark"
+                (click)="this.buscarSocios('',this.paginaAnterior2,0) ">Anterior</button>
+            </ng-template>
+            &nbsp;
+
+            <button *ngIf="this.currentPage2!=this.cantPaginas2; else notShowTablas" class="btn btn-dark"
+              (click)="this.buscarSocios('',this.paginaSiguiente2,0)">Siguiente</button>
+
+            <ng-template #notShowTablas>
+              <button disabled class="btn btn-dark"
+                (click)="this.buscarSocios('',this.paginaSiguiente2,0) ">Siguiente</button>
+            </ng-template>
+
+            &nbsp;
+            &nbsp;
+
+            <span>{{ this.currentPage2 }} de {{ this.cantPaginas2 }} Páginas.</span>
+          </div>
+        </div>
+      </ng-template>
+
+
+    </div>
+  </div>
+</div>
