@@ -36,7 +36,7 @@ export class ServiciosService {
   public updateServicios(formData: any, id: number) {
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.put(base_url + `/api/servicio/${id}`, formData, { headers: parameters });
+    return this.http.put<any>(base_url + `/api/servicio/${id}`, formData, { headers: parameters });
   }
 
   /**
@@ -78,11 +78,10 @@ export class ServiciosService {
 
   // Servicio para crear un usuario
   crearServicio(formData: any) {
-    console.log(formData);
-
+    // console.log(formData);
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.post(base_url + '/api/servicio', formData, { headers: parameters });
+    return this.http.post<any>(base_url + '/api/servicio', formData, { headers: parameters });
   }
 
   /**

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 // Angular Router
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ServiciosService } from 'src/app/services/servicios.service';
+import { EventosService } from 'src/app/services/eventos.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class EditarServiciosComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private rutaActiva: ActivatedRoute,
-    private servicioServices: ServiciosService
+    private servicioServices: ServiciosService,
+    private eventoServices: EventosService
   ) {
 
     // Recibiendo el parametro
@@ -113,16 +115,34 @@ export class EditarServiciosComponent implements OnInit {
 
 
     this.servicioServices.updateServicios(formData, this.idServicio)
-      .subscribe(() => {
+      .subscribe(({ changes }) => {
 
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '¡Modificación Correcta!',
-          text: `El servicio fue modificado corectamente!`,
-          showConfirmButton: false,
-          timer: 3000
-        })
+        // Modificando Productos
+        // Crear el producto
+        const datosForms = {
+          nombre: 'servicio',
+          producto: changes.nombre,
+          num_producto: changes.id,
+          precio: changes.costo,
+          cantidad: 1,
+          estado: changes.estado
+        }
+        // console.log(datosForms);
+
+        this.eventoServices.updateProductos(datosForms, changes.id)
+          .subscribe(({ producto, message }) => {
+
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: '¡Modificación Correcta!',
+              text: `${message}`,
+              showConfirmButton: false,
+              timer: 3000
+            })
+
+
+          });
         this.showServicios();
       }, (err) => {
         console.log(err);

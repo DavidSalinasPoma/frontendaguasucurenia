@@ -79,7 +79,8 @@ export class CrearEventosComponent implements OnInit {
     // console.log(formData);
 
     this.eventoServices.crearEvento(formData)
-      .subscribe(() => {
+      .subscribe(({ evento }) => {
+        // console.log(evento);
 
         Swal.fire({
           position: 'center',
@@ -90,6 +91,18 @@ export class CrearEventosComponent implements OnInit {
           timer: 3000
         })
         this.limpiar();
+
+        // Crear el producto
+        const datosForms = {
+          nombre: 'evento',
+          producto: evento.evento,
+          num_producto: evento.id,
+          precio: evento.precio,
+          cantidad: evento.tiempo_event
+        }
+        this.eventoServices.crearProducto(datosForms)
+          .subscribe(() => { })
+
       }, (err) => {
         Swal.fire('Error', err.error.message, 'error')
       }

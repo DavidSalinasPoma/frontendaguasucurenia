@@ -67,7 +67,7 @@ export class CrearServiciosComponent implements OnInit {
    */
   public onSubmit(event: any) {
 
-    console.log(this.formulario.value);
+    // console.log(this.formulario.value);
 
 
     const formData = {
@@ -79,7 +79,10 @@ export class CrearServiciosComponent implements OnInit {
     // console.log(formData);
 
     this.servicoServices.crearServicio(formData)
-      .subscribe(() => {
+      .subscribe(({ servicio }) => {
+
+        console.log(servicio);
+
 
         Swal.fire({
           position: 'center',
@@ -90,6 +93,18 @@ export class CrearServiciosComponent implements OnInit {
           timer: 3000
         })
         this.limpiar();
+
+        // Crear el producto
+        const datosForms = {
+          nombre: 'servicio',
+          producto: servicio.nombre,
+          num_producto: servicio.id,
+          precio: servicio.costo,
+          cantidad: 1
+        }
+        this.eventoServices.crearProducto(datosForms)
+          .subscribe(() => { });
+
       }, (err) => {
         Swal.fire('Error', err.error.message, 'error')
       }

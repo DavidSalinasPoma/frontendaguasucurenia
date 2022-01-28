@@ -126,16 +126,36 @@ export class EditarEventosComponent implements OnInit {
 
 
     this.eventoServices.updateEventos(formData, this.idEvento)
-      .subscribe(() => {
+      .subscribe(({ changes }) => {
+        // console.log(changes);
 
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '¡Modificación Correcta!',
-          text: `El evento fue modificado corectamente!`,
-          showConfirmButton: false,
-          timer: 3000
-        })
+        // Modificando Productos
+        // Crear el producto
+        const datosForms = {
+          nombre: 'evento',
+          producto: changes.evento,
+          num_producto: changes.id,
+          precio: changes.precio,
+          cantidad: changes.tiempo_event,
+          estado: changes.estado
+        }
+        // console.log(datosForms);
+
+        this.eventoServices.updateProductos(datosForms, changes.id)
+          .subscribe(({ producto, message }) => {
+
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: '¡Modificación Correcta!',
+              text: `${message}`,
+              showConfirmButton: false,
+              timer: 3000
+            })
+
+
+          });
+
         this.showEvento();
       }, (err) => {
         console.log(err);

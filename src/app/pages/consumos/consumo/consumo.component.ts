@@ -167,7 +167,7 @@ export class ConsumoComponent implements OnInit {
             this.options = [];
             // console.log(this.socios);
             this.socios2.forEach((element: any) => {
-              if (element.estado === 1 || element.estado === '1') {
+              if (element.estado === 0 || element.estado === '0') {
                 this.options.push(element);
               }
             });
@@ -213,7 +213,7 @@ export class ConsumoComponent implements OnInit {
         this.options = [];
         // console.log(this.socios);
         this.socios.forEach((element: any) => {
-          if (element.estado === 1 || element.estado === '1') {
+          if (element.estado === 0 || element.estado === '0') {
             this.options.push(element);
           }
         });

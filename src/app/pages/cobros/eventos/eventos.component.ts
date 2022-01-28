@@ -261,13 +261,26 @@ export class EventosComponent implements OnInit {
               this.buscarEventos(nameEvento, urlUser);
             }
 
-            Swal.fire(
-              'Evento dado de Baja!',
-              `El evento ${nombre} fue dado de baja correctamente`,
-              'success'
-            )
-
-          });
+            // Eliminar el producto de la BD
+            const formData = {
+              nombre: 'evento',
+            }
+            this.eventosServices.eliminarProducto(formData, id)
+              .subscribe(({ message }) => {
+                Swal.fire(
+                  'Evento dado de Baja!',
+                  `${message}`,
+                  'success'
+                )
+              })
+          }, (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'El evento ya fue dado de baja!',
+            })
+          }
+          );
 
       }
     })

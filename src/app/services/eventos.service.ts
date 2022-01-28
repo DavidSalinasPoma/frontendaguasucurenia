@@ -31,12 +31,21 @@ export class EventosService {
   }
 
   /**
-   * updateUsuarios
+   * updateEventos
    */
   public updateEventos(formData: any, id: number) {
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.put(base_url + `/api/evento/${id}`, formData, { headers: parameters });
+    return this.http.put<any>(base_url + `/api/evento/${id}`, formData, { headers: parameters });
+  }
+
+  /**
+ * updateProductos
+ */
+  public updateProductos(formData: any, id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.put<any>(base_url + `/api/producto/${id}`, formData, { headers: parameters });
   }
 
   /**
@@ -76,11 +85,18 @@ export class EventosService {
 
 
 
-  // Servicio para crear un usuario
+  // Servicio para crear un evento
   crearEvento(formData: any) {
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.post(base_url + '/api/evento', formData, { headers: parameters });
+    return this.http.post<any>(base_url + '/api/evento', formData, { headers: parameters });
+  }
+
+  // Servicio para crear un producto
+  crearProducto(formData: any) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post(base_url + '/api/producto', formData, { headers: parameters });
   }
 
   /**
@@ -94,4 +110,13 @@ export class EventosService {
 
   }
 
+  /**
+   * eliminar Producto
+   */
+
+  public eliminarProducto(formData: any, id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.put<any>(base_url + `/api/delete/productos/${id}`, formData, { headers: parameters });
+  }
 }

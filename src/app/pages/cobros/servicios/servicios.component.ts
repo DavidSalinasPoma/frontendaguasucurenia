@@ -250,6 +250,7 @@ export class ServiciosComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'Cancelar!',
       confirmButtonText: 'Si, dar de Baja!'
+
     }).then((result) => {
       if (result.isConfirmed) {
 
@@ -263,13 +264,18 @@ export class ServiciosComponent implements OnInit {
               const nameEvento = localStorage.getItem('usuario');
               this.buscarServicios(nameEvento, urlUser);
             }
-
-            Swal.fire(
-              'Servicio dado de Baja!',
-              `El servicio ${nombre} fue dado de baja correctamente`,
-              'success'
-            )
-
+            // Eliminar el producto de la BD
+            const formData = {
+              nombre: 'servicio',
+            }
+            this.eventosServices.eliminarProducto(formData, id)
+              .subscribe(({ message }) => {
+                Swal.fire(
+                  'Servicio dado de Baja!',
+                  `${message}`,
+                  'success'
+                )
+              })
           });
 
       }
