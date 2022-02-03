@@ -45,3 +45,9 @@ body {
 .ancho {
   width: 60%;
 }
+
+@media (min-width: 992px) {
+  .d-inherit {
+    display: inherit !important;
+  }
+}

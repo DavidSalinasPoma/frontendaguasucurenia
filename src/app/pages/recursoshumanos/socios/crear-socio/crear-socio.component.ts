@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { BarriosService } from 'src/app/services/barrios.service';
@@ -27,7 +28,8 @@ export class CrearSocioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private personaServices: PersonaService,
     private socioServices: SociosService,
-    private barrioServices: BarriosService
+    private barrioServices: BarriosService,
+    private router: Router
   ) {
     this.cargarPersonas();
     this.cargarBarrios();
@@ -78,8 +80,7 @@ export class CrearSocioComponent implements OnInit {
 
     this.socioServices.crearSocio(formData)
       .subscribe(resp => {
-        // console.log(resp);
-        // console.log(respToken);
+        this.router.navigateByUrl('/dashboard/socios');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -88,7 +89,7 @@ export class CrearSocioComponent implements OnInit {
           showConfirmButton: false,
           timer: 3000
         })
-        this.limpiar();
+        // this.limpiar();
         this.cargarPersonas();
       }, (err) => {
         console.log(err);

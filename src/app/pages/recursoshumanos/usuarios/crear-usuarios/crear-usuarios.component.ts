@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PersonaService } from 'src/app/services/persona.service';
@@ -25,7 +26,8 @@ export class CrearUsuariosComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private personaServices: PersonaService,
-    private usuarioServices: UsuarioService
+    private usuarioServices: UsuarioService,
+    private router: Router
   ) {
     this.cargarPersonas();
 
@@ -78,8 +80,7 @@ export class CrearUsuariosComponent implements OnInit {
 
     this.usuarioServices.crearUsuario(formData)
       .subscribe(resp => {
-        // console.log(resp);
-        // console.log(respToken);
+        this.router.navigateByUrl('/dashboard/usuarios');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -88,7 +89,7 @@ export class CrearUsuariosComponent implements OnInit {
           showConfirmButton: false,
           timer: 3000
         })
-        this.limpiar();
+        // this.limpiar();
       }, (err) => {
         Swal.fire('Error', err.error.message, 'error')
       }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { EventosService } from 'src/app/services/eventos.service';
 
@@ -22,7 +23,8 @@ export class CrearEventosComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private eventoServices: EventosService
+    private eventoServices: EventosService,
+    private router: Router
   ) {
 
     this.crearFormulario();
@@ -81,7 +83,7 @@ export class CrearEventosComponent implements OnInit {
     this.eventoServices.crearEvento(formData)
       .subscribe(({ evento }) => {
         // console.log(evento);
-
+        this.router.navigateByUrl('/dashboard/eventos');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -90,7 +92,7 @@ export class CrearEventosComponent implements OnInit {
           showConfirmButton: false,
           timer: 3000
         })
-        this.limpiar();
+        // this.limpiar();
 
         // Crear el producto
         const datosForms = {

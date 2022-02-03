@@ -36,6 +36,8 @@ import { CrearSocioComponent } from './recursoshumanos/socios/crear-socio/crear-
 import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/editar-socio.component';
 import { ConsumoComponent } from './consumos/consumo/consumo.component';
 import { LecturaComponent } from './consumos/lectura/lectura.component';
+import { FacturaComponent } from './factura/factura.component';
+import { DetalleComponent } from './factura/detalle/detalle.component';
 
 
 @NgModule({
@@ -63,7 +65,9 @@ import { LecturaComponent } from './consumos/lectura/lectura.component';
     CrearSocioComponent,
     EditarSocioComponent,
     ConsumoComponent,
-    LecturaComponent
+    LecturaComponent,
+    FacturaComponent,
+    DetalleComponent
   ],
   imports: [
     CommonModule,

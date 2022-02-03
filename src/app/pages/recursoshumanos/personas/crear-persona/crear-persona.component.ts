@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import Swal from 'sweetalert2';
 
 import { PersonaService } from 'src/app/services/persona.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-persona',
@@ -44,7 +45,8 @@ export class CrearPersonaComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private personaServices: PersonaService
+    private personaServices: PersonaService,
+    private router: Router
   ) {
 
     this.crearFormulario();
@@ -139,7 +141,7 @@ export class CrearPersonaComponent implements OnInit {
 
     this.personaServices.crearPersonas(formData)
       .subscribe(() => {
-
+        this.router.navigateByUrl('/dashboard/personas');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -148,7 +150,7 @@ export class CrearPersonaComponent implements OnInit {
           showConfirmButton: false,
           timer: 3000
         })
-        this.limpiar();
+        // this.limpiar();
       }, (err) => {
         Swal.fire('Error', err.error.message, 'error')
       }

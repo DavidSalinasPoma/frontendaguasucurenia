@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConsumoService } from 'src/app/services/consumo.service';
+import { FacturaService } from 'src/app/services/factura.service';
 import { LecturaService } from 'src/app/services/lectura.service';
 import Swal from 'sweetalert2';
 
@@ -39,7 +40,8 @@ export class LecturaComponent implements OnInit {
     private lecturaServices: LecturaService,
     private rutaActiva: ActivatedRoute,
     private consumoServices: ConsumoService,
-    private router: Router
+    private router: Router,
+    private facturaServices: FacturaService
 
   ) {
     // Recibiendo el parametro
@@ -149,7 +151,18 @@ export class LecturaComponent implements OnInit {
           showConfirmButton: false,
           timer: 3000
         })
+
+        const datosForm = {
+          consumo_id: consumo.id
+        }
+        // Aqui La logica de generar factura
+        this.facturaServices.crearFactura(datosForm)
+          .subscribe(() => { });
+
+
       }, (err) => {
+        console.log(err);
+
         Swal.fire('Error', err.error.message, 'error')
       });
 

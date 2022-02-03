@@ -63,9 +63,9 @@ export class LoginComponent implements OnInit {
           position: 'center',
           icon: 'success',
           title: '¡Login correcto!',
-          text: `Bienvenid@`,
+          text: `Bienvenid@ ${resp.users.persona.nombres} ${resp.users.persona.ap_paterno} ${resp.users.persona.ap_materno}`,
           showConfirmButton: false,
-          timer: 3000
+          timer: 4000
         })
         // Navegar al dashboar
         setTimeout(() => {
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
 
       }, (err) => {
         // Si sucede un error
-        console.log(err);
+        // console.log(err);
 
         Swal.fire('Error', err.error.message, 'error')
 

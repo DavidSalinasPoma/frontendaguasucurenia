@@ -9,7 +9,7 @@ import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   /****  Rutas PUBLICAS Principales como hijas de app-routing.module.ts****/
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, data: { titulo: 'Login' } },
   { path: 'register', component: RegisterComponent },
 ];
 

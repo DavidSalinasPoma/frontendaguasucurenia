@@ -2,11 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { EventosService } from 'src/app/services/eventos.service';
-import { ServiciosService } from 'src/app/services/servicios.service';
-
 import Swal from 'sweetalert2';
 import { BarriosService } from 'src/app/services/barrios.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-barrio',
@@ -24,7 +22,8 @@ export class CrearBarrioComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private barriosService: BarriosService
+    private barriosService: BarriosService,
+    private router: Router
   ) {
 
     this.crearFormulario();
@@ -70,7 +69,7 @@ export class CrearBarrioComponent implements OnInit {
 
     this.barriosService.crearBarrio(formData)
       .subscribe(() => {
-
+        this.router.navigateByUrl('/dashboard/barrios');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -79,7 +78,7 @@ export class CrearBarrioComponent implements OnInit {
           showConfirmButton: false,
           timer: 3000
         })
-        this.limpiar();
+        // this.limpiar();
       }, (err) => {
         Swal.fire('Error', err.error.message, 'error')
       }

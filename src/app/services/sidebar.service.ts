@@ -16,6 +16,13 @@ export class SidebarService {
       ]
     },
     {
+      titulo: 'Facturación',
+      icono: 'mdi mdi-folder-lock-open',
+      submenu: [
+        { titulo: 'Cobrar factura', url: 'facturas' },
+      ]
+    },
+    {
       titulo: 'Cunsumo',
       icono: 'mdi mdi-chart-line',
       submenu: [
@@ -29,18 +36,11 @@ export class SidebarService {
         { titulo: 'Personas', url: 'personas' },
         { titulo: 'Usuarios', url: 'usuarios' },
         { titulo: 'Socios', url: 'socios' },
-        { titulo: 'Empleados', url: 'empleados' },
+        // { titulo: 'Empleados', url: 'empleados' },
         { titulo: 'Barrio', url: 'barrios' },
       ]
     },
-    {
-      titulo: 'Facturación',
-      icono: 'mdi mdi-folder-lock-open',
-      submenu: [
-        { titulo: 'Factura', url: 'factura' },
-        { titulo: 'Detalle', url: 'detalle' },
-      ]
-    },
+
     {
       titulo: 'Eventos y servicios',
       icono: 'mdi mdi-clipboard-text',
@@ -49,13 +49,13 @@ export class SidebarService {
         { titulo: 'Servicios', url: 'servicios' },
       ]
     },
-    {
-      titulo: 'Apertura',
-      icono: 'mdi  mdi-chart-arc',
-      submenu: [
-        { titulo: 'Apertura', url: 'aperturas' }
-      ]
-    },
+    // {
+    //   titulo: 'Apertura',
+    //   icono: 'mdi  mdi-chart-arc',
+    //   submenu: [
+    //     { titulo: 'Apertura', url: 'aperturas' }
+    //   ]
+    // },
   ];
 
   constructor() { }

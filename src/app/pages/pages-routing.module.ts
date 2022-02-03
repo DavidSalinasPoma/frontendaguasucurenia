@@ -29,6 +29,8 @@ import { EditarSocioComponent } from './recursoshumanos/socios/editar-socio/edit
 import { CrearSocioComponent } from './recursoshumanos/socios/crear-socio/crear-socio.component';
 import { ConsumoComponent } from './consumos/consumo/consumo.component';
 import { LecturaComponent } from './consumos/lectura/lectura.component';
+import { FacturaComponent } from './factura/factura.component';
+import { DetalleComponent } from './factura/detalle/detalle.component';
 
 
 const routes: Routes = [
@@ -72,6 +74,10 @@ const routes: Routes = [
 
       { path: 'consumos', component: ConsumoComponent, data: { titulo: 'Consumo de agua potable' } },
       { path: 'lecturas/:id', component: LecturaComponent, data: { titulo: 'Lectura medidor' } },
+
+      { path: 'facturas', component: FacturaComponent, data: { titulo: 'Sistema de Facturas' } },
+
+      { path: 'detalles/:id', component: DetalleComponent, data: { titulo: 'Factura detalle' } },
 
 
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }

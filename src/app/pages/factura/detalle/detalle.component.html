@@ -1,0 +1,123 @@
+<!-- Loading -->
+<div *ngIf="this.cargando" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!this.cargando" class="row mt-2">
+  <div id="htmlData" class="col-12 bordeFactura">
+    <div class="card card-body printableArea mb-0">
+      <h3 class="m-b-0"><b>Factura</b> <span class="pull-right">Nro. {{ this.socio?.idFactura  }}</span></h3>
+      <hr>
+      <div class="row">
+        <div class="col-12">
+          <div class="row ">
+            <div class="col-12 col-md-4  text-left">
+              <address>
+                <h3>Codigo socio: {{ this.socio?.idSocio  }}</h3>
+                <h4 class=""><strong>Socio:</strong> {{ this.socio?.nombres }} {{ this.socio?.paterno }}
+                  {{ this.socio?.materno }}</h4>
+                <p class="text-muted">Carnet: {{ this.socio?.carnet }}
+                  <br>Dirección: {{ this.socio?.direccion }}
+                  <br>Barrio: {{ this.socio?.barrio }}
+                </p>
+                <p class="m-t-30"><b>Fecha de cobro :</b> <br> <i class="fa fa-calendar"></i>
+                  {{ this.fecha | date:'longDate'  }}
+                </p>
+              </address>
+            </div>
+            <div class="col-12 col-md-8 text-right">
+              <div class="row">
+                <address class="col-12">
+                  <h3> &nbsp;<b class="text-danger">Asociación de agua potable</b></h3>
+                  <p class="text-muted m-l-5">Villa 2 de agosto
+                    <br> Norte Ucureña
+                    <br> Cliza - Cochabamba</p>
+                </address>
+                <!-- Datos tecnicos -->
+                <div class="col-12 mt-3">
+
+                  <div class="row">
+                    <div class="col-6 b-r"> <strong>Lectura Anterior</strong>
+                      <br>
+                      <p class="text-muted">{{ this.socio?.lecturaAnterior }} m3</p>
+                    </div>
+                    <div class="col-6 b-r"> <strong>Lectura Actual</strong>
+                      <br>
+                      <p class="text-muted">{{ this.socio?.lecturaActual }} m3</p>
+                    </div>
+                    <div class="col-6 b-r"> <strong>Consumo</strong>
+                      <br>
+                      <p class="text-muted">{{ this.socio?.consumo }} m3</p>
+                    </div>
+                    <div class="col-6 b-r"> <strong>Periodo</strong>
+                      <br>
+                      <p class="text-muted">{{ this.socio?.periodo }} {{ this.socio?.anio }}</p>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-12">
+          <div class="table-responsive m-t-40" style="clear: both;">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Categoria</th>
+                  <th>Descripción</th>
+                  <th class="pull-right">Precio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Lectura</strong> </td>
+                  <td>Consumo</td>
+                  <td class="pull-right">{{ this.socio?.precioConsumo }} Bs.</td>
+                </tr>
+                <tr>
+                  <td><strong>Retraso</strong> </td>
+                  <td>Multa</td>
+                  <td class="pull-right">{{ this.socio?.retraso }} Bs.</td>
+                </tr>
+                <tr *ngFor="let item of this.detalle">
+                  <td><strong>{{ item.categoriaProducto }}</strong> </td>
+                  <td>{{ item.producto }}</td>
+                  <td class="pull-right">{{ item.precioDetalle }} Bs.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="pull-right m-t-4 text-right">
+            <hr>
+            <h3><b>Total :</b> {{ this.total }} Bs.</h3>
+          </div>
+          <div class="clearfix"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="col-12 text-right mt-2">
+    <button (click)="this.crearPDF()" type="button" class="btn btn-success"><span><i class="fa fa-print"></i>
+      </span> Emitir
+      Factura</button>
+    &nbsp;
+    <button type=" button" class="col-12 col-lg-3 btn btn-danger" (click)="this.cancelar()"><span
+        class="mdi mdi-arrow-left"></span>
+      Cancelar</button>
+  </div>
+</div>

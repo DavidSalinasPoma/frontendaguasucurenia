@@ -13,9 +13,8 @@
                  {{ this.accesUser.paterno }}</span></a>
              <ul aria-expanded="false" class="collapse">
                <li><a href="javascript:void()">Mi perfil</a></li>
-
                <li><a href="javascript:void()">Configuración</a></li>
-               <li><a href="javascript:void()">Salir del sistema</a></li>
+               <li><a href="javascript:void()" (click)="this.logout()" class="cursor">Salir del sistema</a></li>
              </ul>
            </li>
            <li class="nav-devider"></li>
