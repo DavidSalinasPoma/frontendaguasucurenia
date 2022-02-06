@@ -69,7 +69,7 @@ export class FacturaComponent implements OnInit {
 
   public options: any = [];
 
-  public total: any;
+  public total: number = 0;
 
   // Formularios
   public formulario!: FormGroup;
@@ -236,19 +236,26 @@ export class FacturaComponent implements OnInit {
 
         this.facturaServices.buscarFacturas(formDatos)
           .subscribe(({ factura }) => {
+            // console.log(factura);
+
             this.socios2 = factura.data;
+            this.total = 0;
 
             if (this.socios2.length != 0) {
               // console.log(this.socios2);
-              this.total = factura.total;
+              // this.total = factura.total;
 
               this.options = [];
               // console.log(this.socios);
               this.socios2.forEach((element: any) => {
                 if (element.estado_pago === 0 || element.estado_pago === '0') {
                   this.options.push(element);
+                  this.total = this.total + 1;
                 }
               });
+
+              // console.log(this.options);
+
               this.paginaSiguiente2 = factura.next_page_url;
               this.paginaAnterior2 = factura.prev_page_url;
               this.cantPaginas2 = factura.last_page;
@@ -257,6 +264,13 @@ export class FacturaComponent implements OnInit {
               // Persistencia de pagina
               localStorage.setItem('urlPagination', `${base_url}/api/buscar/facturas?page=${this.currentPage2}`);
 
+              if (this.options.length === 0) {
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Facturas',
+                  text: `El socio con codigo: ${texto} ya no tiene facturas pendientes!`,
+                })
+              }
               // loading
               this.cargando = false;
             } else {
@@ -267,7 +281,7 @@ export class FacturaComponent implements OnInit {
 
               Swal.fire({
                 icon: 'info',
-                title: 'Factura no exite',
+                title: 'El socio no exite!',
                 text: `El socio con codigo: ${texto} no existe!`,
               })
             }

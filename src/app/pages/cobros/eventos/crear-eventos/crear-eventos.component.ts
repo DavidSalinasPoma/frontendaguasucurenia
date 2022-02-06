@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 
 import { EventosService } from 'src/app/services/eventos.service';
+import { ListasService } from 'src/app/services/listas.service';
 
 import Swal from 'sweetalert2';
 
@@ -24,7 +25,8 @@ export class CrearEventosComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private eventoServices: EventosService,
-    private router: Router
+    private router: Router,
+    private listaServices: ListasService
   ) {
 
     this.crearFormulario();
@@ -71,44 +73,65 @@ export class CrearEventosComponent implements OnInit {
    */
   public onSubmit(event: any) {
 
-    const formData = {
-      evento: this.evento?.value,
-      descripcion: this.descripcion?.value,
-      precio: this.precio?.value,
-      tiempo_event: this.tiempo?.value,
-    }
+    // Verificar que listas este vacio para crear un evento
 
-    // console.log(formData);
+    this.listaServices.validarLista()
+      .subscribe(({ lista }) => {
+        // console.log(lista);
+        if (lista.length != 0) {
 
-    this.eventoServices.crearEvento(formData)
-      .subscribe(({ evento }) => {
-        // console.log(evento);
-        this.router.navigateByUrl('/dashboard/eventos');
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '¡Registro Correcto!',
-          text: `El Evento fue creado corectamente!`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-        // this.limpiar();
+          Swal.fire({
+            icon: 'info',
+            title: 'Error',
+            text: `No se puede crear un evento mientras existan lecturas pendientes!`,
+          })
 
-        // Crear el producto
-        const datosForms = {
-          nombre: 'evento',
-          producto: evento.evento,
-          num_producto: evento.id,
-          precio: evento.precio,
-          cantidad: evento.tiempo_event
+        } else {
+
+          const formData = {
+            evento: this.evento?.value,
+            descripcion: this.descripcion?.value,
+            precio: this.precio?.value,
+            tiempo_event: this.tiempo?.value,
+          }
+          this.eventoServices.crearEvento(formData)
+            .subscribe(({ evento }) => {
+              // console.log(evento);
+              this.router.navigateByUrl('/dashboard/eventos');
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '¡Registro Correcto!',
+                text: `El Evento fue creado corectamente!`,
+                showConfirmButton: false,
+                timer: 3000
+              })
+              // this.limpiar();
+
+              // Crear el producto
+              const datosForms = {
+                nombre: 'evento',
+                producto: evento.evento,
+                num_producto: evento.id,
+                precio: evento.precio,
+                cantidad: evento.tiempo_event
+              }
+              this.eventoServices.crearProducto(datosForms)
+                .subscribe(() => { })
+
+            }, (err) => {
+              Swal.fire('Error', err.error.message, 'error')
+            }
+            );
+
         }
-        this.eventoServices.crearProducto(datosForms)
-          .subscribe(() => { })
 
-      }, (err) => {
-        Swal.fire('Error', err.error.message, 'error')
-      }
-      );
+
+
+      })
+
+
+
   }
 
   /**

@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ServiciosService } from 'src/app/services/servicios.service';
 import { EventosService } from 'src/app/services/eventos.service';
+import { ListasService } from 'src/app/services/listas.service';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class EditarServiciosComponent implements OnInit {
     private formBuilder: FormBuilder,
     private rutaActiva: ActivatedRoute,
     private servicioServices: ServiciosService,
-    private eventoServices: EventosService
+    private eventoServices: EventosService,
+    private listaServices: ListasService
   ) {
 
     // Recibiendo el parametro
@@ -104,52 +106,67 @@ export class EditarServiciosComponent implements OnInit {
    */
   public onSubmit(event: any) {
 
-    const formData = {
-      nombre: this.servicio?.value,
-      descripcion: this.descripcion?.value,
-      costo: this.precio?.value,
-      estado: this.estado.value
-    }
 
-    // console.log(formData);
+    this.listaServices.validarLista()
+      .subscribe(({ lista }) => {
+        // console.log(lista);
+        if (lista.length != 0) {
+
+          Swal.fire({
+            icon: 'info',
+            title: 'Error',
+            text: `No se puede modificar el evento mientras existan lecturas pendientes!`,
+          })
+
+        } else {
+
+          const formData = {
+            nombre: this.servicio?.value,
+            descripcion: this.descripcion?.value,
+            costo: this.precio?.value,
+            estado: this.estado.value
+          }
+
+          this.servicioServices.updateServicios(formData, this.idServicio)
+            .subscribe(({ changes }) => {
+
+              // Modificando Productos
+              // Crear el producto
+              const datosForms = {
+                nombre: 'servicio',
+                producto: changes.nombre,
+                num_producto: changes.id,
+                precio: changes.costo,
+                cantidad: 1,
+                estado: changes.estado
+              }
+              // console.log(datosForms);
+
+              this.eventoServices.updateProductos(datosForms, changes.id)
+                .subscribe(({ producto, message }) => {
+
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '¡Modificación Correcta!',
+                    text: `${message}`,
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
 
 
-    this.servicioServices.updateServicios(formData, this.idServicio)
-      .subscribe(({ changes }) => {
+                });
+              this.showServicios();
+            }, (err) => {
+              console.log(err);
 
-        // Modificando Productos
-        // Crear el producto
-        const datosForms = {
-          nombre: 'servicio',
-          producto: changes.nombre,
-          num_producto: changes.id,
-          precio: changes.costo,
-          cantidad: 1,
-          estado: changes.estado
+              Swal.fire('Error', err.error.message, 'error')
+            }
+            );
+
+
         }
-        // console.log(datosForms);
-
-        this.eventoServices.updateProductos(datosForms, changes.id)
-          .subscribe(({ producto, message }) => {
-
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: '¡Modificación Correcta!',
-              text: `${message}`,
-              showConfirmButton: false,
-              timer: 3000
-            })
-
-
-          });
-        this.showServicios();
-      }, (err) => {
-        console.log(err);
-
-        Swal.fire('Error', err.error.message, 'error')
-      }
-      );
+      });
 
   }
 

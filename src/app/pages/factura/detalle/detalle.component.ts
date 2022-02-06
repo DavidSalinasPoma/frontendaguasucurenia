@@ -48,7 +48,7 @@ export class DetalleComponent implements OnInit {
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
     this.fecha = hoy.toDateString(); // "Sun Jun 14 2020"
-    console.log(this.fecha);
+    // console.log(this.fecha);
 
   }
 
@@ -65,17 +65,30 @@ export class DetalleComponent implements OnInit {
    * showFacturas
    */
   public showFacturas(item: number) {
+    // console.log(item);
+
     this.facturaServices.showFacturas(item)
       .subscribe(({ detalle }) => {
         let suma = 0;
         // console.log(detalle);
-        this.socio = detalle[0];
-        this.detalle = detalle;
-        detalle.forEach((element: any) => {
-          suma = suma + (element.precioDetalle)
-        });
-        this.total = suma + this.socio.retraso + this.socio.precioConsumo;
-        this.cargando = false;
+        if (detalle.length != 0) {
+          this.socio = detalle[0];
+          this.detalle = detalle;
+          detalle.forEach((element: any) => {
+            suma = suma + (element.precioDetalle)
+          });
+          this.total = suma + this.socio.retraso + this.socio.precioConsumo;
+          this.cargando = false;
+        } else {
+          this.facturaServices.retrasoFactura(item)
+            .subscribe(({ factura }) => {
+              // console.log(factura);
+              this.socio = factura[0];
+              this.total = this.socio.retraso + this.socio.precioConsumo;
+              this.cargando = false;
+            })
+        }
+
       });
   }
 
@@ -83,21 +96,22 @@ export class DetalleComponent implements OnInit {
    * crearPDF
    */
   public crearPDF() {
-    // const doc = new jsPDF();
 
-    // doc.text('Hello world!', 10, 10);
-    // doc.setFontSize(10);
-    // doc.text('Recibo de venta de orquídeas', 10, 30);
-    // doc.text('Comprobante No.: 7854214587', 10, 35);
-    // doc.text('PDV: Pedro Pérez', 10, 40);
-    // doc.text('Operador: 123654', 10, 45);
-    // doc.text('Especie vendida: Sophronitis coccinea', 10, 55);
-    // doc.text('Valor: 35.00', 10, 60);
-    // doc.text('TBX: 242985290', 10, 65);
-    // doc.text('Fecha/Hora: 2019-11-05 12:28:21', 10, 70);
-    // doc.text('_______________________________', 10, 90);
-    // doc.text('Recibí conforme', 10, 95);
-    // Extraemos el
+
+
+    const formData = {
+      total_pagado: this.total,
+      fecha_emision: this.fecha,
+      estado_pago: 1
+    }
+
+    this.facturaServices.updateFactura(formData, this.idFactura)
+      .subscribe(({ changesFactura }) => {
+        // console.log(changesFactura);
+
+      });
+
+
     const DATA: any = document.getElementById('htmlData');
     const doc = new jsPDF('p', 'pt', 'a4');
     const options = {
@@ -121,6 +135,8 @@ export class DetalleComponent implements OnInit {
       docResult.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
       // docResult.save(`${new Date().toISOString()}_tutorial.pdf`);
     });
+
+    this.router.navigate(['/dashboard/facturas']);
 
     // Para auto imprimir
     // doc.autoPrint();

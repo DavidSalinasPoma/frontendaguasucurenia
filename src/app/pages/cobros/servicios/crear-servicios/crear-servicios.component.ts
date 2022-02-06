@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 
 import { EventosService } from 'src/app/services/eventos.service';
+import { ListasService } from 'src/app/services/listas.service';
 import { ServiciosService } from 'src/app/services/servicios.service';
 
 import Swal from 'sweetalert2';
@@ -27,7 +28,8 @@ export class CrearServiciosComponent implements OnInit {
     private formBuilder: FormBuilder,
     private eventoServices: EventosService,
     private servicoServices: ServiciosService,
-    private router: Router
+    private router: Router,
+    private listaServices: ListasService
   ) {
 
     this.crearFormulario();
@@ -69,48 +71,62 @@ export class CrearServiciosComponent implements OnInit {
    */
   public onSubmit(event: any) {
 
-    // console.log(this.formulario.value);
+    this.listaServices.validarLista()
+      .subscribe(({ lista }) => {
+        // console.log(lista);
+        if (lista.length != 0) {
+
+          Swal.fire({
+            icon: 'info',
+            title: 'Error',
+            text: `No se puede crear un Servicio mientras existan lecturas pendientes!`,
+          })
+
+        } else {
 
 
-    const formData = {
-      nombre: this.servicio?.value,
-      descripcion: this.descripcion?.value,
-      costo: this.precio?.value,
-    }
+          const formData = {
+            nombre: this.servicio?.value,
+            descripcion: this.descripcion?.value,
+            costo: this.precio?.value,
+          }
 
-    // console.log(formData);
+          // console.log(formData);
 
-    this.servicoServices.crearServicio(formData)
-      .subscribe(({ servicio }) => {
+          this.servicoServices.crearServicio(formData)
+            .subscribe(({ servicio }) => {
 
-        // console.log(servicio);
-        this.router.navigateByUrl('/dashboard/servicios');
+              // console.log(servicio);
+              this.router.navigateByUrl('/dashboard/servicios');
 
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '¡Registro Correcto!',
-          text: `El Servicio fue creado corectamente!`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-        // this.limpiar();
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '¡Registro Correcto!',
+                text: `El Servicio fue creado corectamente!`,
+                showConfirmButton: false,
+                timer: 3000
+              })
+              // this.limpiar();
 
-        // Crear el producto
-        const datosForms = {
-          nombre: 'servicio',
-          producto: servicio.nombre,
-          num_producto: servicio.id,
-          precio: servicio.costo,
-          cantidad: 1
+              // Crear el producto
+              const datosForms = {
+                nombre: 'servicio',
+                producto: servicio.nombre,
+                num_producto: servicio.id,
+                precio: servicio.costo,
+                cantidad: 1
+              }
+              this.eventoServices.crearProducto(datosForms)
+                .subscribe(() => { });
+
+            }, (err) => {
+              Swal.fire('Error', err.error.message, 'error')
+            }
+            );
+
         }
-        this.eventoServices.crearProducto(datosForms)
-          .subscribe(() => { });
-
-      }, (err) => {
-        Swal.fire('Error', err.error.message, 'error')
-      }
-      );
+      });
   }
 
   /**

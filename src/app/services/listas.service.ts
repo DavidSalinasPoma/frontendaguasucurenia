@@ -48,6 +48,15 @@ export class ListasService {
   }
 
   /**
+   * Validar lista
+   */
+  public validarLista() {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/buscar/validarLista`, { headers: parameters });
+  }
+
+  /**
    * cargarUsuarios
    */
   public cargarSocios(params: string) {

@@ -17,7 +17,7 @@ export class SidebarService {
     },
     {
       titulo: 'Facturación',
-      icono: 'mdi mdi-folder-lock-open',
+      icono: 'mdi mdi-file-document',
       submenu: [
         { titulo: 'Cobrar factura', url: 'facturas' },
       ]
@@ -26,7 +26,7 @@ export class SidebarService {
       titulo: 'Cunsumo',
       icono: 'mdi mdi-chart-line',
       submenu: [
-        { titulo: 'Consumo', url: 'consumos' },
+        { titulo: 'Lectura consumos', url: 'consumos' },
       ]
     },
     {

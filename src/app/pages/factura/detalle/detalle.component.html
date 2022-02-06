@@ -26,7 +26,7 @@
                   <br>Dirección: {{ this.socio?.direccion }}
                   <br>Barrio: {{ this.socio?.barrio }}
                 </p>
-                <p class="m-t-30"><b>Fecha de cobro :</b> <br> <i class="fa fa-calendar"></i>
+                <p class="m-t-30"><b>Fecha emisión de factura :</b> <br> <i class="fa fa-calendar"></i>
                   {{ this.fecha | date:'longDate'  }}
                 </p>
               </address>
@@ -116,8 +116,7 @@
       </span> Emitir
       Factura</button>
     &nbsp;
-    <button type=" button" class="col-12 col-lg-3 btn btn-danger" (click)="this.cancelar()"><span
-        class="mdi mdi-arrow-left"></span>
+    <button type=" button" class="btn btn-danger" (click)="this.cancelar()"><span class="mdi mdi-arrow-left"></span>
       Cancelar</button>
   </div>
 </div>

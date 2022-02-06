@@ -46,6 +46,28 @@ export class FacturaService {
     return this.http.get<any>(base_url + `/api/factura/${id}`, { headers: parameters });
   }
 
+
+  /**
+   * updateFactura
+   */
+  public updateFactura(formData: any, id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.put<any>(base_url + `/api/factura/${id}`, formData, { headers: parameters });
+  }
+
+
+  /**
+* cargarUsuarios
+*/
+  public retrasoFactura(id: number) {
+    // console.log(params);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/show/retrasofactura/${id}`, { headers: parameters });
+  }
+
   /**
    * cargarUsuarios
    */
