@@ -10,6 +10,9 @@ import { RouterModule } from '@angular/router';
 // Angular Material
 import { MaterialModule } from '../material/material.module';
 
+// Para generar pdf
+import { NgxPrintModule } from 'ngx-print';
+
 // componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -77,6 +80,7 @@ import { DetalleComponent } from './factura/detalle/detalle.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPrintModule
   ],
   exports: [ // Es para que otros modulos puedan utilizar estos componentes
     DashboardComponent,

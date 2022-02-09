@@ -49,6 +49,17 @@ export class SociosService {
   }
 
   /**
+  * cargarSocios
+  */
+  public showSocios(id: number) {
+    // console.log(params);
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/show/showsocios/${id}`, { headers: parameters });
+  }
+
+
+  /**
    * cargarUsuarios
    */
   public cargarSocios(params: string) {

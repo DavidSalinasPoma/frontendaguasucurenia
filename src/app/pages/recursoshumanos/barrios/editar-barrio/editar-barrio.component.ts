@@ -9,8 +9,6 @@ import { BarriosService } from 'src/app/services/barrios.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ServiciosService } from 'src/app/services/servicios.service';
 
-
-
 @Component({
   selector: 'app-editar-barrio',
   templateUrl: './editar-barrio.component.html',
