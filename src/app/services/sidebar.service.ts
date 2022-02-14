@@ -33,9 +33,9 @@ export class SidebarService {
       titulo: 'RR. HH.',
       icono: 'mdi mdi-account-multiple-plus',
       submenu: [
+        { titulo: 'Socios', url: 'socios' },
         { titulo: 'Personas', url: 'personas' },
         { titulo: 'Usuarios', url: 'usuarios' },
-        { titulo: 'Socios', url: 'socios' },
         // { titulo: 'Empleados', url: 'empleados' },
         { titulo: 'Barrio', url: 'barrios' },
       ]

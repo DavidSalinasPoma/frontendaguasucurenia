@@ -128,6 +128,7 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
+                  <th>Codigo socio</th>
                   <th>Codigo factura</th>
                   <th>Socio</th>
                   <th>Carnet</th>
@@ -138,6 +139,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of this.options">
+                  <td>{{ item.idSocio }}</td>
                   <td>{{ item.idFactura }}</td>
                   <td>{{ item.nombres }} {{ item.paterno }}
                     {{ item.materno }} </td>

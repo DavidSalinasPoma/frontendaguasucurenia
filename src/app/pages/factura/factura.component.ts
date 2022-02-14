@@ -216,7 +216,7 @@ export class FacturaComponent implements OnInit {
       if (texto != '' || this.textoBuscar === '') {
 
         this.textoBuscar = texto
-        urls = `${base_url}/api/buscar/facturas?page=1`
+        urls = `${base_url}/api/ubicar/facturas?page=1`
 
       }
       if (url != '') {
@@ -237,7 +237,6 @@ export class FacturaComponent implements OnInit {
         this.facturaServices.buscarFacturas(formDatos)
           .subscribe(({ factura }) => {
             // console.log(factura);
-
             this.socios2 = factura.data;
             this.total = 0;
 
@@ -262,13 +261,13 @@ export class FacturaComponent implements OnInit {
               this.currentPage2 = factura.current_page;
 
               // Persistencia de pagina
-              localStorage.setItem('urlPagination', `${base_url}/api/buscar/facturas?page=${this.currentPage2}`);
+              localStorage.setItem('urlPagination', `${base_url}/api/ubicar/facturas?page=${this.currentPage2}`);
 
               if (this.options.length === 0) {
                 Swal.fire({
                   icon: 'info',
                   title: 'Facturas',
-                  text: `El socio con codigo: ${texto} ya no tiene facturas pendientes!`,
+                  text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
                 })
               }
               // loading
@@ -281,9 +280,14 @@ export class FacturaComponent implements OnInit {
 
               Swal.fire({
                 icon: 'info',
-                title: 'El socio no exite!',
-                text: `El socio con codigo: ${texto} no existe!`,
+                title: 'La factura no exite!',
+                text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
               })
+              localStorage.removeItem('usuario');
+              const url: any = localStorage.getItem('paramsUrl');
+              this.cargarFacturas(url);
+              // localStorage.setItem('urlPagination', `${base_url}/api/buscar/facturas?page=1`);
+              this.mostrar = true;
             }
           })
       }

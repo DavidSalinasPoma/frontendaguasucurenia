@@ -80,7 +80,18 @@ export class FacturaService {
   /**
   * cargar eventos
   */
-  public buscarFacturas(formData: any): Observable<any> {
+  public buscarFacturas(formData: any) {
+
+    // console.log(formData);
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post<any>(formData.url, formData, { headers: parameters });
+  }
+
+  public pruebasFacturas(formData: any) {
+
+    // console.log(formData);
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);

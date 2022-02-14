@@ -13,6 +13,11 @@ import html2canvas from 'html2canvas';
 // import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 // (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
+// Numeros a letras
+
+declare var numeroALetras: any;
+declare var covertirNumLetras: any;
+
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.component.html',
@@ -31,6 +36,8 @@ export class DetalleComponent implements OnInit {
 
   public fecha: any;
 
+  public letras: string = '';
+
   constructor(
     private facturaServices: FacturaService,
     private rutaActiva: ActivatedRoute,
@@ -40,6 +47,8 @@ export class DetalleComponent implements OnInit {
     // Recibiendo el parametro
     this.idFactura = this.rutaActiva.snapshot.params.id;
     this.showFacturas(this.idFactura);
+    // Numero a letras
+    // numeroALetras.init();
   }
 
   ngOnInit(): void {
@@ -79,6 +88,18 @@ export class DetalleComponent implements OnInit {
           });
           this.total = suma + this.socio.retraso + this.socio.precioConsumo;
           this.cargando = false;
+
+          // this.letras = numeroALetras(this.total, {
+          //   plural: "BOLIVIANOS",
+          //   singular: "BOLIVIANO",
+          //   centPlural: "CENTAVOS",
+          //   centSingular: "CENTAVO"
+          // });
+
+
+          this.letras = covertirNumLetras(String(this.total));
+          console.log(this.letras);
+
         } else {
           this.facturaServices.retrasoFactura(item)
             .subscribe(({ factura }) => {
@@ -116,4 +137,5 @@ export class DetalleComponent implements OnInit {
     // doc.autoPrint();
     // doc.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
   }
+
 }
