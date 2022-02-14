@@ -36,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // Para el lenguaje español
     { provide: LOCALE_ID, useValue: 'es' }
   ],
   bootstrap: [AppComponent]
