@@ -6,7 +6,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 
 // El tap dispara un efecto secundario
 import { tap, map, catchError } from "rxjs/operators";
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 
 // Variables globales
 import { environment } from './../../environments/environment';
@@ -19,6 +19,8 @@ const base_url = environment.base_url;
   providedIn: 'root'
 })
 export class UsuarioService {
+
+
 
   public nombreEvento = new EventEmitter<{}>();
 
@@ -97,19 +99,26 @@ export class UsuarioService {
    * validarToken
    */
   public validarToken(): Observable<boolean> {
+
     const token = localStorage.getItem('token') || '';
-    return this.http.get(`${base_url}/api/login/renew`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).pipe(
+
+
+
+    // Implementando rxjs
+    let tokenInfo$: Observable<string>;
+    tokenInfo$ = of(token);
+    return tokenInfo$.pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        // console.log(resp);
+        if (resp != '') {
+          localStorage.setItem('token', resp);
+        }
       }),
-      map(resp => true),
-      catchError(error => of(false))
+      map(resp => (resp === '') ? false : true)
     );
+
   }
+
 
   // Servicio para crear un usuario
   crearUsuario(formData: any) {

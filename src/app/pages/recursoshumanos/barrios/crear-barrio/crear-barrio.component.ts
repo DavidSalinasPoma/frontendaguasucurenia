@@ -90,5 +90,6 @@ export class CrearBarrioComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/barrios');
   }
 }

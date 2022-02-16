@@ -139,6 +139,7 @@ export class CrearEventosComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/eventos');
   }
 }
 

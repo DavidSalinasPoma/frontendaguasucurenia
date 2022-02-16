@@ -22,6 +22,8 @@ export class AuthGuard implements CanActivate, CanLoad {
       .pipe(
         tap(estaAutenticado => {
           if (!estaAutenticado) {
+            // console.log('Hola1');
+
             this.router.navigateByUrl('/login');
           }
         })
@@ -36,6 +38,8 @@ export class AuthGuard implements CanActivate, CanLoad {
       .pipe(
         tap(estaAutenticado => {
           if (!estaAutenticado) {
+            // console.log('Hola2');
+
             this.router.navigateByUrl('/login');
           }
         })

@@ -62,7 +62,7 @@ export class EditarPersonaComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private rutaActiva: ActivatedRoute,
-
+    private router: Router,
     private personaServices: PersonaService
   ) {
 
@@ -85,12 +85,12 @@ export class EditarPersonaComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       nombres: ['', [Validators.required]],
       paterno: ['', [Validators.required]],
-      materno: ['', [Validators.required]],
+      materno: [''],
       carnet: ['', [Validators.required]],
       expedito: ['', [Validators.required]],
       sexo: ['', [Validators.required]],
       direccion: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9.!#$%&' * +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)])],
       celular: ['', [Validators.required]],
       celularF: ['', [Validators.required]],
       nacimiento: ['', [Validators.required]],
@@ -162,7 +162,7 @@ export class EditarPersonaComponent implements OnInit {
           celularF: persona.celular_familiar,
           nacimiento: persona.nacimiento,
           ecivil: persona.estado_civil,
-          estado: persona.estado,
+          estado: Number(persona.estado),
         });
         this.cargando = false;
       });
@@ -195,6 +195,7 @@ export class EditarPersonaComponent implements OnInit {
 
     this.personaServices.updatePersonas(formData, this.idPersona)
       .subscribe(() => {
+        this.router.navigateByUrl('/dashboard/personas');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -218,5 +219,6 @@ export class EditarPersonaComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/personas');
   }
 }

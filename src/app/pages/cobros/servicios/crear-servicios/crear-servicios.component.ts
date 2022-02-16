@@ -134,5 +134,6 @@ export class CrearServiciosComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/servicios');
   }
 }

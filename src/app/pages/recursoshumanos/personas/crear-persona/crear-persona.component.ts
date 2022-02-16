@@ -64,12 +64,12 @@ export class CrearPersonaComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       nombres: ['', [Validators.required]],
       paterno: ['', [Validators.required]],
-      materno: ['', [Validators.required]],
+      materno: [''],
       carnet: ['', [Validators.required]],
       expedito: ['', [Validators.required]],
       sexo: ['', [Validators.required]],
       direccion: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9.!#$%&' * +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)])],
       celular: ['', [Validators.required]],
       celularF: ['', [Validators.required]],
       nacimiento: ['', [Validators.required]],
@@ -152,7 +152,8 @@ export class CrearPersonaComponent implements OnInit {
         })
         // this.limpiar();
       }, (err) => {
-        Swal.fire('Error', err.error.message, 'error')
+
+        Swal.fire('Error', (err.ok === false) ? err.error.errors.carnet[0] : err.error.message, 'error')
       }
       );
   }
@@ -162,5 +163,6 @@ export class CrearPersonaComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/personas');
   }
 }

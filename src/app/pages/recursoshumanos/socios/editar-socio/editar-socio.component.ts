@@ -227,6 +227,7 @@ export class EditarSocioComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/socios');
   }
 
   /**
@@ -240,7 +241,7 @@ export class EditarSocioComponent implements OnInit {
         this.formulario.setValue({
           persona: `${socio.persona_id}: ${socio.persona.nombres} ${socio.persona.ap_paterno} ${socio.persona.ap_materno}`,
           barrio: `${socio.barrio_id}: ${socio.barrio.nombre}`,
-          estado: socio.estado
+          estado: Number(socio.estado)
         });
 
       });

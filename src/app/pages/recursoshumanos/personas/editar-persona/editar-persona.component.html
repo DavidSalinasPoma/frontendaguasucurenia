@@ -71,15 +71,6 @@
                           <mat-label>Apellido materno</mat-label>
                           <input type="text" matInput formControlName="materno" autocomplete="off" spellcheck="false">
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div *ngIf="this.materno?.invalid && (this.materno?.dirty || this.materno?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.materno?.hasError('required')" class="animated fadeIn fast text-danger"
-                            id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
 
                       <!-- Form Carnet -->
@@ -169,10 +160,13 @@
                         </mat-form-field>
                         <!-- Validacion -->
                         <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div *ngIf="this.email?.invalid && (this.email?.dirty || this.email?.touched)">
+                        <div *ngIf=" this.email?.invalid && (this.email?.dirty || this.email?.touched)">
                           <!-- Errores con expresiones regulares -->
                           <div *ngIf="this.email?.hasError('required')" class="animated fadeIn fast text-danger" id="">
                             Este campo es requerido.
+                          </div>
+                          <div *ngIf="this.email?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                            Email no valido.
                           </div>
                         </div>
                       </div>

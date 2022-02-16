@@ -104,7 +104,7 @@ export class EditarEventosComponent implements OnInit {
           descripcion: evento.descripcion,
           precio: evento.precio,
           tiempo: evento.tiempo_event,
-          estado: evento.estado,
+          estado: Number(evento.estado),
         });
         this.cargando = false;
       });
@@ -184,6 +184,7 @@ export class EditarEventosComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/eventos');
   }
 }
 

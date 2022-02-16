@@ -37,7 +37,8 @@ export class EditarBarrioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private rutaActiva: ActivatedRoute,
     private servicioServices: ServiciosService,
-    private barriosService: BarriosService
+    private barriosService: BarriosService,
+    private router: Router
   ) {
 
     // Recibiendo el parametro
@@ -83,11 +84,12 @@ export class EditarBarrioComponent implements OnInit {
     this.cargando = true;
     this.barriosService.showBarrios(this.idBarrio)
       .subscribe(({ barrio }) => {
+        console.log(barrio);
 
         this.formulario.setValue({
           barrio: barrio.nombre,
           descripcion: barrio.descripcion,
-          estado: barrio.estado,
+          estado: Number(barrio.estado),
         });
         this.cargando = false;
       });
@@ -110,7 +112,7 @@ export class EditarBarrioComponent implements OnInit {
 
     this.barriosService.updateBarrios(formData, this.idBarrio)
       .subscribe(() => {
-
+        this.router.navigateByUrl('/dashboard/barrios');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -134,5 +136,6 @@ export class EditarBarrioComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/barrios');
   }
 }

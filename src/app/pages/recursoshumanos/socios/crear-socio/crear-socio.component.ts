@@ -218,6 +218,7 @@ export class CrearSocioComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/socios');
   }
 }
 

@@ -39,7 +39,8 @@ export class EditarServiciosComponent implements OnInit {
     private rutaActiva: ActivatedRoute,
     private servicioServices: ServiciosService,
     private eventoServices: EventosService,
-    private listaServices: ListasService
+    private listaServices: ListasService,
+    private router: Router
   ) {
 
     // Recibiendo el parametro
@@ -89,12 +90,12 @@ export class EditarServiciosComponent implements OnInit {
     this.cargando = true;
     this.servicioServices.showServicios(this.idServicio)
       .subscribe(({ servicio }) => {
-
+        this.router.navigateByUrl('/dashboard/servicios');
         this.formulario.setValue({
           servicio: servicio.nombre,
           descripcion: servicio.descripcion,
           precio: servicio.costo,
-          estado: servicio.estado,
+          estado: Number(servicio.estado),
         });
         this.cargando = false;
       });
@@ -175,5 +176,6 @@ export class EditarServiciosComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/servicios');
   }
 }

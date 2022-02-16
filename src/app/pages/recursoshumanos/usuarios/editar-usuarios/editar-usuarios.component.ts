@@ -109,7 +109,7 @@ export class EditarUsuariosComponent implements OnInit {
           persona: `${resp.usuario.persona.id}: ${resp.usuario.persona.nombres} ${resp.usuario.persona.ap_paterno} ${resp.usuario.persona.ap_materno}`,
           email: resp.usuario.email,
           password: 'Ingrese nueva contraseña',
-          estado: resp.usuario.estado,
+          estado: Number(resp.usuario.estado),
         });
         this.cargando = false;
       });
@@ -136,7 +136,7 @@ export class EditarUsuariosComponent implements OnInit {
 
     this.usuarioServices.updateUsuarios(formData, this.idUsuario)
       .subscribe(resp => {
-
+        this.router.navigateByUrl('/dashboard/usuarios');
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -215,5 +215,6 @@ export class EditarUsuariosComponent implements OnInit {
    */
   public limpiar() {
     this.formulario.reset();
+    this.router.navigateByUrl('/dashboard/usuarios');
   }
 }
