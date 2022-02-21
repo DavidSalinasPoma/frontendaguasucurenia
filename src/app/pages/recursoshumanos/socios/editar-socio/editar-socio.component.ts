@@ -80,9 +80,13 @@ export class EditarSocioComponent implements OnInit {
    */
   public onSubmit(event: any) {
 
-    // Primer caracter
-    const id = Number((this.persona?.value).charAt(0));
-    const idBarrio = Number((this.barrio?.value).charAt(0));
+    // Sacar codigo
+    let codigoSocio = (this.persona?.value).split(':');
+    let codigoBarrio = (this.barrio?.value).split(':');
+
+    // Primer numero
+    const id = Number(codigoSocio[0]);
+    const idBarrio = Number(codigoBarrio[0]);
 
     const formData = {
       persona_id: id,

@@ -186,7 +186,7 @@ export class SociosComponent implements OnInit {
         this.totalSocios = socio.total;
 
         this.socios = socio.data;
-        // console.log(this.socios);
+        console.log(this.socios);
 
         this.setPaginator(socio);
 

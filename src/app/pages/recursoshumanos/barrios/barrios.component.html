@@ -63,7 +63,7 @@
                 <tr *ngFor="let item of this.barrios">
                   <td>{{ item.nombre }} </td>
                   <td>{{ item.descripcion }}</td>
-                  <td *ngIf="item.estado; else notShow">
+                  <td *ngIf="item.estado==='1'; else notShow">
                     <div class="label label-table label-success">Activado</div>
                   </td>
                   <ng-template #notShow>
@@ -149,7 +149,7 @@
                   <tr *ngFor="let item of this.barrios2">
                     <td>{{ item.nombre }} </td>
                     <td>{{ item.descripcion }}</td>
-                    <td *ngIf="item.estado; else notShowd">
+                    <td *ngIf="item.estado==='1'; else notShowd">
                       <div class="label label-table label-success">Activado</div>
                     </td>
                     <ng-template #notShowd>

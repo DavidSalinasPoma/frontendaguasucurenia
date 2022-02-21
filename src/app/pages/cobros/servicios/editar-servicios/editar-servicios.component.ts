@@ -90,7 +90,7 @@ export class EditarServiciosComponent implements OnInit {
     this.cargando = true;
     this.servicioServices.showServicios(this.idServicio)
       .subscribe(({ servicio }) => {
-        this.router.navigateByUrl('/dashboard/servicios');
+        // this.router.navigateByUrl('/dashboard/servicios');
         this.formulario.setValue({
           servicio: servicio.nombre,
           descripcion: servicio.descripcion,
@@ -145,6 +145,7 @@ export class EditarServiciosComponent implements OnInit {
 
               this.eventoServices.updateProductos(datosForms, changes.id)
                 .subscribe(({ producto, message }) => {
+                  this.router.navigateByUrl('/dashboard/servicios');
 
                   Swal.fire({
                     position: 'center',
@@ -154,7 +155,6 @@ export class EditarServiciosComponent implements OnInit {
                     showConfirmButton: false,
                     timer: 3000
                   })
-
 
                 });
               this.showServicios();
