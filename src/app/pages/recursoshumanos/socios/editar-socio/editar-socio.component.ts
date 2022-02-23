@@ -32,6 +32,8 @@ export class EditarSocioComponent implements OnInit {
     { value: 0, estado: 'Desactivado' }
   ];
 
+  public cargando: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private personaServices: PersonaService,
@@ -95,6 +97,10 @@ export class EditarSocioComponent implements OnInit {
     }
 
     // console.log(formData);
+    // return;
+
+    // Validar que el socio sea activo siempre para modificar
+
 
     this.socioServices.updateSocios(formData, this.idSocio)
       .subscribe(resp => {
@@ -115,6 +121,11 @@ export class EditarSocioComponent implements OnInit {
         Swal.fire('Error', err.error.message, 'error')
       }
       );
+
+
+
+
+
   }
 
   /**
@@ -248,7 +259,21 @@ export class EditarSocioComponent implements OnInit {
           estado: Number(socio.estado)
         });
 
+        if (this.formulario.value.estado != 1) {
+          this.isEditable();
+        }
+
+        this.cargando = false;
+
+
       });
+  }
+
+  /**
+   * isEditable
+   */
+  public isEditable() {
+    this.persona?.disable();
   }
 }
 

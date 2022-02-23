@@ -4,12 +4,12 @@ import Swal from 'sweetalert2';
 
 // Sericios
 import { Socios } from 'src/app/models/socios.models';
-import { SociosService } from 'src/app/services/socios.service';
 import { ListasService } from 'src/app/services/listas.service';
 import { Listas } from 'src/app/models/listas.models';
 import { FacturaService } from 'src/app/services/factura.service';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/services/data.service';
+
 
 // Variables globales
 const base_url = environment.base_url;
@@ -66,15 +66,22 @@ export class FacturaComponent implements OnInit {
 
   // Mostra 
   public mostrar: boolean = true;
+  public mostrar1: boolean = false;
 
   public options: any = [];
 
   public total: number = 0;
+  public totalSaldo: number = 0;
 
   // Formularios
   public formulario!: FormGroup;
 
   public socioText: any;
+
+  public socio: any;
+  public detalle: any;
+
+  public finalOptions: any;
 
   // Para manipular el dom
   // Para manipular el dom
@@ -199,17 +206,19 @@ export class FacturaComponent implements OnInit {
    */
   public buscarFacturas(texto: any, url?: string, band?: number) {
 
+
     if (band) {
       localStorage.setItem('usuario', texto);
     }
 
     if (texto === '' && url === '') {
       const urlParams = String(localStorage.getItem('paramsUrl'));
-      this.mostrar = true;
+
       this.cargarFacturas(urlParams)
 
-
     } else {
+
+
 
       let urls;
 
@@ -226,17 +235,20 @@ export class FacturaComponent implements OnInit {
       }
 
       const formDatos = {
-        textos: this.textoBuscar,
+        textos: Number(this.textoBuscar),
         url: urls
       }
 
       if (this.textoBuscar) {
-        this.mostrar = false;
+
+        // console.log(formDatos);
         this.cargando = true;
 
         this.facturaServices.buscarFacturas(formDatos)
           .subscribe(({ factura }) => {
             // console.log(factura);
+            // console.log(texto);
+
             this.socios2 = factura.data;
             this.total = 0;
 
@@ -246,14 +258,17 @@ export class FacturaComponent implements OnInit {
 
               this.options = [];
               // console.log(this.socios);
-              this.socios2.forEach((element: any) => {
+              this.socios2.forEach((element: any, index) => {
                 if (element.estado_pago === 0 || element.estado_pago === '0') {
                   this.options.push(element);
                   this.total = this.total + 1;
+
+                  this.totalDetalle(Number(this.options[index].idFactura), index)
+
                 }
               });
 
-              // console.log(this.options);
+
 
               this.paginaSiguiente2 = factura.next_page_url;
               this.paginaAnterior2 = factura.prev_page_url;
@@ -270,14 +285,11 @@ export class FacturaComponent implements OnInit {
                   text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
                 })
               }
-              // loading
-              this.cargando = false;
+
             } else {
               // loading
               this.options = [];
               this.total = 0;
-              this.cargando = false;
-
               Swal.fire({
                 icon: 'info',
                 title: 'La factura no exite!',
@@ -287,7 +299,7 @@ export class FacturaComponent implements OnInit {
               const url: any = localStorage.getItem('paramsUrl');
               this.cargarFacturas(url);
               // localStorage.setItem('urlPagination', `${base_url}/api/buscar/facturas?page=1`);
-              this.mostrar = true;
+
             }
           })
       }
@@ -400,7 +412,6 @@ export class FacturaComponent implements OnInit {
 
   }
 
-
   /**
    * eliminarLocalstorage
    */
@@ -416,5 +427,46 @@ export class FacturaComponent implements OnInit {
     this.options = [];
     this.total = 0;
     this.formulario.reset();
+  }
+
+  /**
+  * totalDetalle
+  */
+  public totalDetalle(item: number, index: number) {
+    // console.log(item);
+
+    this.facturaServices.showFacturas(item)
+      .subscribe(({ detalle }) => {
+        let suma = 0;
+        // console.log(detalle);
+        if (detalle.length != 0) {
+          this.socio = detalle[0];
+          this.detalle = detalle;
+          detalle.forEach((element: any) => {
+            suma = suma + Number(element.precioDetalle)
+          });
+
+          this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+
+          const formData = {
+            saldo: this.totalSaldo
+          }
+          this.finalOptions = Object.assign(this.options[index], formData);
+          this.cargando = false;
+        } else {
+          this.facturaServices.retrasoFactura(item)
+            .subscribe(({ factura }) => {
+              // console.log(factura);
+              this.socio = factura[0];
+              this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+              const formData = {
+                saldo: this.totalSaldo
+              }
+              this.finalOptions = Object.assign(this.options[index], formData);
+              this.cargando = false;
+            })
+        }
+
+      });
   }
 }

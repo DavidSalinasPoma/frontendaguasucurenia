@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 // Servicios
 import { Persona } from 'src/app/models/persona.model';
 import { PersonaService } from 'src/app/services/persona.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -147,7 +149,18 @@ export class PersonasComponent implements OnInit {
           .subscribe(({ persona }) => {
 
             this.totalPersonas2 = persona.total;
-            this.personas2 = persona.data;
+            // Implementando logica de rxjs
+            let myArrayOf$: Observable<any>;
+
+            myArrayOf$ = of(persona.data);
+
+            myArrayOf$.pipe(map((data, index) => {
+              data[index].estado = Number(data[index].estado);
+              return data;
+            }))
+              .subscribe(resp => {
+                this.personas2 = resp;
+              })
 
             this.paginaSiguiente2 = persona.next_page_url;
             this.paginaAnterior2 = persona.prev_page_url;
@@ -181,7 +194,19 @@ export class PersonasComponent implements OnInit {
         // console.log(barrio);
         this.totalPersonas = persona.total;
 
-        this.personas = persona.data;
+        // Implementando logica de rxjs
+        let myArrayOf$: Observable<any>;
+
+        myArrayOf$ = of(persona.data);
+
+        myArrayOf$.pipe(map((data, index) => {
+          data[index].estado = Number(data[index].estado);
+          return data;
+        }))
+          .subscribe(resp => {
+            this.personas = resp;
+          })
+
 
         this.setPaginator(persona);
 

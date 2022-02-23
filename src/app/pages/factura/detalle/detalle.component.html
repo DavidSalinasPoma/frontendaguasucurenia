@@ -114,7 +114,7 @@
                   <td>Consumo</td>
                   <td class="pull-right">{{ this.socio?.precioConsumo }} Bs.</td>
                 </tr>
-                <tr>
+                <tr *ngIf="this.retraso">
                   <td><strong>Retraso</strong> </td>
                   <td>Multa</td>
                   <td class="pull-right">{{ this.socio?.retraso }} Bs.</td>

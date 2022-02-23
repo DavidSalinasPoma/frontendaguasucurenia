@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     this.usuarioServices.login(this.loginForm.value)
       .subscribe(resp => {
         // console.log(resp);
-
+        this.router.navigateByUrl('/');
         // Usuarios del sistema
         const userSistema: any = {
           id: resp.users.id,
@@ -68,9 +68,9 @@ export class LoginComponent implements OnInit {
           timer: 4000
         })
         // Navegar al dashboar
-        setTimeout(() => {
-          this.router.navigateByUrl('/');
-        }, 1000);
+        // setTimeout(() => {
+        // this.router.navigateByUrl('/');
+        // }, 1000);
 
       }, (err) => {
         // Si sucede un error

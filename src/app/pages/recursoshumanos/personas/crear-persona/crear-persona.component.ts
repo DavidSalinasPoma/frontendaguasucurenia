@@ -152,8 +152,11 @@ export class CrearPersonaComponent implements OnInit {
         })
         // this.limpiar();
       }, (err) => {
-
-        Swal.fire('Error', (err.ok === false) ? err.error.errors.carnet[0] : err.error.message, 'error')
+        if (err.error.status === 'err') {
+          Swal.fire('Error', err.error.message, 'error')
+        } else {
+          Swal.fire('Error', (err.ok === false) ? err.error.errors.carnet[0] : err.error.message, 'error')
+        }
       }
       );
   }

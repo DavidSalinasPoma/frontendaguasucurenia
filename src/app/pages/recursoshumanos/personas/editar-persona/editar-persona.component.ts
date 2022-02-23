@@ -192,7 +192,6 @@ export class EditarPersonaComponent implements OnInit {
 
     // console.log(formData);
 
-
     this.personaServices.updatePersonas(formData, this.idPersona)
       .subscribe(() => {
         this.router.navigateByUrl('/dashboard/personas');

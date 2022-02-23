@@ -3,6 +3,10 @@ import { Usuario } from 'src/app/models/usuario.model';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
+// rxJS
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 // Sericios
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { EventosService } from './../../../services/eventos.service';
@@ -151,7 +155,19 @@ export class ServiciosComponent implements OnInit {
           .subscribe(({ servicio }) => {
 
             this.totalServicios2 = servicio.total;
-            this.servicios2 = servicio.data;
+            // this.servicios2 = servicio.data;
+
+            let myArrayOf$: Observable<any>;
+
+            myArrayOf$ = of(servicio.data);
+
+            myArrayOf$.pipe(map((data, index) => {
+              data[index].estado = Number(data[index].estado);
+              return data;
+            }))
+              .subscribe(resp => {
+                this.servicios2 = resp;
+              })
 
             this.paginaSiguiente2 = servicio.next_page_url;
             this.paginaAnterior2 = servicio.prev_page_url;
@@ -185,7 +201,17 @@ export class ServiciosComponent implements OnInit {
         // console.log(servicio);
         this.totalServicios = servicio.total;
 
-        this.servicios = servicio.data;
+        let myArrayOf$: Observable<any>;
+
+        myArrayOf$ = of(servicio.data);
+
+        myArrayOf$.pipe(map((data, index) => {
+          data[index].estado = Number(data[index].estado);
+          return data;
+        }))
+          .subscribe(resp => {
+            this.servicios = resp;
+          })
 
         this.setPaginator(servicio);
 

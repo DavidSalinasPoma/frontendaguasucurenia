@@ -84,7 +84,7 @@ export class EditarBarrioComponent implements OnInit {
     this.cargando = true;
     this.barriosService.showBarrios(this.idBarrio)
       .subscribe(({ barrio }) => {
-        console.log(barrio);
+        // console.log(barrio);
 
         this.formulario.setValue({
           barrio: barrio.nombre,

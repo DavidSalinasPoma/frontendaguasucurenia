@@ -8,6 +8,8 @@ import { ServiciosService } from 'src/app/services/servicios.service';
 import { Servicios } from 'src/app/models/servicios.models';
 import { Socios } from 'src/app/models/socios.models';
 import { SociosService } from 'src/app/services/socios.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -151,8 +153,19 @@ export class SociosComponent implements OnInit {
 
 
             this.totalSocios2 = socio.total;
-            this.socios2 = socio.data;
-            // console.log(this.socios2);
+
+            // Implementando logica de rxjs
+            let myArrayOf$: Observable<any>;
+
+            myArrayOf$ = of(socio.data);
+
+            myArrayOf$.pipe(map((data, index) => {
+              data[index].estado = Number(data[index].estado);
+              return data;
+            }))
+              .subscribe(resp => {
+                this.socios2 = resp;
+              })
 
             this.paginaSiguiente2 = socio.next_page_url;
             this.paginaAnterior2 = socio.prev_page_url;
@@ -185,8 +198,18 @@ export class SociosComponent implements OnInit {
 
         this.totalSocios = socio.total;
 
-        this.socios = socio.data;
-        console.log(this.socios);
+        // Implementando logica de rxjs
+        let myArrayOf$: Observable<any>;
+
+        myArrayOf$ = of(socio.data);
+
+        myArrayOf$.pipe(map((data, index) => {
+          data[index].estado = Number(data[index].estado);
+          return data;
+        }))
+          .subscribe(resp => {
+            this.socios = resp;
+          })
 
         this.setPaginator(socio);
 

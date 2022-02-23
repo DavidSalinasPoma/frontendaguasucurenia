@@ -209,14 +209,18 @@ export class ConsumoComponent implements OnInit {
         this.cLectura = cLectura;
 
         this.socios = socio.data;
+        // console.log(this.socios);
 
         this.options = [];
         // console.log(this.socios);
         this.socios.forEach((element: any) => {
-          if (element.estado === 0 || element.estado === '0') {
+          if (Number(element.estado) === 0 || element.estado === '0') {
             this.options.push(element);
           }
         });
+
+        // console.log(this.options);
+
 
         this.setPaginator(socio);
 

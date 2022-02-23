@@ -29,6 +29,7 @@ export class DetalleComponent implements OnInit {
   public detalle: any;
   public total: any;
   public idFactura: any;
+  public retraso: boolean = true;
 
 
   // loading
@@ -84,29 +85,40 @@ export class DetalleComponent implements OnInit {
           this.socio = detalle[0];
           this.detalle = detalle;
           detalle.forEach((element: any) => {
-            suma = suma + (element.precioDetalle)
+            suma = suma + Number(element.precioDetalle)
           });
-          this.total = suma + this.socio.retraso + this.socio.precioConsumo;
+
+
+          if (Number(this.socio.retraso) === 0) {
+            this.retraso = false;
+          } else {
+            this.retraso = true;
+          }
+
+          this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
           this.cargando = false;
 
-          // this.letras = numeroALetras(this.total, {
-          //   plural: "BOLIVIANOS",
-          //   singular: "BOLIVIANO",
-          //   centPlural: "CENTAVOS",
-          //   centSingular: "CENTAVO"
-          // });
-
-
+          // Convertir numeros a letras
           this.letras = covertirNumLetras(String(this.total));
-          console.log(this.letras);
+          // console.log(this.letras);
 
         } else {
           this.facturaServices.retrasoFactura(item)
             .subscribe(({ factura }) => {
               // console.log(factura);
               this.socio = factura[0];
-              this.total = this.socio.retraso + this.socio.precioConsumo;
+
+              if (Number(this.socio.retraso) === 0) {
+                this.retraso = false;
+              } else {
+                this.retraso = true;
+              }
+
+              this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
               this.cargando = false;
+              // Convertir numeros a letras
+              this.letras = covertirNumLetras(String(this.total));
+              // console.log(this.letras);
             })
         }
 

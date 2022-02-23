@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
@@ -141,7 +143,21 @@ export class UsuariosComponent implements OnInit {
           .subscribe(({ user }) => {
 
             this.totalUsuarios2 = user.total;
-            this.usuarios2 = user.data;
+
+            console.log(user);
+
+
+            let myArrayOf$: Observable<any>;
+
+            myArrayOf$ = of(user.data);
+
+            myArrayOf$.pipe(map((data, index) => {
+              data[index].estado = Number(data[index].estado);
+              return data;
+            }))
+              .subscribe(resp => {
+                this.usuarios2 = resp;
+              })
 
             this.paginaSiguiente2 = user.next_page_url;
             this.paginaAnterior2 = user.prev_page_url;
@@ -173,10 +189,18 @@ export class UsuariosComponent implements OnInit {
     this.usuarioServices.cargarUsuarios(params)
       .subscribe(({ total, usuario, paginate, user }) => {
         this.totalUsuarios = total;
-        this.usuarios = usuario;
-        // console.log(this.usuarios);
 
-        // console.log(user);
+        let myArrayOf$: Observable<any>;
+
+        myArrayOf$ = of(usuario);
+
+        myArrayOf$.pipe(map((data, index) => {
+          data[index].estado = Number(data[index].estado);
+          return data;
+        }))
+          .subscribe(resp => {
+            this.usuarios = resp;
+          })
 
         this.setPaginator(user);
 

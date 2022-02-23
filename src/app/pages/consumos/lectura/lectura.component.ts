@@ -49,11 +49,8 @@ export class LecturaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cargando = true;
     this.crearFormulario();
     this.showLecturas();
-    this.cargando = false;
-
   }
   /**
    * formulario
@@ -173,7 +170,10 @@ export class LecturaComponent implements OnInit {
    */
   public async showLecturas() {
 
+
     const { socio } = await this.lecturaServices.showLecturas(this.idSocio).toPromise();
+
+
 
     this.socioDatos = socio.data;
     // console.log(this.socioDatos);
@@ -234,6 +234,8 @@ export class LecturaComponent implements OnInit {
     this.anio = a.getFullYear();
 
     await this.showConsumo();
+
+    this.cargando = false;
 
   }
 

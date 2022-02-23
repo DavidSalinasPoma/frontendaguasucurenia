@@ -97,8 +97,6 @@ export class CrearSocioComponent implements OnInit {
         // this.limpiar();
         this.cargarPersonas();
       }, (err) => {
-        console.log(err);
-
         Swal.fire('Error', err.error.message, 'error')
       }
       );

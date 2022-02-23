@@ -54,7 +54,7 @@
     <div class="card">
 
       <!-- Primera Parte -->
-      <div *ngIf="this.mostrar, else showTablaOpcion" class="card-body  animated fadeIn fast">
+      <div *ngIf="this.mostrar1, else showTablaOpcion" class="card-body  animated fadeIn fast">
 
         <!-- Boton de crear Usuarios -->
         <h4 class="card-title">Facturas pendientes de pago</h4>
@@ -134,6 +134,7 @@
                   <th>Carnet</th>
                   <th>Multa</th>
                   <th>Periodo consumo</th>
+                  <th>Saldo total</th>
                   <th class="text-nowrap w100">Acciones</th>
                 </tr>
               </thead>
@@ -146,6 +147,7 @@
                   <td>{{ item.carnet }}</td>
                   <td>{{ item.retraso }} Bs.</td>
                   <td>{{ item.mes}} {{ item.anio }}</td>
+                  <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
                   <td class="text-nowrap text-center">
                     <a [routerLink]="[ '/dashboard/detalles', item.idFactura ]" class="btn btn-warning text-white"
                       title="Ver detalle"> <i class="mdi mdi-eye"></i></a>

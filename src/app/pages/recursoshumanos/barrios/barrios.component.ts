@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 
 import { Barrios } from 'src/app/models/barrio.models';
 import { BarriosService } from 'src/app/services/barrios.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -148,7 +150,18 @@ export class BarriosComponent implements OnInit {
           .subscribe(({ barrio }) => {
 
             this.totalBarrios2 = barrio.total;
-            this.barrios2 = barrio.data;
+
+            let myArrayOf$: Observable<any>;
+
+            myArrayOf$ = of(barrio.data);
+
+            myArrayOf$.pipe(map((data, index) => {
+              data[index].estado = Number(data[index].estado);
+              return data;
+            }))
+              .subscribe(resp => {
+                this.barrios2 = resp;
+              })
 
             this.paginaSiguiente2 = barrio.next_page_url;
             this.paginaAnterior2 = barrio.prev_page_url;
@@ -182,7 +195,22 @@ export class BarriosComponent implements OnInit {
         // console.log(barrio);
         this.totalBarrios = barrio.total;
 
-        this.barrios = barrio.data;
+        // this.barrios = barrio.data;
+
+
+        let myArrayOf$: Observable<any>;
+
+        myArrayOf$ = of(barrio.data);
+
+        myArrayOf$.pipe(map((data, index) => {
+          data[index].estado = Number(data[index].estado);
+          return data;
+        }))
+          .subscribe(resp => {
+            this.barrios = resp;
+          })
+
+
 
         this.setPaginator(barrio);
 

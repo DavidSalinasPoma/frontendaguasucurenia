@@ -68,7 +68,7 @@
                     {{ item.persona.ap_materno }} </td>
                   <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
                   <td>{{ item.barrio.nombre }}</td>
-                  <td *ngIf="item.estado==='1'; else notShow">
+                  <td *ngIf="item.estado; else notShow">
                     <div class="label label-table label-success">Activado</div>
                   </td>
                   <ng-template #notShow>
@@ -140,6 +140,7 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
+                    <th>Codigo</th>
                     <th>Socio</th>
                     <th>Carnet</th>
                     <th>Barrio</th>
@@ -152,11 +153,12 @@
 
 
                   <tr *ngFor="let item of this.socios2">
+                    <td>{{ item.id }}</td>
                     <td>{{ item.nombres }} {{ item.ap_paterno }}
                       {{ item.ap_materno }} </td>
                     <td>{{ item.carnet }} {{ item.expedito }}</td>
                     <td>{{ item.nombre }}</td>
-                    <td *ngIf="item.estado==='1'; else notShow">
+                    <td *ngIf="item.estado; else notShow">
                       <div class="label label-table label-success">Activado</div>
                     </td>
                     <ng-template #notShow>
