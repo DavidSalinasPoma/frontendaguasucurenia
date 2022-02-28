@@ -35,7 +35,7 @@
                           <mat-label>Seleccionar</mat-label>
                           <input type="text" placeholder="Buscar" aria-label="Number" matInput [formControl]="myControl"
                             [matAutocomplete]="auto" formControlName="persona" #text
-                            (keyup)="buscarPersona(text.value)">
+                            (keyup)="searchTerm$.next(text.value)">
                           <mat-icon matSuffix>expand_more</mat-icon>
                           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                             <mat-option *ngFor="let option of options" [value]="option">

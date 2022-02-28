@@ -5,8 +5,10 @@ import Swal from 'sweetalert2';
 // Servicios
 import { Persona } from 'src/app/models/persona.model';
 import { PersonaService } from 'src/app/services/persona.service';
+
+// RxJS
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -65,6 +67,9 @@ export class PersonasComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // Mejora la performace del boton buscar
+    const search = document.getElementById('textBusca');
+    console.log(search);
 
     const cambioRuta = Number(localStorage.getItem('guardarRuta'));
     localStorage.removeItem('guardarRuta');
@@ -144,6 +149,7 @@ export class PersonasComponent implements OnInit {
       if (this.textoBuscar) {
         this.mostrar = false;
         this.cargando = true;
+
 
         this.personaService.buscarPersonas(formDatos)
           .subscribe(({ persona }) => {

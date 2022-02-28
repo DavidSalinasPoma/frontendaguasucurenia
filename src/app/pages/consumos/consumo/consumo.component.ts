@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -7,6 +7,8 @@ import { Socios } from 'src/app/models/socios.models';
 import { SociosService } from 'src/app/services/socios.service';
 import { ListasService } from 'src/app/services/listas.service';
 import { Listas } from 'src/app/models/listas.models';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -19,7 +21,7 @@ const base_url = environment.base_url;
   templateUrl: './consumo.component.html',
   styleUrls: ['./consumo.component.css']
 })
-export class ConsumoComponent implements OnInit {
+export class ConsumoComponent implements OnInit, OnDestroy {
 
   public totalSocios: number = 0;
   public totalSocios2: number = 0;
@@ -67,12 +69,22 @@ export class ConsumoComponent implements OnInit {
 
   public options: any = [];
 
+  // Mejorar el performance de la busqueda
+  private OnDestroy$ = new Subject();
+  public searchTerm$ = new Subject<string>();
+
   constructor(
     private socioServices: SociosService,
     private listaServices: ListasService
   ) { }
+  ngOnDestroy(): void {
+    // Para que se deatruya despues de salir de esta vista
+    this.OnDestroy$.next();
+  }
 
   ngOnInit(): void {
+
+    this.buscarSocios('', '', 1);
 
     const cambioRuta = Number(localStorage.getItem('guardarRuta'));
     localStorage.removeItem('guardarRuta');
@@ -117,7 +129,30 @@ export class ConsumoComponent implements OnInit {
   /**
    * cargarUsuarioBuscar
    */
-  public buscarSocios(texto: any, url?: string, band?: number) {
+  public buscarSocios(text: any, url?: string, band?: number) {
+
+
+    if (text != '') {
+      this.logicaBuscar(text, url, band)
+    } else {
+      this.searchTerm$.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.OnDestroy$)
+      )
+        .subscribe(texto => {
+
+          this.logicaBuscar(texto, url, band)
+
+        })
+    }
+
+  }
+
+  /**
+  * logicaBuscar
+ */
+  public logicaBuscar(texto?: any, url?: string, band?: number) {
 
     if (band) {
       localStorage.setItem('usuario', texto);
@@ -153,7 +188,6 @@ export class ConsumoComponent implements OnInit {
       if (this.textoBuscar) {
         this.mostrar = false;
         this.cargando = true;
-
         this.listaServices.buscarSocios(formDatos)
           .subscribe(({ socio, sLectura, cLectura }) => {
 
@@ -200,9 +234,6 @@ export class ConsumoComponent implements OnInit {
 
     this.listaServices.cargarSocios(params)
       .subscribe(({ socio, sLectura, cLectura }) => {
-
-        // console.log(socio);
-
 
         this.totalSocios = socio.total;
         this.sLectura = sLectura;

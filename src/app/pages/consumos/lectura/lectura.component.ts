@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Validacionespropias } from 'src/app/utils/validacionespropias';
 import { ConsumoService } from 'src/app/services/consumo.service';
 import { FacturaService } from 'src/app/services/factura.service';
 import { LecturaService } from 'src/app/services/lectura.service';
@@ -11,9 +14,10 @@ import Swal from 'sweetalert2';
   templateUrl: './lectura.component.html',
   styleUrls: ['./lectura.component.css']
 })
-export class LecturaComponent implements OnInit {
+export class LecturaComponent implements OnInit, OnDestroy {
   // Formularios
   public formulario!: FormGroup;
+  public formularioAnterior!: FormGroup;
   // loading
   public cargando: boolean = true;
   public idSocio: number;
@@ -35,6 +39,13 @@ export class LecturaComponent implements OnInit {
 
   public options: any[] = [];
 
+  // Validar lectura que sea mayor al anterior
+  public mostrarError: boolean = false;
+
+  // Mejorar el performance de la busqueda
+  private OnDestroy$ = new Subject();
+  public searchTerm$ = new Subject<string>();
+
   constructor(
     private formBuilder: FormBuilder,
     private lecturaServices: LecturaService,
@@ -47,18 +58,28 @@ export class LecturaComponent implements OnInit {
     // Recibiendo el parametro
     this.idSocio = this.rutaActiva.snapshot.params.id;
   }
+  ngOnDestroy(): void {
+    // Para que se deatruya despues de salir de esta vista
+    this.OnDestroy$.next();
+  }
 
   ngOnInit(): void {
+
     this.crearFormulario();
     this.showLecturas();
+    this.cuboPrecio('');
   }
   /**
    * formulario
    */
   public crearFormulario() {
+
+    this.formularioAnterior = this.formBuilder.group({
+      anterior: ['', [Validators.required]]
+    });
+
     this.formulario = this.formBuilder.group({
       lectura: ['', [Validators.required]],
-      anterior: [''],
     });
   }
 
@@ -66,103 +87,131 @@ export class LecturaComponent implements OnInit {
   get lectura() {
     return this.formulario.get('lectura');
   }
+  // Validaciones para formulario
+  get anterior() {
+    return this.formularioAnterior.get('anterior');
+  }
+
+
+  /**
+   * onSubmitAnterior
+event:any   */
+  public onSubmitAnterior(event: any) {
+
+    this.mostraAnterior = false;
+    this.mostraActual = true;
+  }
+
 
   /**
   * ngSubmit
   */
   public onSubmit(event: any) {
-    let mesFormat = '';
-    let anioFormat = 0;
 
-    let fecha = new Date(this.socioDatos[0].mes);
 
-    anioFormat = fecha.getFullYear();
+    this.lectActual = this.lectura?.value;
 
-    switch (Number(fecha.getMonth())) {
-      case 0:
-        mesFormat = 'enero';
-        break;
-      case 1:
-        mesFormat = 'febrero';
-        break;
-      case 2:
-        mesFormat = 'marzo';
-        break;
-      case 3:
-        mesFormat = 'abril';
-        break;
-      case 4:
-        mesFormat = 'mayo';
-        break;
-      case 5:
-        mesFormat = 'junio';
-        break;
-      case 6:
-        mesFormat = 'julio';
-        break;
-      case 7:
-        mesFormat = 'agosto';
-        break;
-      case 8:
-        mesFormat = 'septiembre';
-        break;
-      case 9:
-        mesFormat = 'octubre';
-        break;
-      case 10:
-        mesFormat = 'noviembre';
-        break;
-      case 11:
-        mesFormat = 'diciembre';
-        break;
+    if (Number(this.lectAnterior) > Number(this.lectActual)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: `La lectura actual no puede ser menor a la lectura anterior`,
+      })
+    } else {
 
-      default:
-        mesFormat = 'No existe';
-        break;
+      let mesFormat = '';
+      let anioFormat = 0;
+
+      let fecha = new Date(this.socioDatos[0].mes);
+
+      anioFormat = fecha.getFullYear();
+
+      switch (Number(fecha.getMonth())) {
+        case 0:
+          mesFormat = 'enero';
+          break;
+        case 1:
+          mesFormat = 'febrero';
+          break;
+        case 2:
+          mesFormat = 'marzo';
+          break;
+        case 3:
+          mesFormat = 'abril';
+          break;
+        case 4:
+          mesFormat = 'mayo';
+          break;
+        case 5:
+          mesFormat = 'junio';
+          break;
+        case 6:
+          mesFormat = 'julio';
+          break;
+        case 7:
+          mesFormat = 'agosto';
+          break;
+        case 8:
+          mesFormat = 'septiembre';
+          break;
+        case 9:
+          mesFormat = 'octubre';
+          break;
+        case 10:
+          mesFormat = 'noviembre';
+          break;
+        case 11:
+          mesFormat = 'diciembre';
+          break;
+
+        default:
+          mesFormat = 'No existe';
+          break;
+      }
+
+
+
+      const formData = {
+        lecturaAnterior: this.lectAnterior,
+        lecturaActual: this.lectActual,
+        consumo: this.consumo,
+        precio: this.total,
+        mes: mesFormat,
+        anio: anioFormat,
+        socio_id: this.socioDatos[0].id,
+        apertura_id: this.socioDatos[0].apertura,
+        lista_id: this.socioDatos[0].lista
+      }
+      // console.log(formData);
+
+      this.consumoServices.storeConsumos(formData)
+        .subscribe(({ consumo }) => {
+          // console.log(consumo);
+          this.router.navigateByUrl('/dashboard/consumos');
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '¡Registro Correcto!',
+            text: `El Consumo fue creado corectamente!`,
+            showConfirmButton: false,
+            timer: 3000
+          })
+
+          const datosForm = {
+            consumo_id: consumo.id
+          }
+          // Aqui La logica de generar factura
+          this.facturaServices.crearFactura(datosForm)
+            .subscribe(() => { });
+
+
+        }, (err) => {
+          console.log(err);
+
+          Swal.fire('Error', err.error.message, 'error')
+        });
+
     }
-
-
-
-    const formData = {
-      lecturaAnterior: this.lectAnterior,
-      lecturaActual: this.lectActual,
-      consumo: this.consumo,
-      precio: this.total,
-      mes: mesFormat,
-      anio: anioFormat,
-      socio_id: this.socioDatos[0].id,
-      apertura_id: this.socioDatos[0].apertura,
-      lista_id: this.socioDatos[0].lista
-    }
-    // console.log(formData);
-
-    this.consumoServices.storeConsumos(formData)
-      .subscribe(({ consumo }) => {
-        // console.log(consumo);
-        this.router.navigateByUrl('/dashboard/consumos');
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '¡Registro Correcto!',
-          text: `El Consumo fue creado corectamente!`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-
-        const datosForm = {
-          consumo_id: consumo.id
-        }
-        // Aqui La logica de generar factura
-        this.facturaServices.crearFactura(datosForm)
-          .subscribe(() => { });
-
-
-      }, (err) => {
-        console.log(err);
-
-        Swal.fire('Error', err.error.message, 'error')
-      });
-
   }
 
   /**
@@ -268,6 +317,7 @@ export class LecturaComponent implements OnInit {
    * cuboAnterior
    */
   public cuboAnterior(cubos: any) {
+    // console.log(cubos);
     if (cubos === '') {
       this.consumo = 0;
       this.total = 0;
@@ -283,8 +333,31 @@ export class LecturaComponent implements OnInit {
   /**
    * cuboPrecio
    */
-  public cuboPrecio(cubos: any) {
+  public cuboPrecio(text?: any) {
 
+    if (text != '') {
+      this.logicaBuscar(text)
+    } else {
+      this.searchTerm$.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.OnDestroy$)
+      )
+        .subscribe(texto => {
+
+          if (Number(this.lectAnterior) > Number(texto)) {
+            this.mostrarError = true;
+          } else {
+            this.mostrarError = false;
+            this.logicaBuscar(texto)
+          }
+        })
+    }
+
+  }
+
+
+  public logicaBuscar(cubos?: any) {
     if (cubos === '') {
       this.consumo = 0;
       this.total = 0;
@@ -321,32 +394,10 @@ export class LecturaComponent implements OnInit {
 
       this.lecturaServices.cuboPrecio(formData)
         .subscribe((precio) => {
+          // console.log(precio);
           this.total = precio.precio;
         });
-
-
     }
 
   }
-
-
-  /**
-   * subirAnterior
-   */
-  public subirAnterior() {
-
-    if (this.lectAnterior === 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Lectura de consumo anterior no tiene datos',
-      })
-    } else {
-      this.mostraAnterior = false;
-      this.mostraActual = true;
-    }
-
-  }
-
-
 }

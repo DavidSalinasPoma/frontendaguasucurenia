@@ -64,8 +64,6 @@ export class PersonaService {
    * cargar eventos
    */
   public buscarPersonas(formData: any): Observable<any> {
-    // console.log(formData);
-
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);

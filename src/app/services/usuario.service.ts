@@ -160,7 +160,7 @@ export class UsuarioService {
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.get<any>(base_url + '/api/persona', { headers: parameters });
+    return this.http.get<any>(base_url + '/api/buscar/personauser', { headers: parameters });
   }
 
 }

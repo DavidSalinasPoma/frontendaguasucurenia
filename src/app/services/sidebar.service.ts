@@ -49,6 +49,16 @@ export class SidebarService {
         { titulo: 'Servicios', url: 'servicios' },
       ]
     },
+
+    {
+      titulo: 'Administrador',
+      icono: 'mdi mdi-account-key',
+      submenu: [
+        { titulo: 'Consumo', url: 'eventos' },
+        { titulo: 'Factura', url: 'servicios' },
+      ]
+    },
+
     // {
     //   titulo: 'Apertura',
     //   icono: 'mdi  mdi-chart-arc',

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { PersonaService } from 'src/app/services/persona.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
   templateUrl: './crear-usuarios.component.html',
   styleUrls: ['./crear-usuarios.component.css']
 })
-export class CrearUsuariosComponent implements OnInit {
+export class CrearUsuariosComponent implements OnInit, OnDestroy {
 
   // Angular Material
   myControl = new FormControl();
@@ -22,6 +22,10 @@ export class CrearUsuariosComponent implements OnInit {
 
   // Formularios
   public formulario!: FormGroup;
+
+  // Mejorar el performance de la busqueda
+  private OnDestroy$ = new Subject();
+  public searchTerm$ = new Subject<string>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,9 +38,13 @@ export class CrearUsuariosComponent implements OnInit {
     this.crearFormulario();
 
   }
+  ngOnDestroy(): void {
+    // Para que se deatruya despues de salir de esta vista
+    this.OnDestroy$.next();
+  }
 
   ngOnInit(): void {
-
+    this.buscarPersona('');
   }
 
   /**
@@ -106,7 +114,7 @@ export class CrearUsuariosComponent implements OnInit {
     this.usuarioServices.cargarPersonas()
       .subscribe(resp => {
         const arrayPersona = resp.persona.data;
-        // console.log(arrayPersona);
+        console.log(arrayPersona);
         this.options = [];
         arrayPersona.forEach((element: any) => {
           if (element.estado === 1 || element.estado === '1') {
@@ -122,6 +130,30 @@ export class CrearUsuariosComponent implements OnInit {
    * buscarPersona
    */
   public buscarPersona(text: any) {
+
+    if (text != '') {
+      this.logicaBuscar(text)
+    } else {
+      this.searchTerm$.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.OnDestroy$)
+      )
+        .subscribe(texto => {
+
+          this.logicaBuscar(texto)
+
+        })
+    }
+
+  }
+
+  /**
+   * logicaBuscar
+   */
+  public logicaBuscar(text?: any,) {
+
+    // console.log(text);
     if (text === '') {
       this.options = [];
       this.cargarPersonas();
@@ -132,7 +164,7 @@ export class CrearUsuariosComponent implements OnInit {
         textos: text
       }
 
-      this.personaServices.buscarPersonas(formDatos)
+      this.personaServices.buscarPersonasCrear(formDatos)
         .subscribe(resp => {
           // console.log(resp);
           this.options = [];
@@ -146,7 +178,11 @@ export class CrearUsuariosComponent implements OnInit {
           });
           // console.log(this.options);
 
-        });
+        },
+          (err) => {
+            console.log(err);
+          }
+        );
 
     }
   }

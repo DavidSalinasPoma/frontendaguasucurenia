@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -6,8 +6,10 @@ import Swal from 'sweetalert2';
 
 import { Barrios } from 'src/app/models/barrio.models';
 import { BarriosService } from 'src/app/services/barrios.service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+
+// RxJS
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -18,7 +20,7 @@ const base_url = environment.base_url;
   templateUrl: './barrios.component.html',
   styleUrls: ['./barrios.component.css']
 })
-export class BarriosComponent implements OnInit {
+export class BarriosComponent implements OnInit, OnDestroy {
 
   public totalBarrios: number = 0;
   public totalBarrios2: number = 0;
@@ -59,13 +61,24 @@ export class BarriosComponent implements OnInit {
   // Mostra 
   public mostrar: boolean = true;
 
+
+  // Mejorar el performance de la busqueda
+  private OnDestroy$ = new Subject();
+  public searchTerm$ = new Subject<string>();
+
   constructor(
     private barrioServices: BarriosService
   ) { }
 
+
+  ngOnDestroy(): void {
+    // Para que se deatruya despues de salir de esta vista
+    this.OnDestroy$.next();
+  }
+
   ngOnInit(): void {
 
-
+    this.buscarBarrios('', '', 1);
     const cambioRuta = Number(localStorage.getItem('guardarRuta'));
     localStorage.removeItem('guardarRuta');
 
@@ -109,7 +122,31 @@ export class BarriosComponent implements OnInit {
   /**
    * cargarUsuarioBuscar
    */
-  public buscarBarrios(texto: any, url?: string, band?: number) {
+  public buscarBarrios(text?: any, url?: string, band?: number) {
+
+    if (text != '') {
+      this.logicaBuscar(text, url, band)
+    } else {
+      this.searchTerm$.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.OnDestroy$)
+      )
+        .subscribe(texto => {
+
+          this.logicaBuscar(texto, url, band)
+
+        })
+    }
+  }
+
+
+  /**
+   * logicaBuscar
+  */
+  public logicaBuscar(texto?: any, url?: string, band?: number) {
+
+    // console.log(texto);
 
     if (band) {
       localStorage.setItem('usuario', texto);
@@ -145,9 +182,9 @@ export class BarriosComponent implements OnInit {
       if (this.textoBuscar) {
         this.mostrar = false;
         this.cargando = true;
-
         this.barrioServices.buscarBarrios(formDatos)
           .subscribe(({ barrio }) => {
+            // console.log(barrio);
 
             this.totalBarrios2 = barrio.total;
 
@@ -161,7 +198,11 @@ export class BarriosComponent implements OnInit {
             }))
               .subscribe(resp => {
                 this.barrios2 = resp;
-              })
+              }, (error) => {
+                console.log(error);
+
+              }
+              )
 
             this.paginaSiguiente2 = barrio.next_page_url;
             this.paginaAnterior2 = barrio.prev_page_url;
@@ -174,12 +215,15 @@ export class BarriosComponent implements OnInit {
 
             // loading
             this.cargando = false;
-          })
+          }, (err) => {
+            console.log(err);
 
-
+          }
+          )
       }
     }
   }
+
 
   /**
    * cargarUsuario

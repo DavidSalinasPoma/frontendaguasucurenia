@@ -196,7 +196,7 @@ export class CrearSocioComponent implements OnInit {
 
       this.personaServices.buscarPersonasCrear(formDatos)
         .subscribe(resp => {
-          // console.log(resp);
+          console.log(resp);
           this.options = [];
           const arrayPersona = resp.persona.data;
           // console.log(arrayPersona);
@@ -209,7 +209,7 @@ export class CrearSocioComponent implements OnInit {
               this.options.push(`${element.id}: ${element.nombres} ${element.ap_paterno} ${element.ap_materno}`);
             }
           });
-          // console.log(this.options);
+          console.log(this.options);
 
         });
 
