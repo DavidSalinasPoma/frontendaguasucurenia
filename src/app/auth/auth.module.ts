@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
 
+// Angular material
+// import { MaterialModule } from '../material/material.module';
+
 // Componentes de AUTH
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -20,7 +23,8 @@ import { RegisterComponent } from './register/register.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    // MaterialModule
   ],
   exports: [ // Se exporta para que otros modulos puedan utilizarlos
     LoginComponent,

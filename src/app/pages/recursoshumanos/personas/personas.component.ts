@@ -69,7 +69,7 @@ export class PersonasComponent implements OnInit {
 
     // Mejora la performace del boton buscar
     const search = document.getElementById('textBusca');
-    console.log(search);
+    // console.log(search);
 
     const cambioRuta = Number(localStorage.getItem('guardarRuta'));
     localStorage.removeItem('guardarRuta');
@@ -102,7 +102,7 @@ export class PersonasComponent implements OnInit {
     // console.log(this.primeraPagina);
 
     if (this.primeraPagina === null) {
-      this.cargarPersonas(`${base_url}/api/persona?page=1`);
+      this.cargarPersonas(`${base_url}/api/buscar/indexpersonas?page=1`);
       // console.log('hola');
 
     } else {
@@ -223,8 +223,8 @@ export class PersonasComponent implements OnInit {
         this.currentPage = this.pagination.current_page;
 
         // Persistencia de pagina
-        localStorage.setItem('urlPagination', `${base_url}/api/persona?page=${this.currentPage}`);
-        localStorage.setItem('paramsUrl', `${base_url}/api/persona?page=${this.currentPage}`);
+        localStorage.setItem('urlPagination', `${base_url}/api/buscar/indexpersonas?page=${this.currentPage}`);
+        localStorage.setItem('paramsUrl', `${base_url}/api/buscar/indexpersonas?page=${this.currentPage}`);
         // loading
         this.cargando = false;
 

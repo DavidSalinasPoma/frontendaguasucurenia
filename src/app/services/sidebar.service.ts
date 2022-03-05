@@ -20,6 +20,7 @@ export class SidebarService {
       icono: 'mdi mdi-file-document',
       submenu: [
         { titulo: 'Cobrar factura', url: 'facturas' },
+        { titulo: 'Facturas pagadas', url: 'factpagadas' },
       ]
     },
     {

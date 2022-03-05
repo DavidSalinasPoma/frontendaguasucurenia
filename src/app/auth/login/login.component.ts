@@ -13,6 +13,8 @@ export class LoginComponent implements OnInit {
 
   public formSubmitted = false;
 
+  public cargando = false;
+
   // Formulario 
   public loginForm = this.fb.group({
     email: [localStorage.getItem('email') || '', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&' * +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")]],
@@ -34,10 +36,11 @@ export class LoginComponent implements OnInit {
    * login
    */
   public login() {
+    this.cargando = true;
     this.usuarioServices.login(this.loginForm.value)
       .subscribe(resp => {
-        // console.log(resp);
         this.router.navigateByUrl('/');
+        this.cargando = false;
         // Usuarios del sistema
         const userSistema: any = {
           id: resp.users.id,
@@ -77,6 +80,7 @@ export class LoginComponent implements OnInit {
         // console.log(err);
 
         Swal.fire('Error', err.error.message, 'error')
+        this.cargando = false;
 
       }
       )

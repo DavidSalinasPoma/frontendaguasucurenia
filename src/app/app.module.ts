@@ -11,13 +11,16 @@ registerLocaleData(localeEs, 'es');
 import { AppRoutingModule } from './app-routing.module';
 // Sub Modulos de la APP
 import { PagesModule } from './pages/pages.module';
-// Mudulo de SHARED
+// Mudulo de auth
 import { AuthModule } from './auth/auth.module';
+// Toaster
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 // Componentes de APP
 import { AppComponent } from './app.component';
 import { NopagesfoundComponent } from './nopagesfound/nopagesfound.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -33,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot(), // ToastrModule added
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

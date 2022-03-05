@@ -27,6 +27,8 @@ import { ConsumoComponent } from './consumos/consumo/consumo.component';
 import { LecturaComponent } from './consumos/lectura/lectura.component';
 import { FacturaComponent } from './factura/factura.component';
 import { DetalleComponent } from './factura/detalle/detalle.component';
+import { FacturapagadasComponent } from './factura/facturapagadas/facturapagadas.component';
+import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas.component';
 
 const childRoute: Routes = [
   { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
@@ -65,6 +67,10 @@ const childRoute: Routes = [
   { path: 'facturas', component: FacturaComponent, data: { titulo: 'Sistema de Facturas' } },
 
   { path: 'detalles/:id', component: DetalleComponent, data: { titulo: 'Factura detalle' } },
+
+  { path: 'factpagadas', component: FacturapagadasComponent, data: { titulo: 'Facturas pagadas' } },
+
+  { path: 'detallespagadas/:id', component: DetallepagadasComponent, data: { titulo: 'Reporte de Factura Pagada' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]

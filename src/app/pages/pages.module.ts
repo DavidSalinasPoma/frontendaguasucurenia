@@ -12,6 +12,7 @@ import { MaterialModule } from '../material/material.module';
 
 // Para generar pdf
 import { NgxPrintModule } from 'ngx-print';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -23,7 +24,6 @@ import { CrearPersonaComponent } from './recursoshumanos/personas/crear-persona/
 import { UsuariosComponent } from './recursoshumanos/usuarios/usuarios.component';
 import { CrearUsuariosComponent } from './recursoshumanos/usuarios/crear-usuarios/crear-usuarios.component';
 import { EditarUsuariosComponent } from './recursoshumanos/usuarios/editar-usuarios/editar-usuarios.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventosComponent } from './cobros/eventos/eventos.component';
 import { ServiciosComponent } from './cobros/servicios/servicios.component';
 import { CrearEventosComponent } from './cobros/eventos/crear-eventos/crear-eventos.component';
@@ -41,6 +41,8 @@ import { ConsumoComponent } from './consumos/consumo/consumo.component';
 import { LecturaComponent } from './consumos/lectura/lectura.component';
 import { FacturaComponent } from './factura/factura.component';
 import { DetalleComponent } from './factura/detalle/detalle.component';
+import { FacturapagadasComponent } from './factura/facturapagadas/facturapagadas.component';
+import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas.component';
 
 
 @NgModule({
@@ -70,7 +72,9 @@ import { DetalleComponent } from './factura/detalle/detalle.component';
     ConsumoComponent,
     LecturaComponent,
     FacturaComponent,
-    DetalleComponent
+    DetalleComponent,
+    FacturapagadasComponent,
+    DetallepagadasComponent
   ],
   imports: [
     CommonModule,
@@ -86,7 +90,31 @@ import { DetalleComponent } from './factura/detalle/detalle.component';
     DashboardComponent,
     ProgressComponent,
     Grafica1Component,
-    PagesComponent
+    PagesComponent,
+    PersonasComponent,
+    CrearPersonaComponent,
+    UsuariosComponent,
+    CrearUsuariosComponent,
+    EditarUsuariosComponent,
+    EventosComponent,
+    ServiciosComponent,
+    CrearEventosComponent,
+    EditarEventosComponent,
+    EditarServiciosComponent,
+    CrearServiciosComponent,
+    BarriosComponent,
+    CrearBarrioComponent,
+    EditarBarrioComponent,
+    EditarPersonaComponent,
+    SociosComponent,
+    CrearSocioComponent,
+    EditarSocioComponent,
+    ConsumoComponent,
+    LecturaComponent,
+    FacturaComponent,
+    DetalleComponent,
+    FacturapagadasComponent,
+    DetallepagadasComponent
   ]
 })
 export class PagesModule { }

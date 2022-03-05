@@ -12,7 +12,6 @@
     <div class="card">
       <div class="card-body">
         <form class="row" [formGroup]="this.formulario">
-
           <div class="col-12 col-xl-7">
             <div class="row">
               <div class="col-12 form-group">
@@ -23,7 +22,6 @@
               </div>
             </div>
           </div>
-
           <div class="col-12 col-xl-5 d-flex justify-content-start align-items-center ">
             <div class="pull-right">
               <button (click)="this.buscarFacturas(text.value, '',1)" type="button" class="btn btn-primary"><i
@@ -33,7 +31,6 @@
                 Limpiar</button>
             </div>
           </div>
-
         </form>
       </div>
     </div>
@@ -68,8 +65,8 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Codigo factura</th>
-                <th>Socio</th>
+                <th class="w100">Codigo factura</th>
+                <th class="w100">Socio</th>
                 <th>Carnet</th>
                 <th>Multa</th>
                 <th>Periodo consumo</th>
@@ -121,9 +118,9 @@
       <!-- Segunda parte -->
       <ng-template #showTablaOpcion>
         <div class="card-body  animated fadeIn fast">
-          <h4 class="card-title text-capitalize">Total Facturas con Deudas: <span
+          <h4 class="card-title text-capitalize">Total Facturas pagadas: <span
               class="text-danger">({{ this.total }})</span></h4>
-          <h4 class="card-title">Facturas pendientes de pago</h4>
+          <h4 class="card-title">Sistema de facturas pagadas</h4>
 
           <!-- Taabla para limpiar y mostrar buscados -->
           <div class="table-responsive">
@@ -131,13 +128,14 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>Codigo socio</th>
-                  <th>Codigo factura</th>
+                  <th class="w100">Codigo socio</th>
+                  <th class="w100">Codigo factura</th>
                   <th>Socio</th>
                   <th>Carnet</th>
-                  <th>Multa</th>
+                  <th class="w100">Multa</th>
                   <th>Periodo consumo</th>
-                  <th>Saldo total</th>
+                  <th>Fecha emisión</th>
+                  <th class="w100">Total pagado</th>
                   <th class="text-nowrap w100">Acciones</th>
                 </tr>
               </thead>
@@ -150,9 +148,10 @@
                   <td>{{ item.carnet }}</td>
                   <td>{{ item.retraso }} Bs.</td>
                   <td>{{ item.mes}} {{ item.anio }}</td>
+                  <td>{{ item.fecha_emision | date:'longDate' }}</td>
                   <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
                   <td class="text-nowrap text-center">
-                    <a [routerLink]="[ '/dashboard/detalles', item.idFactura ]" class="btn btn-warning text-white"
+                    <a [routerLink]="[ '/dashboard/detallespagadas', item.idFactura ]" class="btn btn-info text-white"
                       title="Ver detalle"> <i class="mdi mdi-eye"></i></a>
                   </td>
                 </tr>

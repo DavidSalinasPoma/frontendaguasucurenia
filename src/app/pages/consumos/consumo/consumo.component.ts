@@ -189,12 +189,18 @@ export class ConsumoComponent implements OnInit, OnDestroy {
         this.mostrar = false;
         this.cargando = true;
         this.listaServices.buscarSocios(formDatos)
-          .subscribe(({ socio, sLectura, cLectura }) => {
+          .subscribe(({ socio, sLectura, cLectura, totalsocio }) => {
 
+            console.log(sLectura);
 
-            this.totalSocios2 = socio.total;
-            this.sLectura2 = sLectura.sLectura;
-            this.cLectura2 = cLectura.cLectura;
+            if (Number(sLectura) === 0) {
+              this.totalSocios2 = 0;
+            } else {
+              this.totalSocios2 = totalsocio;
+            }
+
+            this.sLectura2 = sLectura;
+            this.cLectura2 = cLectura;
 
 
             this.socios2 = socio.data;
@@ -233,9 +239,15 @@ export class ConsumoComponent implements OnInit, OnDestroy {
     this.cargando = true;
 
     this.listaServices.cargarSocios(params)
-      .subscribe(({ socio, sLectura, cLectura }) => {
+      .subscribe(({ socio, sLectura, cLectura, totalsocio }) => {
 
-        this.totalSocios = socio.total;
+        // console.log(socio);
+        if (Number(sLectura) === 0) {
+          this.totalSocios = 0;
+        } else {
+          this.totalSocios = Number(totalsocio);
+        }
+
         this.sLectura = sLectura;
         this.cLectura = cLectura;
 

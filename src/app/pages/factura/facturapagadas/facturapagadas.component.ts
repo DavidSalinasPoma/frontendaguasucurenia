@@ -16,12 +16,14 @@ const base_url = environment.base_url;
 
 
 
+
 @Component({
-  selector: 'app-factura',
-  templateUrl: './factura.component.html',
-  styleUrls: ['./factura.component.css']
+  selector: 'app-facturapagadas',
+  templateUrl: './facturapagadas.component.html',
+  styles: [
+  ]
 })
-export class FacturaComponent implements OnInit {
+export class FacturapagadasComponent implements OnInit {
 
   public totalSocios: number = 0;
   public totalSocios2: number = 0;
@@ -248,6 +250,7 @@ export class FacturaComponent implements OnInit {
         this.facturaServices.buscarFacturas(formDatos)
           .subscribe(({ factura }) => {
 
+            // console.log(factura);
             this.socios2 = factura.data;
             this.total = 0;
 
@@ -259,7 +262,7 @@ export class FacturaComponent implements OnInit {
               this.options = [];
               // console.log(this.socios);
               this.socios2.forEach((element: any, index) => {
-                if (element.estado_pago === 0 || element.estado_pago === '0') {
+                if (element.estado_pago === 1 || element.estado_pago === '1') {
                   this.options.push(element);
                   this.total = this.total + 1;
                   // console.log(this.options);
@@ -284,7 +287,7 @@ export class FacturaComponent implements OnInit {
                 Swal.fire({
                   icon: 'info',
                   title: 'Facturas',
-                  text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
+                  text: `El socio con codigo: ${texto} no tiene facturas pagadas!`,
                 })
               }
 
@@ -295,7 +298,7 @@ export class FacturaComponent implements OnInit {
               Swal.fire({
                 icon: 'info',
                 title: 'La factura no exite!',
-                text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
+                text: `El socio con codigo: ${texto} no tiene facturas pagadas!`,
               })
               localStorage.removeItem('usuario');
               const url: any = localStorage.getItem('paramsUrl');
@@ -477,3 +480,4 @@ export class FacturaComponent implements OnInit {
       });
   }
 }
+

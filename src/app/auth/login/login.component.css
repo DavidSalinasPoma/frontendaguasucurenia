@@ -49,6 +49,13 @@ Login register and recover password Page
 
 .imagen-logo {
   max-width: 100%;
+  width: 60%;
+  max-height: 100%;
+}
+
+.imagen-logo2 {
+  max-width: 100%;
+  width: 30%;
   max-height: 100%;
 }
 
@@ -61,4 +68,30 @@ Login register and recover password Page
   font-size: 2rem;
   color: crimson;
   font-weight: bold;
+}
+
+.img-fluidd {
+  max-width: 100%;
+  height: auto;
+}
+
+.sombras {
+  -webkit-box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.75);
+}
+
+.hero {
+  background-image: url(/assets/images/background/login-register.jpg);
+  /* Set a specific height */
+  height: 100vh;
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.btn:hover {
+  background-color: rgb(14, 77, 148);
 }

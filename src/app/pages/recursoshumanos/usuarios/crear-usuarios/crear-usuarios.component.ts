@@ -75,8 +75,11 @@ export class CrearUsuariosComponent implements OnInit, OnDestroy {
    */
   public onSubmit(event: any) {
 
-    // Primer caracter
-    const id = Number((this.persona?.value).charAt(0));
+    // Sacar codigo
+    let codigoUsuario = (this.persona?.value).split(':');
+
+    // Primer numero
+    const id = Number(codigoUsuario[0]);
 
     const formData = {
       persona_id: id,

@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Subject, Observable, of, from } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { Validacionespropias } from 'src/app/utils/validacionespropias';
 import { ConsumoService } from 'src/app/services/consumo.service';
 import { FacturaService } from 'src/app/services/factura.service';
 import { LecturaService } from 'src/app/services/lectura.service';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lectura',
@@ -46,13 +47,17 @@ export class LecturaComponent implements OnInit, OnDestroy {
   private OnDestroy$ = new Subject();
   public searchTerm$ = new Subject<string>();
 
+  // Ocultar boton al guardar
+  public ocultar: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private lecturaServices: LecturaService,
     private rutaActiva: ActivatedRoute,
     private consumoServices: ConsumoService,
     private router: Router,
-    private facturaServices: FacturaService
+    private facturaServices: FacturaService,
+    private toastr: ToastrService
 
   ) {
     // Recibiendo el parametro
@@ -109,7 +114,13 @@ event:any   */
   public onSubmit(event: any) {
 
 
+    this.ocultar = false;
+
+    // Deshabilitando un boton
+    console.log('holas');
+
     this.lectActual = this.lectura?.value;
+    this.formulario.reset();
 
     if (Number(this.lectAnterior) > Number(this.lectActual)) {
       Swal.fire({
@@ -170,7 +181,6 @@ event:any   */
       }
 
 
-
       const formData = {
         lecturaAnterior: this.lectAnterior,
         lecturaActual: this.lectActual,
@@ -182,24 +192,28 @@ event:any   */
         apertura_id: this.socioDatos[0].apertura,
         lista_id: this.socioDatos[0].lista
       }
-      // console.log(formData);
-
       this.consumoServices.storeConsumos(formData)
         .subscribe(({ consumo }) => {
           // console.log(consumo);
-          this.router.navigateByUrl('/dashboard/consumos');
           Swal.fire({
             position: 'center',
             icon: 'success',
             title: '¡Registro Correcto!',
-            text: `El Consumo fue creado corectamente!`,
+            text: `El Consumo fue creado correctamente!`,
             showConfirmButton: false,
             timer: 3000
           })
 
+          this.router.navigateByUrl('/dashboard/consumos');
+          // this.toastr.success('El consumo fue creado Correctamente!', 'Registro Correcto!');
+          this.ocultar = true;
+
           const datosForm = {
             consumo_id: consumo.id
           }
+
+          console.log(datosForm);
+
           // Aqui La logica de generar factura
           this.facturaServices.crearFactura(datosForm)
             .subscribe(() => { });
