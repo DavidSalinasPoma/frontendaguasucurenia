@@ -9,6 +9,7 @@ import { FacturaService } from 'src/app/services/factura.service';
 import { LecturaService } from 'src/app/services/lectura.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { SociosService } from 'src/app/services/socios.service';
 
 @Component({
   selector: 'app-lectura',
@@ -57,7 +58,8 @@ export class LecturaComponent implements OnInit, OnDestroy {
     private consumoServices: ConsumoService,
     private router: Router,
     private facturaServices: FacturaService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private socioServices: SociosService
 
   ) {
     // Recibiendo el parametro
@@ -117,7 +119,7 @@ event:any   */
     this.ocultar = false;
 
     // Deshabilitando un boton
-    console.log('holas');
+    // console.log('holas');
 
     this.lectActual = this.lectura?.value;
     this.formulario.reset();
@@ -192,6 +194,10 @@ event:any   */
         apertura_id: this.socioDatos[0].apertura,
         lista_id: this.socioDatos[0].lista
       }
+
+      // console.log(formData);
+      // return;
+
       this.consumoServices.storeConsumos(formData)
         .subscribe(({ consumo }) => {
           // console.log(consumo);
@@ -212,8 +218,13 @@ event:any   */
             consumo_id: consumo.id
           }
 
-          console.log(datosForm);
-
+          // Logica para generar factura para directivos
+          console.log(formData);
+          this.socioServices.showSocios(formData.socio_id)
+            .subscribe(({ socio }) => {
+              console.log(socio);
+            })
+          return;
           // Aqui La logica de generar factura
           this.facturaServices.crearFactura(datosForm)
             .subscribe(() => { });

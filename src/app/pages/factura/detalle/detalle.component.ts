@@ -4,6 +4,8 @@ import { FacturaService } from 'src/app/services/factura.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { PdfMakeWrapper } from 'pdfmake-wrapper';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 // Sector generar PDF
@@ -43,7 +45,8 @@ export class DetalleComponent implements OnInit {
     private facturaServices: FacturaService,
     private rutaActiva: ActivatedRoute,
     private dataServices: DataService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     // Recibiendo el parametro
     this.idFactura = this.rutaActiva.snapshot.params.id;
@@ -142,6 +145,7 @@ export class DetalleComponent implements OnInit {
       .subscribe(({ changesFactura }) => {
         // console.log(changesFactura);
         this.router.navigate(['/dashboard/facturas']);
+        this.toastr.success('Registro de pago exitoso!!', 'Pago correcto');
       });
 
 

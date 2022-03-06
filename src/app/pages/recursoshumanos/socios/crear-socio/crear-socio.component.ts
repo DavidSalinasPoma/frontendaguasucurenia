@@ -48,7 +48,8 @@ export class CrearSocioComponent implements OnInit {
   public crearFormulario() {
     this.formulario = this.formBuilder.group({
       persona: ['', [Validators.required]],
-      barrio: ['', [Validators.required]]
+      barrio: ['', [Validators.required]],
+      directivo: ['']
     });
   }
 
@@ -60,7 +61,9 @@ export class CrearSocioComponent implements OnInit {
     return this.formulario.get('barrio');
   }
 
-
+  get directivo() {
+    return this.formulario.get('directivo');
+  }
 
   /**
    * ngSubmit
@@ -78,10 +81,12 @@ export class CrearSocioComponent implements OnInit {
 
     const formData = {
       persona_id: id,
-      barrio_id: idBarrio
+      barrio_id: idBarrio,
+      directivo: this.directivo?.value ? 1 : 0
     }
 
     // console.log(formData);
+    // return;
 
     this.socioServices.crearSocio(formData)
       .subscribe(resp => {
@@ -156,8 +161,6 @@ export class CrearSocioComponent implements OnInit {
 
     }
   }
-
-
 
   /**
    * indexPersonas

@@ -57,136 +57,78 @@
     <div class="card">
 
       <!-- Primera Parte -->
-      <div *ngIf="this.mostrar1, else showTablaOpcion" class="card-body  animated fadeIn fast">
 
-        <!-- Boton de crear Usuarios -->
-        <h4 class="card-title">Facturas pendientes de pago</h4>
 
+      <!-- Segunda parte -->
+
+      <div class="card-body  animated fadeIn fast">
+        <div class="row justify-content-between">
+          <h4 class="card-title text-info">Facturas pendientes de pago</h4>
+          <h4 class="card-title text-capitalize">Total Facturas con Deudas: <span
+              class="text-danger">({{ this.total }})</span></h4>
+        </div>
         <!-- Taabla para limpiar y mostrar buscados -->
         <div class="table-responsive">
 
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>Codigo socio</th>
                 <th>Codigo factura</th>
                 <th>Socio</th>
                 <th>Carnet</th>
                 <th>Multa</th>
                 <th>Periodo consumo</th>
+                <th>Saldo total</th>
                 <th class="text-nowrap w100">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of this.options">
+                <td>{{ item.idSocio }}</td>
                 <td>{{ item.idFactura }}</td>
                 <td>{{ item.nombres }} {{ item.paterno }}
                   {{ item.materno }} </td>
                 <td>{{ item.carnet }}</td>
-                <td>0 Bs.</td>
+                <td>{{ item.retraso }} Bs.</td>
                 <td>{{ item.mes}} {{ item.anio }}</td>
+                <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
                 <td class="text-nowrap text-center">
-                  <a class="btn btn-primary" [routerLink]="[ '/dashboard/detalles', item.id ]" ng-route
-                    data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-eye-outline"></i> </a>
+                  <a [routerLink]="[ '/dashboard/detalles', item.idFactura ]" class="btn btn-warning text-white"
+                    title="Ver detalle"> <i class="mdi mdi-eye"></i></a>
                 </td>
               </tr>
+
             </tbody>
           </table>
 
         </div>
 
         <div class="mt-3">
-          <button *ngIf="this.currentPage!=1; else notShowAnteriorl" class="btn btn-dark"
-            (click)="this.cargarFacturas(this.paginaAnterior)">anterior</button>
+          <button *ngIf="this.currentPage2!=1; else notShowAnteriorTabla" class="btn btn-dark"
+            (click)="this.buscarFacturas('',this.paginaAnterior2,0)">anterior</button>
 
-          <ng-template #notShowAnteriorl>
-            <button disabled class="btn btn-dark" (click)="this.cargarFacturas(this.paginaAnterior) ">Anterior</button>
-          </ng-template>
-          &nbsp;
-
-          <button *ngIf="this.currentPage!=this.cantPaginas; else notShowTablasp" class="btn btn-dark"
-            (click)="this.cargarFacturas(this.paginaSiguiente)">Siguiente</button>
-
-          <ng-template #notShowTablasp>
+          <ng-template #notShowAnteriorTabla>
             <button disabled class="btn btn-dark"
-              (click)="this.cargarFacturas(this.paginaSiguiente) ">Siguiente</button>
+              (click)="this.buscarFacturas('',this.paginaAnterior2,0) ">Anterior</button>
+          </ng-template>
+          &nbsp;
+
+          <button *ngIf="this.currentPage2!=this.cantPaginas2; else notShowTablas" class="btn btn-dark"
+            (click)="this.buscarFacturas('',this.paginaSiguiente2,0)">Siguiente</button>
+
+          <ng-template #notShowTablas>
+            <button disabled class="btn btn-dark"
+              (click)="this.buscarFacturas('',this.paginaSiguiente2,0) ">Siguiente</button>
           </ng-template>
 
           &nbsp;
           &nbsp;
 
-          <!-- <span>{{ this.currentPage }} de {{ this.cantPaginas }} Páginas.</span> -->
+          <span>{{ this.currentPage2 }} de {{ this.cantPaginas2 }} Páginas.</span>
         </div>
       </div>
 
-      <!-- Segunda parte -->
-      <ng-template #showTablaOpcion>
-        <div class="card-body  animated fadeIn fast">
-          <h4 class="card-title text-capitalize">Total Facturas con Deudas: <span
-              class="text-danger">({{ this.total }})</span></h4>
-          <h4 class="card-title">Facturas pendientes de pago</h4>
-
-          <!-- Taabla para limpiar y mostrar buscados -->
-          <div class="table-responsive">
-
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Codigo socio</th>
-                  <th>Codigo factura</th>
-                  <th>Socio</th>
-                  <th>Carnet</th>
-                  <th>Multa</th>
-                  <th>Periodo consumo</th>
-                  <th>Saldo total</th>
-                  <th class="text-nowrap w100">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of this.options">
-                  <td>{{ item.idSocio }}</td>
-                  <td>{{ item.idFactura }}</td>
-                  <td>{{ item.nombres }} {{ item.paterno }}
-                    {{ item.materno }} </td>
-                  <td>{{ item.carnet }}</td>
-                  <td>{{ item.retraso }} Bs.</td>
-                  <td>{{ item.mes}} {{ item.anio }}</td>
-                  <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
-                  <td class="text-nowrap text-center">
-                    <a [routerLink]="[ '/dashboard/detalles', item.idFactura ]" class="btn btn-warning text-white"
-                      title="Ver detalle"> <i class="mdi mdi-eye"></i></a>
-                  </td>
-                </tr>
-
-              </tbody>
-            </table>
-
-          </div>
-
-          <div class="mt-3">
-            <button *ngIf="this.currentPage2!=1; else notShowAnteriorTabla" class="btn btn-dark"
-              (click)="this.buscarFacturas('',this.paginaAnterior2,0)">anterior</button>
-
-            <ng-template #notShowAnteriorTabla>
-              <button disabled class="btn btn-dark"
-                (click)="this.buscarFacturas('',this.paginaAnterior2,0) ">Anterior</button>
-            </ng-template>
-            &nbsp;
-
-            <button *ngIf="this.currentPage2!=this.cantPaginas2; else notShowTablas" class="btn btn-dark"
-              (click)="this.buscarFacturas('',this.paginaSiguiente2,0)">Siguiente</button>
-
-            <ng-template #notShowTablas>
-              <button disabled class="btn btn-dark"
-                (click)="this.buscarFacturas('',this.paginaSiguiente2,0) ">Siguiente</button>
-            </ng-template>
-
-            &nbsp;
-            &nbsp;
-
-            <span>{{ this.currentPage2 }} de {{ this.cantPaginas2 }} Páginas.</span>
-          </div>
-        </div>
-      </ng-template>
 
 
     </div>

@@ -6,6 +6,7 @@ export class Socios {
         public id: string,
         public persona_id: number,
         public barrio_id: number,
+        public directivo?: number,
         public nombre?: string,
         public nombres?: string,
         public carnet?: string,

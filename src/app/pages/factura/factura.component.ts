@@ -314,32 +314,8 @@ export class FacturaComponent implements OnInit {
   public cargarFacturas(params: string) {
 
     // Loading
-    this.cargando = true;
+    this.cargando = false;
 
-    this.facturaServices.cargarFacturas(params)
-      .subscribe(({ factura }) => {
-
-        this.socios = factura.data;
-        // console.log(this.socios);
-
-        this.options = [];
-
-        this.setPaginator(factura);
-
-        this.paginaSiguiente = this.pagination.next_page_url;
-        this.paginaAnterior = this.pagination.prev_page_url;
-
-        this.cantPaginas = this.pagination.last_page;
-        this.currentPage = this.pagination.current_page;
-
-        // Persistencia de pagina
-        localStorage.setItem('urlPagination', `${base_url}/api/factura?page=${this.currentPage}`);
-        localStorage.setItem('paramsUrl', `${base_url}/api/factura?page=${this.currentPage}`)
-
-        // loading
-        this.cargando = false;
-
-      })
   }
 
   /**

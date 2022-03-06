@@ -62,7 +62,8 @@ export class EditarSocioComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       persona: ['', [Validators.required]],
       barrio: ['', [Validators.required]],
-      estado: ['', [Validators.required]]
+      estado: ['', [Validators.required]],
+      directivo: ['']
     });
   }
 
@@ -76,6 +77,11 @@ export class EditarSocioComponent implements OnInit {
   get estado(): any {
     return this.formulario.get('estado');
   }
+
+  get directivo(): any {
+    return this.formulario.get('directivo');
+  }
+
 
   /**
    * ngSubmit
@@ -93,7 +99,8 @@ export class EditarSocioComponent implements OnInit {
     const formData = {
       persona_id: id,
       barrio_id: idBarrio,
-      estado: this.estado.value
+      estado: this.estado.value,
+      directivo: this.directivo.value ? 1 : 0
     }
 
     // console.log(formData);
@@ -256,7 +263,8 @@ export class EditarSocioComponent implements OnInit {
         this.formulario.setValue({
           persona: `${socio.persona_id}: ${socio.persona.nombres} ${socio.persona.ap_paterno} ${socio.persona.ap_materno}`,
           barrio: `${socio.barrio_id}: ${socio.barrio.nombre}`,
-          estado: Number(socio.estado)
+          estado: Number(socio.estado),
+          directivo: Number(socio.directivo) ? true : ''
         });
 
         if (this.formulario.value.estado != 1) {
