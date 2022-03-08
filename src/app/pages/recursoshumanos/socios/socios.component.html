@@ -62,32 +62,69 @@
               <tbody>
 
 
-                <tr *ngFor="let item of this.socios">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.persona.nombres }} {{ item.persona.ap_paterno }}
-                    {{ item.persona.ap_materno }} </td>
-                  <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
-                  <td>{{ item.barrio.nombre }}</td>
-                  <td *ngIf="item.estado; else notShow">
-                    <div class="label label-table label-success">Activado</div>
-                  </td>
-                  <ng-template #notShow>
-                    <td>
-                      <div class="label label-table label-danger">Desactivado</div>
+
+                <ng-container *ngFor="let item of this.socios">
+
+                  <tr *ngIf="item.directivo; else notDirectivo" class="bg-light-success">
+
+
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.persona.nombres }} {{ item.persona.ap_paterno }}
+                      {{ item.persona.ap_materno }} </td>
+                    <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
+                    <td>{{ item.barrio.nombre }}</td>
+                    <td *ngIf="item.estado; else notShow">
+                      <div class="label label-table label-success">Activado</div>
                     </td>
+                    <ng-template #notShow>
+                      <td>
+                        <div class="label label-table label-danger">Desactivado</div>
+                      </td>
+                    </ng-template>
+                    <td>{{ item.created_at | date:'medium' }}</td>
+
+
+
+                    <td class="text-nowrap text-center">
+                      <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" ng-route data-toggle="tooltip"
+                        title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                      &nbsp;
+                      <a (click)="this.eliminarSocio(item,1)" data-toggle="tooltip" title="Borrar"> <i
+                          class="fa fa-close text-danger cursor"></i> </a>
+                    </td>
+
+                  </tr>
+
+                  <ng-template #notDirectivo>
+                    <tr>
+                      <td>{{ item.id }}</td>
+                      <td>{{ item.persona.nombres }} {{ item.persona.ap_paterno }}
+                        {{ item.persona.ap_materno }} </td>
+                      <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
+                      <td>{{ item.barrio.nombre }}</td>
+                      <td *ngIf="item.estado; else notShow">
+                        <div class="label label-table label-success">Activado</div>
+                      </td>
+                      <ng-template #notShow>
+                        <td>
+                          <div class="label label-table label-danger">Desactivado</div>
+                        </td>
+                      </ng-template>
+                      <td>{{ item.created_at | date:'medium' }}</td>
+
+                      <td class="text-nowrap text-center">
+                        <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" ng-route data-toggle="tooltip"
+                          title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                        &nbsp;
+                        <a (click)="this.eliminarSocio(item,1)" data-toggle="tooltip" title="Borrar"> <i
+                            class="fa fa-close text-danger cursor"></i> </a>
+                      </td>
+                    </tr>
                   </ng-template>
-                  <td>{{ item.created_at | date:'medium' }}</td>
 
 
+                </ng-container>
 
-                  <td class="text-nowrap text-center">
-                    <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" ng-route data-toggle="tooltip"
-                      title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                    &nbsp;
-                    <a (click)="this.eliminarSocio(item,1)" data-toggle="tooltip" title="Borrar"> <i
-                        class="fa fa-close text-danger cursor"></i> </a>
-                  </td>
-                </tr>
               </tbody>
             </table>
 
@@ -151,32 +188,64 @@
                 </thead>
                 <tbody>
 
+                  <ng-container *ngFor="let item of this.socios2">
 
-                  <tr *ngFor="let item of this.socios2">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.nombres }} {{ item.ap_paterno }}
-                      {{ item.ap_materno }} </td>
-                    <td>{{ item.carnet }} {{ item.expedito }}</td>
-                    <td>{{ item.nombre }}</td>
-                    <td *ngIf="item.estado; else notShow">
-                      <div class="label label-table label-success">Activado</div>
-                    </td>
-                    <ng-template #notShow>
-                      <td>
-                        <div class="label label-table label-danger">Desactivado</div>
+                    <tr *ngIf="item.directivo; else notDirectivoDos" class="bg-light-success">
+
+                      <td>{{ item.id }}</td>
+                      <td>{{ item.nombres }} {{ item.ap_paterno }}
+                        {{ item.ap_materno }} </td>
+                      <td>{{ item.carnet }} {{ item.expedito }}</td>
+                      <td>{{ item.nombre }}</td>
+                      <td *ngIf="item.estado; else notShow">
+                        <div class="label label-table label-success">Activado</div>
                       </td>
-                    </ng-template>
-                    <td>{{ item.created_at | date:'medium' }}</td>
+                      <ng-template #notShow>
+                        <td>
+                          <div class="label label-table label-danger">Desactivado</div>
+                        </td>
+                      </ng-template>
+                      <td>{{ item.created_at | date:'medium' }}</td>
 
-                    <td class="text-nowrap text-center">
-                      <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" href="#" data-toggle="tooltip"
-                        title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i>
-                      </a>
-                      &nbsp;
-                      <a (click)="this.eliminarSocio(item,0)" data-toggle="tooltip" title="Borrar"> <i
-                          class="fa fa-close text-danger cursor"></i> </a>
-                    </td>
-                  </tr>
+                      <td class="text-nowrap text-center">
+                        <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" href="#" data-toggle="tooltip"
+                          title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i>
+                        </a>
+                        &nbsp;
+                        <a (click)="this.eliminarSocio(item,0)" data-toggle="tooltip" title="Borrar"> <i
+                            class="fa fa-close text-danger cursor"></i> </a>
+                      </td>
+                    </tr>
+                    <ng-template #notDirectivoDos>
+                      <tr>
+
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.nombres }} {{ item.ap_paterno }}
+                          {{ item.ap_materno }} </td>
+                        <td>{{ item.carnet }} {{ item.expedito }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td *ngIf="item.estado; else notShow">
+                          <div class="label label-table label-success">Activado</div>
+                        </td>
+                        <ng-template #notShow>
+                          <td>
+                            <div class="label label-table label-danger">Desactivado</div>
+                          </td>
+                        </ng-template>
+                        <td>{{ item.created_at | date:'medium' }}</td>
+
+                        <td class="text-nowrap text-center">
+                          <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" href="#" data-toggle="tooltip"
+                            title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i>
+                          </a>
+                          &nbsp;
+                          <a (click)="this.eliminarSocio(item,0)" data-toggle="tooltip" title="Borrar"> <i
+                              class="fa fa-close text-danger cursor"></i> </a>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                  </ng-container>
 
                 </tbody>
               </table>

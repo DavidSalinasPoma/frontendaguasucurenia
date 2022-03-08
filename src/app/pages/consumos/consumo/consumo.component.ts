@@ -191,7 +191,7 @@ export class ConsumoComponent implements OnInit, OnDestroy {
         this.listaServices.buscarSocios(formDatos)
           .subscribe(({ socio, sLectura, cLectura, totalsocio }) => {
 
-            console.log(sLectura);
+            // console.log(sLectura);
 
             if (Number(sLectura) === 0) {
               this.totalSocios2 = 0;
@@ -252,7 +252,7 @@ export class ConsumoComponent implements OnInit, OnDestroy {
         this.cLectura = cLectura;
 
         this.socios = socio.data;
-        // console.log(this.socios);
+        console.log(this.socios);
 
         this.options = [];
         // console.log(this.socios);

@@ -167,6 +167,9 @@ export class SociosComponent implements OnInit {
                 this.socios2 = resp;
               })
 
+            // console.log(this.socios2);
+
+
             this.paginaSiguiente2 = socio.next_page_url;
             this.paginaAnterior2 = socio.prev_page_url;
 
@@ -196,6 +199,9 @@ export class SociosComponent implements OnInit {
     this.socioServices.cargarSocios(params)
       .subscribe(({ socio }) => {
 
+
+
+
         this.totalSocios = socio.total;
 
         // Implementando logica de rxjs
@@ -205,12 +211,13 @@ export class SociosComponent implements OnInit {
 
         myArrayOf$.pipe(map((data, index) => {
           data[index].estado = Number(data[index].estado);
+          data[index].directivo = Number(data[index].directivo);
           return data;
         }))
           .subscribe(resp => {
             this.socios = resp;
           })
-
+        // console.log(this.socios);
         this.setPaginator(socio);
 
         this.paginaSiguiente = this.pagination.next_page_url;
@@ -297,11 +304,7 @@ export class SociosComponent implements OnInit {
 
       }
     })
-
-
   }
-
-
   /**
    * eliminarLocalstorage
    */

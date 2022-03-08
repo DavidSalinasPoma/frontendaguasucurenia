@@ -192,10 +192,11 @@ event:any   */
         anio: anioFormat,
         socio_id: this.socioDatos[0].id,
         apertura_id: this.socioDatos[0].apertura,
-        lista_id: this.socioDatos[0].lista
+        lista_id: this.socioDatos[0].lista,
+        directivo: this.socioDatos[0].directivoLista
       }
 
-      // console.log(formData);
+      console.log(formData);
       // return;
 
       this.consumoServices.storeConsumos(formData)
@@ -219,10 +220,10 @@ event:any   */
           }
 
           // Logica para generar factura para directivos
-          console.log(formData);
+          // console.log(formData);
           this.socioServices.showSocios(formData.socio_id)
             .subscribe(({ socio }) => {
-              console.log(socio);
+              // console.log(socio);
             })
           // return;
           // Aqui La logica de generar factura
