@@ -224,7 +224,7 @@ event:any   */
             .subscribe(({ socio }) => {
               console.log(socio);
             })
-          return;
+          // return;
           // Aqui La logica de generar factura
           this.facturaServices.crearFactura(datosForm)
             .subscribe(() => { });
