@@ -31,6 +31,7 @@ export class DetallepagadasComponent implements OnInit {
   public total: any;
   public idFactura: any;
   public retraso: boolean = true;
+  public directivoMenor: boolean = false;
 
 
   // loading
@@ -39,6 +40,11 @@ export class DetallepagadasComponent implements OnInit {
   public fecha: any;
 
   public letras: string = '';
+
+  // Factura para directivo
+  public mostraDirectivoMenor: boolean = false;
+  public mostraDirectivoMayor: boolean = false;
+  public facturaDirectivo: any = [];
 
   constructor(
     private facturaServices: FacturaService,
@@ -67,7 +73,7 @@ export class DetallepagadasComponent implements OnInit {
    * cancelar
    */
   public cancelar() {
-    this.dataServices.idSocio$.emit(this.socio.idSocio);
+    // this.dataServices.idSocio$.emit(this.socio.idSocio);
     this.router.navigate(['/dashboard/factpagadas']);
 
   }
@@ -76,55 +82,90 @@ export class DetallepagadasComponent implements OnInit {
    * showFacturas
    */
   public showFacturas(item: number) {
-    // console.log(item);
 
-    this.facturaServices.showFacturas(item)
-      .subscribe(({ detalle }) => {
-        this.fecha = detalle[0].fecha_emision;
+    // Hacer la consulta a facturas??
+    this.facturaServices.showFacturasDirectivos(item)
+      .subscribe(({ factura }) => {
 
-        let suma = 0;
-        // console.log(detalle);
-        if (detalle.length != 0) {
-          this.socio = detalle[0];
-          this.detalle = detalle;
-          detalle.forEach((element: any) => {
-            suma = suma + Number(element.precioDetalle)
-          });
+        // console.log(factura);
 
+        const { directivo, precioConsumo } = factura[0];
 
-          if (Number(this.socio.retraso) === 0) {
-            this.retraso = false;
-          } else {
-            this.retraso = true;
-          }
+        if (Number(directivo) && precioConsumo <= 20) {
 
-          this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+          this.facturaDirectivo = factura[0];
+          this.mostraDirectivoMenor = true;
           this.cargando = false;
-
           // Convertir numeros a letras
-          this.letras = covertirNumLetras(String(this.total));
-          // console.log(this.letras);
+          this.letras = covertirNumLetras(String(this.facturaDirectivo.total_pagado));
 
         } else {
-          this.facturaServices.retrasoFactura(item)
-            .subscribe(({ factura }) => {
-              // console.log(factura);
-              this.socio = factura[0];
+          this.facturaServices.showFacturas(item)
+            .subscribe(({ detalle }) => {
 
-              if (Number(this.socio.retraso) === 0) {
-                this.retraso = false;
+              // console.log(detalle);
+              // return;
+
+              this.fecha = detalle[0].fecha_emision;
+
+              // console.log(this.fecha);
+              let suma = 0;
+              // console.log(detalle);
+              if (detalle.length != 0) {
+                this.socio = detalle[0];
+                this.detalle = detalle;
+                detalle.forEach((element: any) => {
+                  suma = suma + Number(element.precioDetalle)
+                });
+
+                // console.log(this.socio);
+
+                if (Number(this.socio.directivo) && Number(this.socio.precioConsumo) <= 30) {
+                  this.total = Number(this.socio.precioConsumo);
+                  this.letras = covertirNumLetras(String(this.total));
+                  this.directivoMenor = true;
+                } else {
+                  if (Number(this.socio.retraso) === 0) {
+                    this.retraso = false;
+                  } else {
+                    this.retraso = true;
+                  }
+
+                  this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                  this.cargando = false;
+
+                  // Convertir numeros a letras
+                  this.letras = covertirNumLetras(String(this.total));
+                  // console.log(this.letras);
+                }
+
               } else {
-                this.retraso = true;
+                this.facturaServices.retrasoFactura(item)
+                  .subscribe(({ factura }) => {
+                    // console.log(factura);
+                    this.socio = factura[0];
+
+                    if (Number(this.socio.retraso) === 0) {
+                      this.retraso = false;
+                    } else {
+                      this.retraso = true;
+                    }
+
+                    this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                    this.cargando = false;
+                    // Convertir numeros a letras
+                    this.letras = covertirNumLetras(String(this.total));
+                    // console.log(this.letras);
+                  })
               }
 
-              this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
-              this.cargando = false;
-              // Convertir numeros a letras
-              this.letras = covertirNumLetras(String(this.total));
-              // console.log(this.letras);
-            })
-        }
+            },
+              err => {
+                console.log(err);
 
+              }
+            );
+        }
       });
   }
 

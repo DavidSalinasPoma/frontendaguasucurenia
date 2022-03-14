@@ -196,7 +196,7 @@ event:any   */
         directivo: this.socioDatos[0].directivoLista
       }
 
-      console.log(formData);
+      // console.log(formData);
       // return;
 
       this.consumoServices.storeConsumos(formData)
@@ -216,16 +216,11 @@ event:any   */
           this.ocultar = true;
 
           const datosForm = {
-            consumo_id: consumo.id
+            consumo_id: consumo.id,
+            precio: consumo.precio,
+            directivo: consumo.directivo
           }
 
-          // Logica para generar factura para directivos
-          // console.log(formData);
-          this.socioServices.showSocios(formData.socio_id)
-            .subscribe(({ socio }) => {
-              // console.log(socio);
-            })
-          // return;
           // Aqui La logica de generar factura
           this.facturaServices.crearFactura(datosForm)
             .subscribe(() => { });

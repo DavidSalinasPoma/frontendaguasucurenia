@@ -209,7 +209,6 @@ export class FacturapagadasComponent implements OnInit {
   public buscarFacturas(texto: any, url?: string, band?: number) {
     // console.log(texto);
 
-
     if (band) {
       localStorage.setItem('usuario', texto);
     }

@@ -39,11 +39,18 @@ export class FacturaService {
   * cargarUsuarios
   */
   public showFacturas(id: number) {
-    // console.log(params);
-
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
     return this.http.get<any>(base_url + `/api/factura/${id}`, { headers: parameters });
+  }
+
+  /**
+   * cargarUsuarios
+   */
+  public showFacturasDirectivos(id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/show/factura/${id}`, { headers: parameters });
   }
 
 

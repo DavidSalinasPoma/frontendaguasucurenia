@@ -79,22 +79,40 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of this.options">
-                <td>{{ item.idSocio }}</td>
-                <td>{{ item.idFactura }}</td>
-                <td>{{ item.nombres }} {{ item.paterno }}
-                  {{ item.materno }} </td>
-                <td>{{ item.carnet }}</td>
-                <td>{{ item.retraso }} Bs.</td>
-                <td>{{ item.mes}} {{ item.anio }}</td>
-                <td>{{ item.fecha_emision | date:'longDate' }}</td>
-                <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
-                <td class="text-nowrap text-center">
-                  <a [routerLink]="[ '/dashboard/detallespagadas', item.idFactura ]" class="btn btn-info text-white"
-                    title="Ver detalle"> <i class="mdi mdi-eye"></i></a>
-                </td>
-              </tr>
-
+              <ng-container *ngFor="let item of this.options">
+                <tr *ngIf="item.directivo; else notDirectivoDos" class="bg-light-success">
+                  <td>{{ item.idSocio }}</td>
+                  <td>{{ item.idFactura }}</td>
+                  <td>{{ item.nombres }} {{ item.paterno }}
+                    {{ item.materno }} </td>
+                  <td>{{ item.carnet }}</td>
+                  <td>{{ item.retraso }} Bs.</td>
+                  <td>{{ item.mes}} {{ item.anio }}</td>
+                  <td>{{ item.fecha_emision | date:'longDate' }}</td>
+                  <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
+                  <td class="text-nowrap text-center">
+                    <a [routerLink]="[ '/dashboard/detallespagadas', item.idFactura ]" class="btn btn-info text-white"
+                      title="Ver detalle"> <i class="mdi mdi-eye"></i></a>
+                  </td>
+                </tr>
+                <ng-template #notDirectivoDos>
+                  <tr>
+                    <td>{{ item.idSocio }}</td>
+                    <td>{{ item.idFactura }}</td>
+                    <td>{{ item.nombres }} {{ item.paterno }}
+                      {{ item.materno }} </td>
+                    <td>{{ item.carnet }}</td>
+                    <td>{{ item.retraso }} Bs.</td>
+                    <td>{{ item.mes}} {{ item.anio }}</td>
+                    <td>{{ item.fecha_emision | date:'longDate' }}</td>
+                    <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
+                    <td class="text-nowrap text-center">
+                      <a [routerLink]="[ '/dashboard/detallespagadas', item.idFactura ]" class="btn btn-info text-white"
+                        title="Ver detalle"> <i class="mdi mdi-eye"></i></a>
+                    </td>
+                  </tr>
+                </ng-template>
+              </ng-container>
             </tbody>
           </table>
 

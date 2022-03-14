@@ -96,20 +96,36 @@
             </thead>
             <tbody>
 
+              <ng-container *ngFor="let item of this.options">
+                <tr *ngIf="item.directivo; else notDirectivo" class="bg-light-success">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nombres }} {{ item.ap_paterno }}
+                    {{ item.ap_materno }} </td>
+                  <td>{{ item.carnet }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.mes | date:'LLLL'}}</td>
+                  <td class="text-nowrap text-center">
+                    <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
+                      data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-plus"></i> </a>
+                  </td>
+                </tr>
+                <ng-template #notDirectivo>
+                  <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.nombres }} {{ item.ap_paterno }}
+                      {{ item.ap_materno }} </td>
+                    <td>{{ item.carnet }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.mes | date:'LLLL'}}</td>
+                    <td class="text-nowrap text-center">
+                      <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
+                        data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-plus"></i> </a>
+                    </td>
+                  </tr>
+                </ng-template>
 
-              <tr *ngFor="let item of this.options">
-                <td>{{ item.id }}</td>
-                <td>{{ item.nombres }} {{ item.ap_paterno }}
-                  {{ item.ap_materno }} </td>
-                <td>{{ item.carnet }}</td>
-                <td>{{ item.nombre }}</td>
-                <td>{{ item.mes | date:'LLLL'}}</td>
+              </ng-container>
 
-                <td class="text-nowrap text-center">
-                  <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
-                    data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-plus"></i> </a>
-                </td>
-              </tr>
             </tbody>
           </table>
 
@@ -199,20 +215,35 @@
               </thead>
               <tbody>
 
+                <ng-container *ngFor="let item of this.options">
+                  <tr *ngIf="item.directivo; else notDirectivoDos" class="bg-light-success">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.nombres }} {{ item.ap_paterno }}
+                      {{ item.ap_materno }} </td>
+                    <td>{{ item.carnet }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.mes | date:'LLLL'}}</td>
+                    <td class="text-nowrap text-center">
+                      <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
+                        data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-plus"></i> </a>
+                    </td>
+                  </tr>
+                  <ng-template #notDirectivoDos>
+                    <tr>
+                      <td>{{ item.id }}</td>
+                      <td>{{ item.nombres }} {{ item.ap_paterno }}
+                        {{ item.ap_materno }} </td>
+                      <td>{{ item.carnet }}</td>
+                      <td>{{ item.nombre }}</td>
+                      <td>{{ item.mes | date:'LLLL'}}</td>
+                      <td class="text-nowrap text-center">
+                        <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
+                          data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-plus"></i> </a>
+                      </td>
+                    </tr>
+                  </ng-template>
 
-                <tr *ngFor="let item of this.options">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.nombres }} {{ item.ap_paterno }}
-                    {{ item.ap_materno }} </td>
-                  <td>{{ item.carnet }}</td>
-                  <td>{{ item.nombre }}</td>
-                  <td>{{ item.mes | date:'LLLL'}}</td>
-
-                  <td class="text-nowrap text-center">
-                    <a class="btn btn-primary" [routerLink]="[ '/dashboard/lecturas', item.id ]" ng-route
-                      data-toggle="tooltip" title="Cargar datos"> <i class="mdi mdi-check"></i> </a>
-                  </td>
-                </tr>
+                </ng-container>
 
               </tbody>
             </table>
