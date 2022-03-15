@@ -229,6 +229,13 @@
                     <td>Directivo</td>
                     <td class="pull-right">--</td>
                   </tr>
+                  <!-- Para mostrar directivos mayores a 20bs -->
+                  <tr *ngIf="this.mostraDirectivoMayor">
+                    <td><strong>Beneficiario</strong> </td>
+                    <td>Directivo</td>
+                    <td class="pull-right"> -20 Bs.</td>
+                  </tr>
+
                 </tbody>
               </table>
             </div>

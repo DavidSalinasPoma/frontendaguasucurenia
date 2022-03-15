@@ -98,65 +98,111 @@ export class DetallepagadasComponent implements OnInit {
           this.cargando = false;
           // Convertir numeros a letras
           this.letras = covertirNumLetras(String(this.facturaDirectivo.total_pagado));
-
         } else {
           this.facturaServices.showFacturas(item)
             .subscribe(({ detalle }) => {
 
-              // console.log(detalle);
-              // return;
+              const { directivo } = detalle[0];
 
-              this.fecha = detalle[0].fecha_emision;
+              if (Number(directivo)) {
+                this.fecha = detalle[0].fecha_emision;
+                let suma = 0;
+                if (detalle.length != 0) {
+                  this.socio = detalle[0];
+                  this.detalle = detalle;
+                  detalle.forEach((element: any) => {
+                    suma = suma + Number(element.precioDetalle)
+                  });
 
-              // console.log(this.fecha);
-              let suma = 0;
-              // console.log(detalle);
-              if (detalle.length != 0) {
-                this.socio = detalle[0];
-                this.detalle = detalle;
-                detalle.forEach((element: any) => {
-                  suma = suma + Number(element.precioDetalle)
-                });
+                  // console.log(this.socio);
 
-                // console.log(this.socio);
-
-                if (Number(this.socio.directivo) && Number(this.socio.precioConsumo) <= 30) {
-                  this.total = Number(this.socio.precioConsumo);
-                  this.letras = covertirNumLetras(String(this.total));
-                  this.directivoMenor = true;
-                } else {
-                  if (Number(this.socio.retraso) === 0) {
-                    this.retraso = false;
+                  if (Number(this.socio.directivo) && Number(this.socio.precioConsumo) <= 20) {
+                    this.total = Number(this.socio.precioConsumo);
+                    this.letras = covertirNumLetras(String(this.total));
+                    this.directivoMenor = true;
                   } else {
-                    this.retraso = true;
-                  }
-
-                  this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
-                  this.cargando = false;
-
-                  // Convertir numeros a letras
-                  this.letras = covertirNumLetras(String(this.total));
-                  // console.log(this.letras);
-                }
-
-              } else {
-                this.facturaServices.retrasoFactura(item)
-                  .subscribe(({ factura }) => {
-                    // console.log(factura);
-                    this.socio = factura[0];
-
                     if (Number(this.socio.retraso) === 0) {
                       this.retraso = false;
                     } else {
                       this.retraso = true;
                     }
 
-                    this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                    this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
                     this.cargando = false;
+
                     // Convertir numeros a letras
                     this.letras = covertirNumLetras(String(this.total));
-                    // console.log(this.letras);
-                  })
+                    this.mostraDirectivoMayor = true;
+                  }
+
+                } else {
+                  this.facturaServices.retrasoFactura(item)
+                    .subscribe(({ factura }) => {
+                      // console.log(factura);
+                      this.socio = factura[0];
+
+                      if (Number(this.socio.retraso) === 0) {
+                        this.retraso = false;
+                      } else {
+                        this.retraso = true;
+                      }
+
+                      this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
+                      this.cargando = false;
+                      // Convertir numeros a letras
+                      this.letras = covertirNumLetras(String(this.total));
+                      this.mostraDirectivoMayor = true;
+                    })
+                }
+              } else {
+                this.fecha = detalle[0].fecha_emision;
+                let suma = 0;
+                if (detalle.length != 0) {
+                  this.socio = detalle[0];
+                  this.detalle = detalle;
+                  detalle.forEach((element: any) => {
+                    suma = suma + Number(element.precioDetalle)
+                  });
+
+
+                  if (Number(this.socio.directivo) && Number(this.socio.precioConsumo) <= 20) {
+                    this.total = Number(this.socio.precioConsumo);
+                    this.letras = covertirNumLetras(String(this.total));
+                    this.directivoMenor = true;
+                  } else {
+                    if (Number(this.socio.retraso) === 0) {
+                      this.retraso = false;
+                    } else {
+                      this.retraso = true;
+                    }
+
+                    this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                    this.cargando = false;
+
+                    // Convertir numeros a letras
+                    this.letras = covertirNumLetras(String(this.total));
+                    this.mostraDirectivoMayor = false;
+                  }
+
+                } else {
+                  this.facturaServices.retrasoFactura(item)
+                    .subscribe(({ factura }) => {
+                      // console.log(factura);
+                      this.socio = factura[0];
+
+                      if (Number(this.socio.retraso) === 0) {
+                        this.retraso = false;
+                      } else {
+                        this.retraso = true;
+                      }
+
+                      this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                      this.cargando = false;
+                      // Convertir numeros a letras
+                      this.letras = covertirNumLetras(String(this.total));
+                      this.mostraDirectivoMayor = false;
+                    })
+                }
               }
 
             },

@@ -9,6 +9,8 @@ import { Listas } from 'src/app/models/listas.models';
 import { FacturaService } from 'src/app/services/factura.service';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { DataService } from 'src/app/services/data.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 // Variables globales
@@ -252,10 +254,22 @@ export class FacturaComponent implements OnInit {
             this.total = 0;
             let count = 0;
             if (this.socios2.length != 0) {
-              // console.log(this.socios2);
 
               this.options = [];
-              // console.log(this.socios);
+              // Implementando logica de rxjs
+              let myArrayOf$: Observable<any>;
+              myArrayOf$ = of(...this.socios2);
+              myArrayOf$
+                .pipe(
+                  map(data => {
+                    data.estado = Number(data.estado);
+                    data.directivo = Number(data.directivo);
+                    this.options.push(data);
+                  })
+                )
+                .subscribe();
+              this.socios2 = this.options;
+              this.options = [];
               this.socios2.forEach((element: any, index) => {
                 if (element.estado_pago === 0 || element.estado_pago === '0') {
                   this.options.push(element);
@@ -413,40 +427,80 @@ export class FacturaComponent implements OnInit {
 
     this.facturaServices.showFacturas(item)
       .subscribe(({ detalle }) => {
-        let suma = 0;
         // console.log(detalle);
-        if (detalle.length != 0) {
-          this.socio = detalle[0];
-          this.detalle = detalle;
-          // console.log(detalle);
-          detalle.forEach((element: any) => {
-            suma = suma + Number(element.precioDetalle)
-          });
+        const { directivo } = detalle[0];
 
-          this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
-          // console.log(this.totalSaldo);
+        if (Number(directivo)) {
+          let suma = 0;
+          if (detalle.length != 0) {
+            this.socio = detalle[0];
+            this.detalle = detalle;
+            // console.log(detalle);
+            detalle.forEach((element: any) => {
+              suma = suma + Number(element.precioDetalle)
+            });
 
-          const formData = {
-            saldo: Number(this.totalSaldo)
+            this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
+            // console.log(this.totalSaldo);
+
+            const formData = {
+              saldo: Number(this.totalSaldo)
+            }
+            // console.log(this.options);
+
+            // return;
+            this.finalOptions = Object.assign(this.options[index], formData);
+            this.cargando = false;
+          } else {
+            this.facturaServices.retrasoFactura(item)
+              .subscribe(({ factura }) => {
+                // console.log(factura);
+                this.socio = factura[0];
+                this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
+                const formData = {
+                  saldo: this.totalSaldo
+                }
+                this.finalOptions = Object.assign(this.options[index], formData);
+                this.cargando = false;
+              })
           }
-          // console.log(this.options);
-
-          // return;
-          this.finalOptions = Object.assign(this.options[index], formData);
-          this.cargando = false;
         } else {
-          this.facturaServices.retrasoFactura(item)
-            .subscribe(({ factura }) => {
-              // console.log(factura);
-              this.socio = factura[0];
-              this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
-              const formData = {
-                saldo: this.totalSaldo
-              }
-              this.finalOptions = Object.assign(this.options[index], formData);
-              this.cargando = false;
-            })
+          let suma = 0;
+          if (detalle.length != 0) {
+            this.socio = detalle[0];
+            this.detalle = detalle;
+            // console.log(detalle);
+            detalle.forEach((element: any) => {
+              suma = suma + Number(element.precioDetalle)
+            });
+
+            this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+            // console.log(this.totalSaldo);
+
+            const formData = {
+              saldo: Number(this.totalSaldo)
+            }
+            // console.log(this.options);
+
+            // return;
+            this.finalOptions = Object.assign(this.options[index], formData);
+            this.cargando = false;
+          } else {
+            this.facturaServices.retrasoFactura(item)
+              .subscribe(({ factura }) => {
+                // console.log(factura);
+                this.socio = factura[0];
+                this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                const formData = {
+                  saldo: this.totalSaldo
+                }
+                this.finalOptions = Object.assign(this.options[index], formData);
+                this.cargando = false;
+              })
+          }
         }
+
+
 
       });
   }

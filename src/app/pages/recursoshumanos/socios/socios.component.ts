@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
-// Sericios
-import { EventosService } from './../../../services/eventos.service';
-import { ServiciosService } from 'src/app/services/servicios.service';
-import { Servicios } from 'src/app/models/servicios.models';
+// Servicios
 import { Socios } from 'src/app/models/socios.models';
 import { SociosService } from 'src/app/services/socios.service';
 import { Observable, of } from 'rxjs';
@@ -199,24 +196,23 @@ export class SociosComponent implements OnInit {
     this.socioServices.cargarSocios(params)
       .subscribe(({ socio }) => {
 
-
-
-
         this.totalSocios = socio.total;
 
         // Implementando logica de rxjs
         let myArrayOf$: Observable<any>;
 
-        myArrayOf$ = of(socio.data);
+        myArrayOf$ = of(...socio.data);
 
-        myArrayOf$.pipe(map((data, index) => {
-          data[index].estado = Number(data[index].estado);
-          data[index].directivo = Number(data[index].directivo);
-          return data;
-        }))
-          .subscribe(resp => {
-            this.socios = resp;
-          })
+        myArrayOf$
+          .pipe(
+            map(data => {
+              data.estado = Number(data.estado);
+              data.directivo = Number(data.directivo);
+              this.socios.push(data);
+            })
+          )
+          .subscribe();
+
         // console.log(this.socios);
         this.setPaginator(socio);
 

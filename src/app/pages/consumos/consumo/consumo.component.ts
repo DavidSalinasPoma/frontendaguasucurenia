@@ -7,8 +7,8 @@ import { Socios } from 'src/app/models/socios.models';
 import { SociosService } from 'src/app/services/socios.service';
 import { ListasService } from 'src/app/services/listas.service';
 import { Listas } from 'src/app/models/listas.models';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -201,10 +201,23 @@ export class ConsumoComponent implements OnInit, OnDestroy {
             this.sLectura2 = sLectura;
             this.cLectura2 = cLectura;
 
-
-            this.socios2 = socio.data;
             this.options = [];
-            // console.log(this.socios);
+
+            // Implementando logica de rxjs
+            this.options = [];
+            let myArrayOf$: Observable<any>;
+            myArrayOf$ = of(...socio.data);
+            myArrayOf$
+              .pipe(
+                map(data => {
+                  data.estado = Number(data.estado);
+                  data.directivo = Number(data.directivo);
+                  this.options.push(data);
+                })
+              )
+              .subscribe();
+            this.socios2 = this.options;
+            this.options = [];
             this.socios2.forEach((element: any) => {
               if (element.estado === 0 || element.estado === '0') {
                 this.options.push(element);
@@ -251,8 +264,21 @@ export class ConsumoComponent implements OnInit, OnDestroy {
         this.cLectura = cLectura;
 
         this.socios = socio.data;
-        // console.log(this.socios);
+        // Implementando logica de rxjs
+        this.options = [];
 
+        let myArrayOf$: Observable<any>;
+        myArrayOf$ = of(...this.socios);
+        myArrayOf$
+          .pipe(
+            map(data => {
+              data.estado = Number(data.estado);
+              data.directivo = Number(data.directivo);
+              this.options.push(data);
+            })
+          )
+          .subscribe();
+        this.socios = this.options;
         this.options = [];
         // console.log(this.socios);
         this.socios.forEach((element: any) => {
@@ -260,9 +286,6 @@ export class ConsumoComponent implements OnInit, OnDestroy {
             this.options.push(element);
           }
         });
-
-        // console.log(this.options);
-
 
         this.setPaginator(socio);
 
