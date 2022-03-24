@@ -43,6 +43,7 @@ import { FacturaComponent } from './factura/factura.component';
 import { DetalleComponent } from './factura/detalle/detalle.component';
 import { FacturapagadasComponent } from './factura/facturapagadas/facturapagadas.component';
 import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas.component';
+import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-directivos.component';
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas
     FacturaComponent,
     DetalleComponent,
     FacturapagadasComponent,
-    DetallepagadasComponent
+    DetallepagadasComponent,
+    ListaDirectivosComponent
   ],
   imports: [
     CommonModule,
@@ -114,7 +116,8 @@ import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas
     FacturaComponent,
     DetalleComponent,
     FacturapagadasComponent,
-    DetallepagadasComponent
+    DetallepagadasComponent,
+    ListaDirectivosComponent
   ]
 })
 export class PagesModule { }

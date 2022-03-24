@@ -3,7 +3,7 @@
       <div class="card">
         <div class="card-body">
           <input id="textBuscar" type="text" class="form-control" placeholder="Buscar socios..." #text
-            (keyup)="buscarSocios(text.value, '',1)" autocomplete="off">
+            (keyup)="searchTerm$.next(text.value)" autocomplete="off">
         </div>
       </div>
     </div>

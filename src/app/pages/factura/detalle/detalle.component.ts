@@ -70,7 +70,7 @@ export class DetalleComponent implements OnInit {
    * cancelar
    */
   public cancelar() {
-    this.dataServices.idSocio$.emit(this.socio.idSocio);
+    // this.dataServices.idSocio$.emit(this.socio.idSocio);
     this.router.navigate(['/dashboard/facturas']);
 
   }

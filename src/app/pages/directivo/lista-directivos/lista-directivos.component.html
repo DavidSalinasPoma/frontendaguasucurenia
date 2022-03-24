@@ -1,0 +1,53 @@
+  <!-- Loading -->
+  <div *ngIf="this.cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="alert alert-info text-center">
+        <h4 class="alert-heading">Cargando</h4>
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+        <p class="mb-0">Por favor espere</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!this.cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+      <div class="card">
+
+        <!-- Primera Parte -->
+        <div class="card-body  animated fadeIn fast">
+
+          <!-- Boton de crear Usuarios -->
+          <div class="row">
+
+            <div class="col-8">
+              <h4 class="card-title">Directorio</h4>
+              <h6 class="card-subtitle">Lista de socios que son parte del directorio</h6>
+            </div>
+          </div>
+
+
+          <!-- Taabla para limpiar y mostrar buscados -->
+          <div class="table-responsive">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Codigo socio</th>
+                  <th>Nombre completo</th>
+                  <th>Carnet</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of this.directivos">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nombres }} {{ item.paterno }} {{ item.materno }}</td>
+                  <td>{{ item.carnet }} {{ item.expedito }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

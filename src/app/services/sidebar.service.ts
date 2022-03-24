@@ -67,6 +67,13 @@ export class SidebarService {
     //     { titulo: 'Apertura', url: 'aperturas' }
     //   ]
     // },
+    {
+      titulo: 'Directorio',
+      icono: 'mdi   mdi-format-list-bulleted',
+      submenu: [
+        { titulo: 'Lista directorio', url: 'directivos' }
+      ]
+    },
   ];
 
   constructor() { }

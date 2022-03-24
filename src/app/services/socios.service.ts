@@ -38,6 +38,15 @@ export class SociosService {
   }
 
   /**
+   * deleteSocioDirectorio
+   */
+  public deleteSocioDirectorio(id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/delete/deletesociodirectorio/${id}`, { headers: parameters });
+  }
+
+  /**
    * cargarUsuarios
    */
   public showEventos(id: number) {
@@ -124,6 +133,5 @@ export class SociosService {
     parameters = parameters.set('Authorization', "Bearer " + this.token);
     return this.http.get<any>(base_url + '/api/barrio', { headers: parameters });
   }
-
 
 }

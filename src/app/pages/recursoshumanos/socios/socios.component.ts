@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 // Servicios
 import { Socios } from 'src/app/models/socios.models';
 import { SociosService } from 'src/app/services/socios.service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 // Variables globales
 const base_url = environment.base_url;
@@ -18,7 +18,7 @@ const base_url = environment.base_url;
   templateUrl: './socios.component.html',
   styleUrls: ['./socios.component.css']
 })
-export class SociosComponent implements OnInit {
+export class SociosComponent implements OnInit, OnDestroy {
 
   public totalSocios: number = 0;
   public totalSocios2: number = 0;
@@ -59,12 +59,23 @@ export class SociosComponent implements OnInit {
   // Mostra 
   public mostrar: boolean = true;
 
+
+  // Mejorar el performance de la busqueda
+  private OnDestroy$ = new Subject();
+  public searchTerm$ = new Subject<string>();
+
   constructor(
     private socioServices: SociosService
   ) { }
 
-  ngOnInit(): void {
+  ngOnDestroy(): void {
+    // Para que se deatruya despues de salir de esta vista
+    this.OnDestroy$.next();
+  }
 
+
+  ngOnInit(): void {
+    this.buscarSocios('', '', 1);
     const cambioRuta = Number(localStorage.getItem('guardarRuta'));
     localStorage.removeItem('guardarRuta');
 
@@ -108,8 +119,27 @@ export class SociosComponent implements OnInit {
   /**
    * cargarUsuarioBuscar
    */
-  public buscarSocios(texto: any, url?: string, band?: number) {
+  public buscarSocios(text?: any, url?: string, band?: number) {
 
+    if (text != '') {
+      this.logicaBuscar(text, url, band)
+    } else {
+      this.searchTerm$.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.OnDestroy$)
+      )
+        .subscribe(texto => {
+          this.logicaBuscar(texto, url, band)
+        })
+    }
+
+  }
+
+  /**
+   * logicaBuscar
+   */
+  public logicaBuscar(texto?: any, url?: string, band?: number) {
     if (band) {
       localStorage.setItem('usuario', texto);
     }
@@ -133,7 +163,6 @@ export class SociosComponent implements OnInit {
       if (url != '') {
         urls = url;
         // console.log(url);
-
       }
 
       const formDatos = {
@@ -150,19 +179,21 @@ export class SociosComponent implements OnInit {
 
 
             this.totalSocios2 = socio.total;
-
+            this.socios2 = [];
             // Implementando logica de rxjs
             let myArrayOf$: Observable<any>;
 
-            myArrayOf$ = of(socio.data);
+            myArrayOf$ = of(...socio.data);
 
-            myArrayOf$.pipe(map((data, index) => {
-              data[index].estado = Number(data[index].estado);
-              return data;
-            }))
-              .subscribe(resp => {
-                this.socios2 = resp;
-              })
+            myArrayOf$
+              .pipe(
+                map(data => {
+                  data.estado = Number(data.estado);
+                  data.directivo = Number(data.directivo);
+                  this.socios2.push(data);
+                })
+              )
+              .subscribe();
 
             // console.log(this.socios2);
 
@@ -202,7 +233,7 @@ export class SociosComponent implements OnInit {
         let myArrayOf$: Observable<any>;
 
         myArrayOf$ = of(...socio.data);
-
+        this.socios = [];
         myArrayOf$
           .pipe(
             map(data => {
@@ -279,25 +310,26 @@ export class SociosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.socioServices.eliminarSocio(id)
-          .subscribe(() => {
-            const parametro = String(localStorage.getItem('urlPagination'));
-            if (bandera) {
-              this.cargarSocio(parametro);
-            } else {
-              const urlUser = String(localStorage.getItem('urlPagination'));
-              const nameEvento = localStorage.getItem('usuario');
-              this.buscarSocios(nameEvento, urlUser);
-            }
+        this.socioServices.deleteSocioDirectorio(id).subscribe(resp => {
 
-            Swal.fire(
-              'Servicio dado de Baja!',
-              `El socio ${nombre} fue dado de baja correctamente`,
-              'success'
-            )
+          this.socioServices.eliminarSocio(id)
+            .subscribe(() => {
+              const parametro = String(localStorage.getItem('urlPagination'));
+              if (bandera) {
+                this.cargarSocio(parametro);
+              } else {
+                const urlUser = String(localStorage.getItem('urlPagination'));
+                const nameEvento = localStorage.getItem('usuario');
+                this.buscarSocios(nameEvento, urlUser);
+              }
 
-          });
-
+              Swal.fire(
+                'Servicio dado de Baja!',
+                `El socio ${nombre} fue dado de baja correctamente`,
+                'success'
+              )
+            });
+        });
       }
     })
   }

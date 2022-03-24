@@ -29,6 +29,7 @@ import { FacturaComponent } from './factura/factura.component';
 import { DetalleComponent } from './factura/detalle/detalle.component';
 import { FacturapagadasComponent } from './factura/facturapagadas/facturapagadas.component';
 import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas.component';
+import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-directivos.component';
 
 const childRoute: Routes = [
   { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
@@ -71,6 +72,8 @@ const childRoute: Routes = [
   { path: 'factpagadas', component: FacturapagadasComponent, data: { titulo: 'Facturas pagadas' } },
 
   { path: 'detallespagadas/:id', component: DetallepagadasComponent, data: { titulo: 'Reporte de Factura Pagada' } },
+
+  { path: 'directivos', component: ListaDirectivosComponent, data: { titulo: 'Lista del directorio actual' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]
