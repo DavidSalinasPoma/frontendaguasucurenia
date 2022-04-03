@@ -130,14 +130,13 @@ export class CrearSocioComponent implements OnInit {
   }
 
   /**
-   * buscarPersona
+   * buscarBarrio
    */
   public buscarBarrio(text: any) {
     if (text === '') {
       this.options = [];
       this.cargarBarrios();
     } else {
-
 
       const formDatos = {
         textos: text

@@ -44,6 +44,10 @@ import { DetalleComponent } from './factura/detalle/detalle.component';
 import { FacturapagadasComponent } from './factura/facturapagadas/facturapagadas.component';
 import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas.component';
 import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-directivos.component';
+import { SocioxbarrioComponent } from './reportes/socioxbarrio/socioxbarrio.component';
+import { ReportesComponent } from './reportes/reportes.component';
+import { CrearReunionesComponent } from './reuniones/crear-reuniones/crear-reuniones.component';
+import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuniones.component';
 
 
 @NgModule({
@@ -76,7 +80,11 @@ import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-dir
     DetalleComponent,
     FacturapagadasComponent,
     DetallepagadasComponent,
-    ListaDirectivosComponent
+    ListaDirectivosComponent,
+    SocioxbarrioComponent,
+    ReportesComponent,
+    CrearReunionesComponent,
+    ListaReunionesComponent
   ],
   imports: [
     CommonModule,
@@ -117,7 +125,9 @@ import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-dir
     DetalleComponent,
     FacturapagadasComponent,
     DetallepagadasComponent,
-    ListaDirectivosComponent
+    ListaDirectivosComponent,
+    SocioxbarrioComponent,
+    ReportesComponent
   ]
 })
 export class PagesModule { }

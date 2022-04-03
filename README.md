@@ -64,3 +64,7 @@ ng g m pages/pages --flat --skip-tests
 Existen 2 maneras de hacer ruting
 1.- Por rutas hijas en l app-routing.module.ts
 2.- Por rutas por modulos los routing van a ser importados en el app.routing.module.ts
+
+# Para crear componentes especificos con modulos
+
+$ ng g c pages/reportes/socioxbarrio --skip-tests --module pages

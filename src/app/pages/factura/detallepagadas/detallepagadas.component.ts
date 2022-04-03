@@ -222,6 +222,7 @@ export class DetallepagadasComponent implements OnInit {
 
     this.router.navigate(['/dashboard/factpagadas']);
 
+
   }
 
 }

@@ -134,4 +134,16 @@ export class SociosService {
     return this.http.get<any>(base_url + '/api/barrio', { headers: parameters });
   }
 
+
+  /**
+  * Buscar socio por id de barrio
+  */
+  public socioporBarrio(id: number) {
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + '/api/show/socioporbarrio/' + id, { headers: parameters });
+
+  }
+
 }

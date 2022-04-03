@@ -56,3 +56,8 @@ body {
   display: inline-block;
   border-top: 0.5px solid darkgrey;
 }
+
+.icono-reportes {
+  font-size: 2.5rem;
+  color: white;
+}

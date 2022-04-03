@@ -10,9 +10,10 @@ export class SidebarService {
       titulo: 'Dashboard!!',
       icono: 'mdi mdi-gauge',
       submenu: [
-        { titulo: 'Main', url: '/' },
-        { titulo: 'ProgressBar', url: 'progress' },
-        { titulo: 'Gráficas', url: 'grafica1' },
+        { titulo: 'Principal', url: '/' },
+        { titulo: 'Reportes', url: 'reportes' },
+        // { titulo: 'ProgressBar', url: 'progress' },
+        // { titulo: 'Gráficas', url: 'grafica1' },
       ]
     },
     {
@@ -72,6 +73,13 @@ export class SidebarService {
       icono: 'mdi   mdi-format-list-bulleted',
       submenu: [
         { titulo: 'Lista directorio', url: 'directivos' }
+      ]
+    },
+    {
+      titulo: 'Reuniones',
+      icono: 'mdi    mdi-account-box',
+      submenu: [
+        { titulo: 'Crear reuniones', url: 'reuniones' }
       ]
     },
   ];

@@ -1,3 +1,4 @@
+import { SocioxbarrioComponent } from './reportes/socioxbarrio/socioxbarrio.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -30,6 +31,9 @@ import { DetalleComponent } from './factura/detalle/detalle.component';
 import { FacturapagadasComponent } from './factura/facturapagadas/facturapagadas.component';
 import { DetallepagadasComponent } from './factura/detallepagadas/detallepagadas.component';
 import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-directivos.component';
+import { ReportesComponent } from './reportes/reportes.component';
+import { CrearReunionesComponent } from './reuniones/crear-reuniones/crear-reuniones.component';
+import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuniones.component';
 
 const childRoute: Routes = [
   { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
@@ -74,6 +78,14 @@ const childRoute: Routes = [
   { path: 'detallespagadas/:id', component: DetallepagadasComponent, data: { titulo: 'Reporte de Factura Pagada' } },
 
   { path: 'directivos', component: ListaDirectivosComponent, data: { titulo: 'Lista del directorio actual' } },
+
+  { path: 'reportes', component: ReportesComponent, data: { titulo: 'Reportes' } },
+
+  { path: 'reportexbarrio', component: SocioxbarrioComponent, data: { titulo: 'Reportes socio por barrio' } },
+
+  { path: 'reuniones', component: CrearReunionesComponent, data: { titulo: 'Reuniones' } },
+
+  { path: 'listaReunion', component: ListaReunionesComponent, data: { titulo: 'Lista de reuniones' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]
