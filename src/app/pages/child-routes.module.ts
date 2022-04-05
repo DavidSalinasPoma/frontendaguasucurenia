@@ -1,3 +1,5 @@
+import { DetallereunionesComponent } from './reuniones/detallereuniones/detallereuniones.component';
+import { SociogeneralComponent } from './reportes/sociogeneral/sociogeneral.component';
 import { SocioxbarrioComponent } from './reportes/socioxbarrio/socioxbarrio.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -86,6 +88,10 @@ const childRoute: Routes = [
   { path: 'reuniones', component: CrearReunionesComponent, data: { titulo: 'Reuniones' } },
 
   { path: 'listaReunion', component: ListaReunionesComponent, data: { titulo: 'Lista de reuniones' } },
+
+  { path: 'detalleReunion/:id', component: DetallereunionesComponent, data: { titulo: 'Registro de reuniones por socio' } },
+
+  { path: 'reportegeneral', component: SociogeneralComponent, data: { titulo: 'Reporte de general de socios' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]

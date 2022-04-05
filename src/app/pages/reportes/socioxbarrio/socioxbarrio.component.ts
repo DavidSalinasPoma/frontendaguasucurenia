@@ -56,6 +56,7 @@ export class SocioxbarrioComponent implements OnInit {
 
     this.socioServices.socioporBarrio(idBarrio)
       .subscribe(({ socio }) => {
+        console.log(socio);
 
         this.barrioName = socio[0].barrio;
 

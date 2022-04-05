@@ -1,0 +1,95 @@
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row animated fadeIn fast ">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+
+            <div class="col-md-7 border ">
+
+              <div class="card card-body">
+                <div class="row">
+                  <div class="col-8">
+                    <h3 class="box-title m-b-0">Reportes general de socios</h3>
+                    <p class="text-muted m-b-30 font-13"> Sistema de reportes</p>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12 col-xs-12">
+
+
+                    <button (click)="this.onSubmit()" type="button"
+                      class="btn btn-success waves-effect waves-light m-r-10">Generar lista</button>
+
+
+                    <button routerLink='/dashboard/reportes' type="button" class="btn btn-primary"><i
+                        class="fa fa-list-alt"></i>
+                      Regresar</button>
+
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+
+            <div *ngIf="this.mostrarSocios" class="row mt-4">
+              <div class="col-12">
+                <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
+                  printSectionId="htmlDatas" ngxPrint><span><i class="fa fa-print"></i>
+                  </span> Imprimir Reporte</button>
+              </div>
+            </div>
+
+            <div id="htmlDatas" class="mt-4">
+              <div class="row">
+                <div class="col-8">
+                  <h3 class="box-title m-b-0">Lista de socios</h3>
+                </div>
+
+              </div>
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Codigo socio</th>
+                    <th>Socio</th>
+                    <th>Carnet</th>
+                    <th>Barrio</th>
+                    <th>estado</th>
+                    <th>Lectura</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of this.listaSocios">
+
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.persona.nombres }} {{ item.persona.ap_paterno }} {{ item.persona.ap_materno }}</td>
+                    <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
+                    <td>{{ item.barrio.nombre }}</td>
+                    <td *ngIf="item.estado; else notShow">
+                      <div class="text-success">Activo</div>
+                    </td>
+                    <ng-template #notShow>
+                      <td>
+                        <div class="text-danger">No activo</div>
+                      </td>
+                    </ng-template>
+                    <td> </td>
+
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->

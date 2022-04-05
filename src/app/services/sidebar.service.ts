@@ -51,33 +51,16 @@ export class SidebarService {
         { titulo: 'Servicios', url: 'servicios' },
       ]
     },
-
-    // {
-    //   titulo: 'Administrador',
-    //   icono: 'mdi mdi-account-key',
-    //   submenu: [
-    //     { titulo: 'Consumo', url: 'eventos' },
-    //     { titulo: 'Factura', url: 'servicios' },
-    //   ]
-    // },
-
-    // {
-    //   titulo: 'Apertura',
-    //   icono: 'mdi  mdi-chart-arc',
-    //   submenu: [
-    //     { titulo: 'Apertura', url: 'aperturas' }
-    //   ]
-    // },
     {
       titulo: 'Directorio',
-      icono: 'mdi   mdi-format-list-bulleted',
+      icono: 'mdi mdi-format-list-bulleted',
       submenu: [
         { titulo: 'Lista directorio', url: 'directivos' }
       ]
     },
     {
       titulo: 'Reuniones',
-      icono: 'mdi    mdi-account-box',
+      icono: 'mdi mdi-account-box',
       submenu: [
         { titulo: 'Crear reuniones', url: 'reuniones' }
       ]

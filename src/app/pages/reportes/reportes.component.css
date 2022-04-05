@@ -2,3 +2,8 @@
   background-color: rgb(34, 34, 136) !important;
   cursor: pointer;
 }
+
+.boton-reporte-general:hover {
+  background-color: rgb(12, 95, 40) !important;
+  cursor: pointer;
+}

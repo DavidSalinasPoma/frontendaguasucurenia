@@ -86,7 +86,6 @@ export class SociosService {
   public buscarSocios(formData: any): Observable<any> {
     // console.log(formData);
 
-
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
     return this.http.post<any>(formData.url, formData, { headers: parameters });
@@ -143,7 +142,15 @@ export class SociosService {
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
     return this.http.get<any>(base_url + '/api/show/socioporbarrio/' + id, { headers: parameters });
+  }
 
+  /**
+   * Reporte general de socios
+   */
+  public reporteSociosGeneral() {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + '/api/index/reportesocios', { headers: parameters });
   }
 
 }

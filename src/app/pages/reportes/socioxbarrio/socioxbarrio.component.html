@@ -85,17 +85,23 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
+                    <th>Nro.</th>
                     <th>Codigo</th>
                     <th>Socio</th>
                     <th>Carnet</th>
-                    <th>estado</th>
+                    <th>Barrio</th>
+                    <th>Estado</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of this.listaSocios">
+                  <tr *ngFor="let item of this.listaSocios; index as i">
+                    <td>{{ i+1 }}</td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.nombres }} {{ item.paterno }} {{ item.materno }}</td>
                     <td>{{ item.carnet }} {{ item.expedito }}</td>
+                    <td>{{ item.barrio }}</td>
                     <td *ngIf="item.estado; else notShow">
                       <div class="text-success">Activo</div>
                     </td>
@@ -104,6 +110,8 @@
                         <div class="text-danger">No activo</div>
                       </td>
                     </ng-template>
+                    <td> </td>
+                    <td> </td>
                   </tr>
                 </tbody>
               </table>
