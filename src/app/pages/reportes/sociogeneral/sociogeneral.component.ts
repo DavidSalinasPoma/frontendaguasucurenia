@@ -21,6 +21,9 @@ export class SociogeneralComponent implements OnInit {
   public barrioName: string = '';
   // Formularios
   public formulario!: FormGroup;
+
+  // Loading
+  public cargando: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private barrioServices: BarriosService,
@@ -36,7 +39,7 @@ export class SociogeneralComponent implements OnInit {
    * ngSubmit
    */
   public onSubmit() {
-
+    this.cargando = true;
     this.socioServices.reporteSociosGeneral()
       .subscribe(({ socio }) => {
         // console.log(socio);
@@ -57,7 +60,9 @@ export class SociogeneralComponent implements OnInit {
             })
           )
           .subscribe();
+        this.cargando = false;
         this.mostrarSocios = true;
+
       });
   }
 

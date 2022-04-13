@@ -36,56 +36,70 @@
 
             </div>
 
-            <div *ngIf="this.mostrarSocios" class="row mt-4">
+            <!-- Loading -->
+            <div *ngIf="this.cargando" class="row animated fadeIn fast mt-2">
               <div class="col-12">
-                <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
-                  printSectionId="htmlDatas" ngxPrint><span><i class="fa fa-print"></i>
-                  </span> Imprimir Reporte</button>
-              </div>
-            </div>
-
-            <div id="htmlDatas" class="mt-4">
-              <div class="row">
-                <div class="col-8">
-                  <h3 class="box-title m-b-0">Lista de socios</h3>
+                <div class="alert alert-info text-center">
+                  <h4 class="alert-heading">Cargando</h4>
+                  <i class="fa fa-spin fa-refresh fa-2x"></i>
+                  <p class="mb-0">Por favor espere</p>
                 </div>
-
               </div>
-
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Codigo socio</th>
-                    <th>Socio</th>
-                    <th>Carnet</th>
-                    <th>Barrio</th>
-                    <th>estado</th>
-                    <th>Lectura</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of this.listaSocios">
-
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.persona.nombres }} {{ item.persona.ap_paterno }} {{ item.persona.ap_materno }}</td>
-                    <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
-                    <td>{{ item.barrio.nombre }}</td>
-                    <td *ngIf="item.estado; else notShow">
-                      <div class="text-success">Activo</div>
-                    </td>
-                    <ng-template #notShow>
-                      <td>
-                        <div class="text-danger">No activo</div>
-                      </td>
-                    </ng-template>
-                    <td> </td>
-
-                  </tr>
-                </tbody>
-              </table>
-
             </div>
 
+            <div *ngIf="!this.cargando" class="row animated fadeIn fast">
+              <div *ngIf="this.mostrarSocios" class="col-12 mt-4">
+                <div class="">
+                  <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
+                    printSectionId="htmlDatas" ngxPrint><span><i class="fa fa-print"></i>
+                    </span> Imprimir Reporte</button>
+                </div>
+              </div>
+
+              <div class="col-12" *ngIf="this.mostrarSocios">
+                <div id="htmlDatas" class="mt-4">
+                  <div class="row">
+                    <div class="col-8">
+                      <h3 class="box-title m-b-0">Lista de socios</h3>
+                    </div>
+
+                  </div>
+
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Codigo socio</th>
+                        <th>Socio</th>
+                        <th>Carnet</th>
+                        <th>Barrio</th>
+                        <th>estado</th>
+                        <th>Lectura</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of this.listaSocios">
+
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.persona.nombres }} {{ item.persona.ap_paterno }} {{ item.persona.ap_materno }}</td>
+                        <td>{{ item.persona.carnet }} {{ item.persona.expedito }}</td>
+                        <td>{{ item.barrio.nombre }}</td>
+                        <td *ngIf="item.estado; else notShow">
+                          <div class="text-success">Activo</div>
+                        </td>
+                        <ng-template #notShow>
+                          <td>
+                            <div class="text-danger">No activo</div>
+                          </td>
+                        </ng-template>
+                        <td> </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

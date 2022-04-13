@@ -21,6 +21,7 @@ export class SocioxbarrioComponent implements OnInit {
   public barrioName: string = '';
   // Formularios
   public formulario!: FormGroup;
+
   constructor(
     private formBuilder: FormBuilder,
     private barrioServices: BarriosService,
@@ -56,7 +57,7 @@ export class SocioxbarrioComponent implements OnInit {
 
     this.socioServices.socioporBarrio(idBarrio)
       .subscribe(({ socio }) => {
-        console.log(socio);
+        // console.log(socio);
 
         this.barrioName = socio[0].barrio;
 
