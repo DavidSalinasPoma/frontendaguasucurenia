@@ -50,6 +50,7 @@ import { CrearReunionesComponent } from './reuniones/crear-reuniones/crear-reuni
 import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuniones.component';
 import { SociogeneralComponent } from './reportes/sociogeneral/sociogeneral.component';
 import { DetallereunionesComponent } from './reuniones/detallereuniones/detallereuniones.component';
+import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { DetallereunionesComponent } from './reuniones/detallereuniones/detaller
     CrearReunionesComponent,
     ListaReunionesComponent,
     SociogeneralComponent,
-    DetallereunionesComponent
+    DetallereunionesComponent,
+    CobroxmesComponent
   ],
   imports: [
     CommonModule,
@@ -133,7 +135,8 @@ import { DetallereunionesComponent } from './reuniones/detallereuniones/detaller
     SocioxbarrioComponent,
     ReportesComponent,
     SociogeneralComponent,
-    DetallereunionesComponent
+    DetallereunionesComponent,
+    CobroxmesComponent
   ]
 })
 export class PagesModule { }

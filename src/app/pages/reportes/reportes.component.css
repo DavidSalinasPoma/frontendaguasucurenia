@@ -7,3 +7,8 @@
   background-color: rgb(12, 95, 40) !important;
   cursor: pointer;
 }
+
+.boton-reporte-mes:hover {
+  background-color: rgb(64, 60, 122) !important;
+  cursor: pointer;
+}

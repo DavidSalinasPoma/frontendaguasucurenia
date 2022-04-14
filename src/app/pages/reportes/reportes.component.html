@@ -1,4 +1,6 @@
-<div class="row">
+<div class="row animated fadeIn fast">
+
+  <!-- Reporte socios por barrio -->
   <div class="col-lg-3">
     <a [routerLink]="[ '/dashboard/reportexbarrio']">
       <div class="boton-reporte card bg-info">
@@ -23,6 +25,22 @@
             <div class="m-r-20 align-self-center"><i class="icono-reportes fa fa-users"></i></div>
             <div class="align-self-center">
               <h5 class="text-white m-t-10 m-b-0">Reporte general de socios</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Boton reporte  cobro por mes -->
+  <div class="col-lg-3">
+    <a [routerLink]="[ '/dashboard/cobroxmes']">
+      <div class="boton-reporte-mes card bg-primary">
+        <div class="card-body">
+          <div class="d-flex no-block">
+            <div class="m-r-20 align-self-center"><i class="icono-reportes fa fa-money"></i></div>
+            <div class="align-self-center">
+              <h5 class="text-white m-t-10 m-b-0">Reporte cobro por mes</h5>
             </div>
           </div>
         </div>

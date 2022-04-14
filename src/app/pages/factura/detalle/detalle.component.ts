@@ -187,9 +187,15 @@ export class DetalleComponent implements OnInit {
    */
   public crearPDF() {
 
+    const fecha = new Date();
+    const mes = fecha.toLocaleString("es-ES", { month: "long" });
+    const anio = fecha.getFullYear();
+
     const formData = {
       total_pagado: this.total,
       fecha_emision: this.fecha,
+      mes_pago: mes,
+      anio_pago: anio,
       estado_pago: 1
     }
 

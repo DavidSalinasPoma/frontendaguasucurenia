@@ -36,6 +36,7 @@ import { ListaDirectivosComponent } from './directivo/lista-directivos/lista-dir
 import { ReportesComponent } from './reportes/reportes.component';
 import { CrearReunionesComponent } from './reuniones/crear-reuniones/crear-reuniones.component';
 import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuniones.component';
+import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
 
 const childRoute: Routes = [
   { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
@@ -92,6 +93,8 @@ const childRoute: Routes = [
   { path: 'detalleReunion/:id', component: DetallereunionesComponent, data: { titulo: 'Registro de reuniones por socio' } },
 
   { path: 'reportegeneral', component: SociogeneralComponent, data: { titulo: 'Reporte de general de socios' } },
+
+  { path: 'cobroxmes', component: CobroxmesComponent, data: { titulo: 'Reporte cobros por mes' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]
