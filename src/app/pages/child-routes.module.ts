@@ -37,6 +37,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { CrearReunionesComponent } from './reuniones/crear-reuniones/crear-reuniones.component';
 import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuniones.component';
 import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
+import { ListamultasComponent } from './reuniones/listamultas/listamultas.component';
 
 const childRoute: Routes = [
   { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
@@ -91,6 +92,8 @@ const childRoute: Routes = [
   { path: 'listaReunion', component: ListaReunionesComponent, data: { titulo: 'Lista de reuniones' } },
 
   { path: 'detalleReunion/:id', component: DetallereunionesComponent, data: { titulo: 'Registro de reuniones por socio' } },
+
+  { path: 'reportemultas/:id', component: ListamultasComponent, data: { titulo: 'Reporte de multas de reunión' } },
 
   { path: 'reportegeneral', component: SociogeneralComponent, data: { titulo: 'Reporte de general de socios' } },
 

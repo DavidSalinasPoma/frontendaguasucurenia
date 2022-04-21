@@ -46,6 +46,7 @@ export class CrearEventosComponent implements OnInit {
       descripcion: ['', [Validators.required]],
       precio: ['', Validators.required],
       tiempo: ['', Validators.required],
+
     });
   }
 

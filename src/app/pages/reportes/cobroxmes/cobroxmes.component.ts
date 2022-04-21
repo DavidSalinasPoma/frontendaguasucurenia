@@ -6,6 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 import { ReportesService } from 'src/app/services/reportes.service';
 import { ToastrService } from 'ngx-toastr';
 
+
 interface Mes {
   value: string;
   viewValue: string;
@@ -43,10 +44,15 @@ export class CobroxmesComponent implements OnInit {
   public mostrar: boolean = false;
 
   public totaConsumo: number = 0;
+  public totaConsumoString: any;
   public totalMes: number = 0;
+  public totalConvertidoMes: any;
   public totalDirectivos: number = 0;
   public totalRetrazo: number = 0;
   public totalAgrupados: any;
+
+  // Fecha reporte
+  public fechaReporte = new Date();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,12 +92,20 @@ export class CobroxmesComponent implements OnInit {
 
 
         this.totalDirectivos = facturaTotalDirectivos[0]?.sumaFacturasDirectivos_total || 0;
-        this.totaConsumo = sumaSoloConsumoTotal + this.totalDirectivos;
+        this.totaConsumo = Number(sumaSoloConsumoTotal) + Number(this.totalDirectivos);
+
+        this.totaConsumoString = Number(this.totaConsumo).toLocaleString('en-US');
+
         this.totalRetrazo = facturaTotalRetrasos[0]?.sumaFacturasRetrasos_total || 0;
 
         this.totalAgrupados = agrupados;
 
-        this.totalMes = (facturaTotalMes[0]?.sumaFacturas_total || 0) - this.totalDirectivos;
+        this.totalMes = (facturaTotalMes[0]?.sumaFacturas_total || 0) - Number(this.totalDirectivos);
+
+        this.totalConvertidoMes = Number(this.totalMes).toLocaleString('en-US');
+
+
+
 
         if (this.totalMes === 0) {
           this.cargando = false;
@@ -110,6 +124,12 @@ export class CobroxmesComponent implements OnInit {
       }, err => {
         console.log(err);
       })
+
+  }
+  /**
+ * crearPDF
+ */
+  public crearPDF() {
 
   }
 

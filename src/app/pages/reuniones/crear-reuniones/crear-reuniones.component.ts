@@ -22,6 +22,8 @@ export class CrearReunionesComponent implements OnInit {
   // Formularios
   public formulario!: FormGroup;
 
+  // Ocultar boton al guardar
+  public ocultar: boolean = true;
   constructor(
     private formBuilder: FormBuilder,
     private barriosService: BarriosService,
@@ -75,9 +77,9 @@ export class CrearReunionesComponent implements OnInit {
     }
 
     // console.log(formData);
-
     this.reunionesService.storeReunion(formData)
       .subscribe(() => {
+        this.ocultar = false;
         this.router.navigateByUrl('/dashboard/listaReunion');
         Swal.fire({
           position: 'center',

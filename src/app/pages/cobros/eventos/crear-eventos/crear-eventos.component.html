@@ -34,15 +34,16 @@
                         <mat-form-field class="example-full-width" appearance="outline">
                           <mat-label>Evento</mat-label>
                           <input type="text" matInput formControlName="evento" autocomplete="off" spellcheck="false">
+                          <!-- Validacion -->
+                          <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                          <mat-hint *ngIf="this.evento?.invalid && (this.evento?.dirty || this.evento?.touched)">
+                            <!-- Errores con expresiones regulares -->
+                            <div *ngIf="this.evento?.hasError('required')" class="animated fadeIn fast text-danger"
+                              id="">
+                              Este campo es requerido.
+                            </div>
+                          </mat-hint>
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div *ngIf="this.evento?.invalid && (this.evento?.dirty || this.evento?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.evento?.hasError('required')" class="animated fadeIn fast text-danger" id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
 
                       <!-- Form descripcion -->
@@ -52,17 +53,17 @@
                           <mat-label>Descripción</mat-label>
                           <input type="email" matInput formControlName="descripcion" autocomplete="off"
                             spellcheck="false">
+                          <!-- Validacion -->
+                          <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                          <mat-hint
+                            *ngIf="this.descripcion?.invalid && (this.descripcion?.dirty || this.descripcion?.touched)">
+                            <!-- Errores con expresiones regulares -->
+                            <div *ngIf="this.descripcion?.hasError('required')" class="animated fadeIn fast text-danger"
+                              id="">
+                              Este campo es requerido.
+                            </div>
+                          </mat-hint>
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div
-                          *ngIf="this.descripcion?.invalid && (this.descripcion?.dirty || this.descripcion?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.descripcion?.hasError('required')" class="animated fadeIn fast text-danger"
-                            id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
 
                       <!-- Form Precio -->
@@ -71,15 +72,16 @@
                         <mat-form-field class="example-full-width" appearance="outline">
                           <mat-label>Precio</mat-label>
                           <input type="number" matInput formControlName="precio" autocomplete="off" spellcheck="false">
+                          <!-- Validacion -->
+                          <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                          <mat-hint *ngIf="this.precio?.invalid && (this.precio?.dirty || this.precio?.touched)">
+                            <!-- Errores con expresiones regulares -->
+                            <div *ngIf="this.precio?.hasError('required')" class="animated fadeIn fast text-danger"
+                              id="">
+                              Este campo es requerido.
+                            </div>
+                          </mat-hint>
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div *ngIf="this.precio?.invalid && (this.precio?.dirty || this.precio?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.precio?.hasError('required')" class="animated fadeIn fast text-danger" id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
 
                       <!-- Form Precio -->
@@ -88,17 +90,17 @@
                         <mat-form-field class="example-full-width" appearance="outline">
                           <mat-label>Tiempo evento</mat-label>
                           <input type="number" matInput formControlName="tiempo" autocomplete="off" spellcheck="false">
+                          <!-- Validacion -->
+                          <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                          <mat-hint *ngIf="this.tiempo?.invalid && (this.tiempo?.dirty || this.tiempo?.touched)">
+                            <!-- Errores con expresiones regulares -->
+                            <div *ngIf="this.tiempo?.hasError('required')" class="animated fadeIn fast text-danger"
+                              id="">
+                              Este campo es requerido.
+                            </div>
+                          </mat-hint>
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div *ngIf="this.tiempo?.invalid && (this.tiempo?.dirty || this.tiempo?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.tiempo?.hasError('required')" class="animated fadeIn fast text-danger" id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
-
 
                       <div class="mt-5">
                         <button [disabled]="this.formulario.invalid" type="submit"

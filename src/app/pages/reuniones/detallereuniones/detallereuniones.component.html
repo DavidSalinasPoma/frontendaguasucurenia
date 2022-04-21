@@ -1,73 +1,212 @@
- <!-- Start Page Content -->
- <!-- ============================================================== -->
- <div class="row animated fadeIn fast ">
-   <div class="col-12">
-     <div class="card">
-       <div class="card-body">
-
-         <div class="col-md-7 ">
-
-           <div class="row">
-             <div class="col-8">
-               <h3 class="box-title m-b-0">Sistema de registro de multas</h3>
-               <p class="text-muted m-b-30 font-13"> Sistema de multas</p>
-             </div>
-             <div class="col">
-               <button routerLink='/dashboard/listaReunion' type="button" class="btn btn-primary"><i
-                   class="fa fa-list-alt"></i>
-                 Regresar</button>
-             </div>
-           </div>
-
+   <!-- <div class="row animated fadeIn fast">
+     <div class="col-12">
+       <div class="card">
+         <div class="card-body">
+           <input id="textBuscar" type="text" class="form-control" placeholder="Buscar por codigo de socio..." #text
+             (keyup)="searchTerm$.next(text.value)" autocomplete="off">
          </div>
        </div>
      </div>
-
-     <!-- Taabla para limpiar y mostrar buscados -->
-     <div class="table-responsive">
-
-       <table class="table table-bordered">
-         <thead>
-           <tr>
-             <th>Codigo</th>
-             <th>Reunión</th>
-             <th>Multa</th>
-             <th>Fecha reunión</th>
-
-             <th class="text-nowrap w100">Acciones</th>
-           </tr>
-         </thead>
-         <tbody>
-
-           <tr>
-             <td> </td>
-             <td> </td>
-             <td> </td>
-             <td> </td>
-             <td>
+   </div> -->
 
 
-               <section class="example-section">
-                 <mat-radio-group>
-                   <mat-radio-button class="example-margin" value="si">Si</mat-radio-button>
-                   <br>
-                   <mat-radio-button class="example-margin" value="no">No</mat-radio-button>
-                   <br>
-                   <mat-radio-button class="example-margin" value="retraso">Retraso</mat-radio-button>
-                 </mat-radio-group>
-               </section>
-
-               <button type="button" class="btn btn-success"><i class="fa fa-plus"></i>
-                 guardar</button>
 
 
-             </td>
-           </tr>
+   <div class="row animated fadeIn fast">
+     <div class="col-12">
+       <div class="card">
 
-         </tbody>
-       </table>
+         <!-- Primera Parte -->
+         <div *ngIf="this.mostrar, else showTablaOpcion" class="card-body  animated fadeIn fast">
 
+           <!-- Boton de crear Usuarios -->
+           <div class="row">
+
+             <div class="col-6">
+               <h4 class="card-title">Total socios activos: ({{ this.totalBarrios }})</h4>
+               <h6 class="card-subtitle">Registro de multas</h6>
+             </div>
+             <div class="col-6 text-right">
+               <button routerLink='/dashboard/listaReunion' type="button" class="btn btn-primary"><i
+                   class="fa fa-arrow-left"></i>
+                 Lista reuniones</button>
+               &nbsp;
+               <button [routerLink]="['/dashboard/reportemultas',this.idReunion]" type="button" class="btn btn-info"><i
+                   class="fa fa-list-ul"></i>
+                 Reporte multas</button>
+
+             </div>
+
+           </div>
+
+           <!-- Loading -->
+           <div *ngIf="this.cargando" class="row animated fadeIn fast">
+             <div class="col-12">
+               <div class="alert alert-info text-center">
+                 <h4 class="alert-heading">Cargando</h4>
+                 <i class="fa fa-spin fa-refresh fa-2x"></i>
+                 <p class="mb-0">Por favor espere</p>
+               </div>
+             </div>
+           </div>
+
+           <!-- Taabla para limpiar y mostrar buscados -->
+           <div *ngIf="!this.cargando" class="table-responsive">
+
+             <table class="table table-bordered">
+               <thead>
+                 <tr>
+                   <th class="text-nowrap w100">Codigo socio</th>
+                   <th>Socio</th>
+                   <th>Carnet</th>
+                   <th>Reunión</th>
+                   <th>Multa</th>
+                   <th>Fecha reunión</th>
+                   <th class="text-nowrap w100">Acciones</th>
+                 </tr>
+               </thead>
+               <tbody>
+
+
+                 <tr *ngFor="let item of this.barrios">
+                   <td>{{ item.id }} </td>
+                   <td>{{ item.nombres }} {{ item.paterno }} {{ item.materno }}</td>
+                   <td>{{ item.carnet }} {{ item.expedito }}</td>
+                   <td>{{ item.reunion }}</td>
+                   <td>{{ item.multa }}</td>
+                   <td>{{ item.fecha | date:'longDate'  }}</td>
+                   <td>
+                     <form [formGroup]="this.formulario" (submit)="this.onSubmit($event,item.detalle_id)">
+                       <section class="example-section">
+                         <mat-radio-group formControlName="opcion">
+                           <mat-radio-button class="example-margin" value="si">Si</mat-radio-button>
+                           <br>
+                           <mat-radio-button class="example-margin" value="no">No</mat-radio-button>
+                           <br>
+                           <mat-radio-button class="example-margin" value="retraso">Retraso</mat-radio-button>
+                         </mat-radio-group>
+                       </section>
+                       <button [disabled]="this.formulario.invalid" type="submit" class="btn btn-success"><i
+                           class="fa fa-plus"></i>
+                         guardar</button>
+                     </form>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+
+           </div>
+
+           <!-- <div class="mt-3">
+             <button *ngIf="this.currentPage!=1; else notShowAnteriorl" class="btn btn-dark"
+               (click)="this.cargarBarrios(this.paginaAnterior)">anterior</button>
+
+             <ng-template #notShowAnteriorl>
+               <button disabled class="btn btn-dark"
+                 (click)="this.cargarBarrios(this.paginaAnterior) ">Anterior</button>
+             </ng-template>
+             &nbsp;
+
+             <button *ngIf="this.currentPage!=this.cantPaginas; else notShowTablasp" class="btn btn-dark"
+               (click)="this.cargarBarrios(this.paginaSiguiente)">Siguiente</button>
+
+             <ng-template #notShowTablasp>
+               <button disabled class="btn btn-dark"
+                 (click)="this.cargarBarrios(this.paginaSiguiente) ">Siguiente</button>
+             </ng-template>
+
+             &nbsp;
+             &nbsp;
+
+             <span>{{ this.currentPage }} de {{ this.cantPaginas }} Páginas.</span>
+           </div> -->
+         </div>
+
+         <!-- Segunda parte -->
+         <ng-template #showTablaOpcion>
+           <div class="card-body  animated fadeIn fast">
+
+             <div class="row">
+               <div class="col-8">
+
+                 <h4 class="card-title text-success">Total de barrios encontrados: ({{ this.totalBarrios2 }})</h4>
+                 <h6 class="card-subtitle">Barrios Registrados en el Sistema</h6>
+               </div>
+               <div class="col text-right">
+                 <button routerLink='/dashboard/crearbarrios' type="button" class="btn btn-primary"><i
+                     class="fa fa-apple"></i>
+                   Crear
+                   Barrios</button>
+               </div>
+             </div>
+
+             <!-- Taabla para limpiar y mostrar buscados -->
+             <div class="table-responsive">
+
+               <table class="table table-bordered">
+                 <thead>
+                   <tr>
+                     <th class="text-nowrap w100">Codigo socio</th>
+                     <th>Socio</th>
+                     <th>Carnet</th>
+                     <th>Reunión</th>
+                     <th>Multa</th>
+                     <th>Fecha reunion</th>
+                     <th class="text-nowrap w100">Acciones</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+
+
+                   <tr *ngFor="let item of this.barrios2">
+                     <td>{{ item.id }} </td>
+                     <td>{{ item.reunion }}</td>
+                     <td>{{ item.multa }}</td>
+                     <td>{{ item.fecha | date:'longDate'  }}</td>
+                     <td *ngIf="item.estado; else notShow">
+                       <div class="label label-table label-success">Activado</div>
+                     </td>
+                     <ng-template #notShow>
+                       <td>
+                         <div class="label label-table label-danger">Desactivado</div>
+                       </td>
+                     </ng-template>
+                     <td class="text-nowrap text-center">
+                       <a [routerLink]="[ '/dashboard/detalleReunion', item.id]" class="btn btn-warning text-white"
+                         title="Ver Lista detalle"> <i class="mdi mdi-eye"></i></a>
+                     </td>
+                   </tr>
+
+                 </tbody>
+               </table>
+
+             </div>
+
+             <!-- <div class="mt-3">
+               <button *ngIf="this.currentPage2!=1; else notShowAnteriorTabla" class="btn btn-dark"
+                 (click)="this.buscarBarrios('',this.paginaAnterior2,0)">anterior</button>
+
+               <ng-template #notShowAnteriorTabla>
+                 <button disabled class="btn btn-dark"
+                   (click)="this.buscarBarrios('',this.paginaAnterior2,0) ">Anterior</button>
+               </ng-template>
+               &nbsp;
+
+               <button *ngIf="this.currentPage2!=this.cantPaginas2; else notShowTablas" class="btn btn-dark"
+                 (click)="this.buscarBarrios('',this.paginaSiguiente2,0)">Siguiente</button>
+
+               <ng-template #notShowTablas>
+                 <button disabled class="btn btn-dark"
+                   (click)="this.buscarBarrios('',this.paginaSiguiente2,0) ">Siguiente</button>
+               </ng-template>
+
+               &nbsp;
+               &nbsp;
+
+               <span>{{ this.currentPage2 }} de {{ this.cantPaginas2 }} Páginas.</span>
+             </div> -->
+           </div>
+         </ng-template>
+       </div>
      </div>
-
    </div>
- </div>

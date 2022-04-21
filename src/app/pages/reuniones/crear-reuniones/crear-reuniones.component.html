@@ -26,7 +26,8 @@
                   <div class="col-sm-12 col-xs-12">
 
                     <!-- Registro de ususarios -->
-                    <form [formGroup]="this.formulario" (submit)="this.onSubmit($event)">
+                    <form *ngIf="this.ocultar; else notShow" [formGroup]="this.formulario"
+                      (submit)="this.onSubmit($event)">
 
                       <!-- Form Evento -->
                       <div class="form-group">
@@ -35,17 +36,17 @@
                           <mat-label>Nombre de reunión</mat-label>
                           <input type="text" matInput formControlName="nombreReunion" autocomplete="off"
                             spellcheck="false">
+                          <!-- Validacion -->
+                          <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                          <mat-hint
+                            *ngIf="this.nombreReunion?.invalid && (this.nombreReunion?.dirty || this.nombreReunion?.touched)">
+                            <!-- Errores con expresiones regulares -->
+                            <div *ngIf="this.nombreReunion?.hasError('required')"
+                              class="animated fadeIn fast text-danger" id="">
+                              Este campo es requerido.
+                            </div>
+                          </mat-hint>
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div
-                          *ngIf="this.nombreReunion?.invalid && (this.nombreReunion?.dirty || this.nombreReunion?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.nombreReunion?.hasError('required')" class="animated fadeIn fast text-danger"
-                            id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
                       <!-- Form Precio reunion -->
                       <div class="form-group">
@@ -54,17 +55,17 @@
                           <mat-label>Multa reunión</mat-label>
                           <input type="number" matInput formControlName="multaReunion" autocomplete="off"
                             spellcheck="false">
+                          <!-- Validacion -->
+                          <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                          <mat-hint
+                            *ngIf="this.multaReunion?.invalid && (this.multaReunion?.dirty || this.multaReunion?.touched)">
+                            <!-- Errores con expresiones regulares -->
+                            <div *ngIf="this.multaReunion?.hasError('required')"
+                              class="animated fadeIn fast text-danger" id="">
+                              Este campo es requerido.
+                            </div>
+                          </mat-hint>
                         </mat-form-field>
-                        <!-- Validacion -->
-                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                        <div
-                          *ngIf="this.multaReunion?.invalid && (this.multaReunion?.dirty || this.multaReunion?.touched)">
-                          <!-- Errores con expresiones regulares -->
-                          <div *ngIf="this.multaReunion?.hasError('required')" class="animated fadeIn fast text-danger"
-                            id="">
-                            Este campo es requerido.
-                          </div>
-                        </div>
                       </div>
 
                       <!-- Fecha reunion -->
@@ -74,18 +75,17 @@
                         <input formControlName="fechaReunion" matInput [matDatepicker]="picker">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
+                        <!-- Validacion -->
+                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                        <mat-hint
+                          *ngIf="this.fechaReunion?.invalid && (this.fechaReunion?.dirty || this.fechaReunion?.touched)">
+                          <!-- Errores con expresiones regulares -->
+                          <div *ngIf="this.fechaReunion?.hasError('required')" class="animated fadeIn fast text-danger"
+                            id="">
+                            Este campo es requerido.
+                          </div>
+                        </mat-hint>
                       </mat-form-field>
-                      <!-- Validacion -->
-                      <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
-                      <div
-                        *ngIf="this.fechaReunion?.invalid && (this.fechaReunion?.dirty || this.fechaReunion?.touched)">
-                        <!-- Errores con expresiones regulares -->
-                        <div *ngIf="this.fechaReunion?.hasError('required')" class="animated fadeIn fast text-danger"
-                          id="">
-                          Este campo es requerido.
-                        </div>
-                      </div>
-
                       <div class="mt-5">
                         <button [disabled]="this.formulario.invalid" type="submit"
                           class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
@@ -93,6 +93,14 @@
                           class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                       </div>
                     </form>
+                    <ng-template #notShow>
+                      <div class="alert alert-info animated fadeIn fast mt-2">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span
+                            aria-hidden="true">×</span> </button>
+                        <h3 class="text-info"><i class="fa fa-exclamation-circle"></i> Información</h3>
+                        Espere por favor se esta guardando...
+                      </div>
+                    </ng-template>
                   </div>
                 </div>
               </div>

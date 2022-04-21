@@ -1,0 +1,81 @@
+   <!-- Loading -->
+   <div *ngIf="this.cargando" class="row animated fadeIn fast">
+     <div class="col-12">
+       <div class="alert alert-info text-center">
+         <h4 class="alert-heading">Cargando</h4>
+         <i class="fa fa-spin fa-refresh fa-2x"></i>
+         <p class="mb-0">Por favor espere</p>
+       </div>
+     </div>
+   </div>
+
+
+   <div *ngIf="!this.cargando" class="row animated fadeIn fast">
+     <div class="col-12">
+       <div class="card">
+         <div class="card-body  animated fadeIn fast">
+
+           <h3 class="box-title m-b-0">Reportes general de multas a reuniones</h3>
+           <p class="text-muted m-b-30 font-13"> Sistema de reportes</p>
+
+           <div class="d-flex justify-content-between">
+             <div class="">
+               <h4>Reunión: <span class="text-muted m-b-30 font-13">{{ this.reunion }}</span>
+               </h4>
+               <h4>Multa: <span class="text-muted m-b-30 font-13">{{ this.multa }}</span></h4>
+               <h4>Fecha reunión: <span class="text-muted m-b-30 font-13">{{ this.fecha | date:'longDate'}}</span>
+               </h4>
+             </div>
+             <div class="">
+               <button [routerLink]="[ '/dashboard/detalleReunion', this.idReunion ]" type="button"
+                 class="btn btn-primary"><i class="fa fa-arrow-left"></i>
+                 Lista reuniones</button>
+             </div>
+           </div>
+
+           <!-- Boton de crear Usuarios -->
+           <div class="row">
+
+             <!-- Taabla para limpiar y mostrar buscados -->
+             <div class="table-responsive">
+
+               <table class="table table-bordered">
+                 <thead>
+                   <tr>
+                     <th>#</th>
+                     <th class="text-nowrap w100">Codigo socio</th>
+                     <th>Socio</th>
+                     <th>Carnet</th>
+                     <th>Estado</th>
+                     <th>Opción</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+
+
+                   <tr *ngFor="let item of this.listas ; index as i">
+                     <td>{{ i+1 }}</td>
+                     <td>{{ item.id }} </td>
+                     <td>{{ item.nombres }} {{ item.paterno }} {{ item.materno }}</td>
+                     <td>{{ item.carnet }} {{ item.expedito }}</td>
+                     <td *ngIf="item.estado; else notShow">
+                       <div class="label label-table label-success">Leido</div>
+                     </td>
+                     <ng-template #notShow>
+                       <td>
+                         <div class="label label-table label-danger">No leido</div>
+                       </td>
+                     </ng-template>
+                     <td>
+                       {{ item.opcion }}
+                     </td>
+                   </tr>
+                 </tbody>
+               </table>
+
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>

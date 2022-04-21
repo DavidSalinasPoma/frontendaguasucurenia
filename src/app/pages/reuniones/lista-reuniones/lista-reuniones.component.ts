@@ -83,7 +83,8 @@ export class ListaReunionesComponent implements OnInit {
   ngOnInit(): void {
 
     this.buscarBarrios('', '', 1);
-    const cambioRuta = Number(localStorage.getItem('guardarRuta'));
+    // const cambioRuta = Number(localStorage.getItem('guardarRuta'));
+    const cambioRuta = 1;
     localStorage.removeItem('guardarRuta');
 
     if (cambioRuta) {
@@ -234,7 +235,7 @@ export class ListaReunionesComponent implements OnInit {
    */
   public cargarBarrios(params: string) {
 
-    console.log(params);
+    // console.log(params);
 
 
     // Loading
@@ -243,26 +244,26 @@ export class ListaReunionesComponent implements OnInit {
     this.reunionServices.indexReuniones(params)
       .subscribe(({ reunion }) => {
 
-        console.log(reunion);
+        // console.log(reunion);
         this.totalBarrios = reunion.total;
 
-        // this.barrios = barrio.data;
+        // console.log(reunion.data);
 
+        if (reunion.data.length != 0) {
+          let myArrayOf$: Observable<any>;
 
-        let myArrayOf$: Observable<any>;
+          myArrayOf$ = of(reunion.data);
 
-        myArrayOf$ = of(reunion.data);
+          myArrayOf$.pipe(map((data, index) => {
+            data[index].estado = Number(data[index].estado);
+            return data;
+          }))
+            .subscribe(resp => {
+              this.barrios = resp;
+              // console.log(this.barrios);
 
-        myArrayOf$.pipe(map((data, index) => {
-          data[index].estado = Number(data[index].estado);
-          return data;
-        }))
-          .subscribe(resp => {
-            this.barrios = resp;
-            console.log(this.barrios);
-
-          })
-
+            })
+        }
 
 
         this.setPaginator(reunion);

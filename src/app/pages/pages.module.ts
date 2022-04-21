@@ -51,6 +51,7 @@ import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuni
 import { SociogeneralComponent } from './reportes/sociogeneral/sociogeneral.component';
 import { DetallereunionesComponent } from './reuniones/detallereuniones/detallereuniones.component';
 import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
+import { ListamultasComponent } from './reuniones/listamultas/listamultas.component';
 
 
 @NgModule({
@@ -90,7 +91,8 @@ import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
     ListaReunionesComponent,
     SociogeneralComponent,
     DetallereunionesComponent,
-    CobroxmesComponent
+    CobroxmesComponent,
+    ListamultasComponent
   ],
   imports: [
     CommonModule,

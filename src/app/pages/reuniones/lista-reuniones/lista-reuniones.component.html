@@ -51,6 +51,7 @@
              <table class="table table-bordered">
                <thead>
                  <tr>
+                   <th>#</th>
                    <th>Codigo</th>
                    <th>Reunión</th>
                    <th>Multa</th>
@@ -62,17 +63,18 @@
                <tbody>
 
 
-                 <tr *ngFor="let item of this.barrios">
+                 <tr *ngFor="let item of this.barrios; index as i">
+                   <td>{{ i+1 }}</td>
                    <td>{{ item.id }} </td>
                    <td>{{ item.reunion }}</td>
                    <td>{{ item.multa }}</td>
                    <td>{{ item.fecha | date:'longDate'  }}</td>
                    <td *ngIf="item.estado; else notShow">
-                     <div class="label label-table label-success">Activado</div>
+                     <div class="label label-table label-danger">No vigente</div>
                    </td>
                    <ng-template #notShow>
                      <td>
-                       <div class="label label-table label-danger">Desactivado</div>
+                       <div class="label label-table label-success">Vigente</div>
                      </td>
                    </ng-template>
                    <td class="text-nowrap text-center">
@@ -151,11 +153,11 @@
                      <td>{{ item.multa }}</td>
                      <td>{{ item.fecha | date:'longDate'  }}</td>
                      <td *ngIf="item.estado; else notShow">
-                       <div class="label label-table label-success">Activado</div>
+                       <div class="label label-table label-danger">No vigente</div>
                      </td>
                      <ng-template #notShow>
                        <td>
-                         <div class="label label-table label-danger">Desactivado</div>
+                         <div class="label label-table label-success">Vigente</div>
                        </td>
                      </ng-template>
                      <td class="text-nowrap text-center">

@@ -204,7 +204,10 @@ export class DetalleComponent implements OnInit {
         // console.log(changesFactura);
         this.router.navigate(['/dashboard/facturas']);
         this.toastr.success('Registro de pago exitoso!!', 'Pago correcto');
-      });
+      }, (err => {
+        this.toastr.error('Transacción fallida', 'Error');
+      })
+      );
 
 
     // Para auto imprimir

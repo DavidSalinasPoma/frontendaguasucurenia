@@ -95,14 +95,19 @@
 
  <div *ngIf="!this.cargando" class="row animated fadeIn fast">
    <div *ngIf="this.mostrar" class="col-md-12">
-     <div class="card card-body printableArea border">
+     <div class="text-left mb-2">
+       <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
+         printSectionId="htmlDatas" ngxPrint><span><i class="fa fa-print"></i>
+         </span> Imprimir</button>
+     </div>
+     <div id="htmlDatas" class="card card-body printableArea">
        <!-- <h3><b>INVOICE</b> <span class="pull-right">#5669626</span></h3>
        <hr> -->
-       <div class="row">
+       <div class="row border p-4">
          <div class="col-md-12">
            <h4 class="">Reporte cobro por mes</h4>
            <p class="m-t-30 mb-0">
-             Fecha reporte : <i class="fa fa-calendar"></i>
+             Fecha reporte : {{ this.fechaReporte | date:'longDate'  }} <i class="fa fa-calendar"></i>
            </p>
          </div>
          <div class="col-md-12">
@@ -117,7 +122,7 @@
                <tbody>
                  <tr>
                    <td>Total consumo</td>
-                   <td class="text-right">{{ this.totaConsumo }} Bs.</td>
+                   <td class="text-right">{{ this.totaConsumoString }} Bs.</td>
                  </tr>
                  <tr>
                    <td>Total directivos</td>
@@ -142,15 +147,10 @@
          <div class="col-md-12">
            <div class="pull-right m-t-30 text-right">
              <hr>
-             <h3><b>Total :</b> {{ this.totalMes }} Bs.</h3>
+             <h3><b>Total :</b> {{ this.totalConvertidoMes }} Bs.</h3>
            </div>
            <div class="clearfix"></div>
-           <hr>
-           <div class="text-right">
 
-             <button id="print" class="btn btn-primary" type="button"> <span><i class="fa fa-print"></i>
-                 Imprimir</span> </button>
-           </div>
          </div>
        </div>
      </div>
