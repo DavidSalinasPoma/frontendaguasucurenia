@@ -70,11 +70,11 @@
                    <td>{{ item.multa }}</td>
                    <td>{{ item.fecha | date:'longDate'  }}</td>
                    <td *ngIf="item.estado; else notShow">
-                     <div class="label label-table label-danger">No vigente</div>
+                     <div class="label label-table label-danger">Completado</div>
                    </td>
                    <ng-template #notShow>
                      <td>
-                       <div class="label label-table label-success">Vigente</div>
+                       <div class="label label-table label-success">No completado</div>
                      </td>
                    </ng-template>
                    <td class="text-nowrap text-center">
@@ -153,11 +153,11 @@
                      <td>{{ item.multa }}</td>
                      <td>{{ item.fecha | date:'longDate'  }}</td>
                      <td *ngIf="item.estado; else notShow">
-                       <div class="label label-table label-danger">No vigente</div>
+                       <div class="label label-table label-danger">Completado</div>
                      </td>
                      <ng-template #notShow>
                        <td>
-                         <div class="label label-table label-success">Vigente</div>
+                         <div class="label label-table label-success">No completado</div>
                        </td>
                      </ng-template>
                      <td class="text-nowrap text-center">

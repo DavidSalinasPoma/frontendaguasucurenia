@@ -35,6 +35,16 @@ export class DetallereunionService {
   }
 
   /**
+  * update lista reunion
+  */
+  public updateListaReunion(formData: any, id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.put(base_url + `/api/lista/detalleReunion/${id}`, formData, { headers: parameters });
+  }
+
+
+  /**
    * cargarUsuarios
    */
   public showBarrios(id: number) {
@@ -48,11 +58,11 @@ export class DetallereunionService {
   /**
    * cargar reuniones
    */
-  public indexDetalleReuniones(params: string) {
+  public showDetalleReuniones(id: number) {
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.get<any>(params, { headers: parameters });
+    return this.http.get<any>(base_url + '/api/detalleReunion/' + id, { headers: parameters });
   }
 
   /**

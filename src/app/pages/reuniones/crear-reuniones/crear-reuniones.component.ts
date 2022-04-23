@@ -77,9 +77,10 @@ export class CrearReunionesComponent implements OnInit {
     }
 
     // console.log(formData);
+    this.ocultar = false;
     this.reunionesService.storeReunion(formData)
       .subscribe(() => {
-        this.ocultar = false;
+        this.ocultar = true;
         this.router.navigateByUrl('/dashboard/listaReunion');
         Swal.fire({
           position: 'center',
@@ -91,7 +92,7 @@ export class CrearReunionesComponent implements OnInit {
         })
         // this.limpiar();
       }, (err) => {
-
+        console.log(err);
         Swal.fire('Error', err.error.message, 'error')
       }
       );
