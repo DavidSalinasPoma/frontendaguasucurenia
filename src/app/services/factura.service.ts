@@ -45,6 +45,15 @@ export class FacturaService {
   }
 
   /**
+ * cargar facturas reuniones
+ */
+  public showFacturaReunion(id: number) {
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.get<any>(base_url + `/api/show/facturareunion/${id}`, { headers: parameters });
+  }
+
+  /**
    * cargarUsuarios
    */
   public showFacturasDirectivos(id: number) {

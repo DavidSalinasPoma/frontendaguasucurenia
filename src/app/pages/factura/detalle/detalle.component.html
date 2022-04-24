@@ -111,6 +111,17 @@
                   <td>Directivo</td>
                   <td class="pull-right"> -20 Bs.</td>
                 </tr>
+                <ng-container *ngFor="let item of this.facturaReunion">
+                  <tr *ngIf="item.precio!=0; else factReunion">
+                    <td>Reunión</td>
+                    <td>{{ item.reunion }}</td>
+                    <td class="pull-right"> {{ item.precio }} Bs.</td>
+                  </tr>
+                  <ng-template #factReunion>
+                    <tr></tr>
+                  </ng-template>
+                </ng-container>
+
               </tbody>
             </table>
           </div>

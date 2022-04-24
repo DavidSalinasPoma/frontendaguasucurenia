@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { BarriosService } from 'src/app/services/barrios.service';
 import { Router } from '@angular/router';
 import { ReunionesService } from 'src/app/services/reuniones.service';
+import { ListasService } from 'src/app/services/listas.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class CrearReunionesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private barriosService: BarriosService,
     private reunionesService: ReunionesService,
-    private router: Router
+    private router: Router,
+    private listaServices: ListasService
   ) {
 
     this.crearFormulario();
@@ -67,35 +69,48 @@ export class CrearReunionesComponent implements OnInit {
    */
   public onSubmit(event: any) {
 
-    // console.log(this.formulario.value);
 
+    this.listaServices.validarLista()
+      .subscribe(({ lista }) => {
+        // console.log(lista);
+        if (lista.length != 0) {
 
-    const formData = {
-      reunion: this.nombreReunion?.value,
-      multa: this.multaReunion?.value,
-      fecha: this.fechaReunion?.value,
-    }
+          Swal.fire({
+            icon: 'info',
+            title: 'Error',
+            text: `No se puede crear una Reunión mientras existan lecturas pendientes!`,
+          })
 
-    // console.log(formData);
-    this.ocultar = false;
-    this.reunionesService.storeReunion(formData)
-      .subscribe(() => {
-        this.ocultar = true;
-        this.router.navigateByUrl('/dashboard/listaReunion');
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '¡Registro Correcto!',
-          text: `La reunión fue creado correctamente!`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-        // this.limpiar();
-      }, (err) => {
-        console.log(err);
-        Swal.fire('Error', err.error.message, 'error')
-      }
-      );
+        } else {
+
+          const formData = {
+            reunion: this.nombreReunion?.value,
+            multa: this.multaReunion?.value,
+            fecha: this.fechaReunion?.value,
+          }
+
+          // console.log(formData);
+          this.ocultar = false;
+          this.reunionesService.storeReunion(formData)
+            .subscribe(() => {
+              this.ocultar = true;
+              this.router.navigateByUrl('/dashboard/listaReunion');
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '¡Registro Correcto!',
+                text: `La reunión fue creado correctamente!`,
+                showConfirmButton: false,
+                timer: 3000
+              })
+              // this.limpiar();
+            }, (err) => {
+              console.log(err);
+              Swal.fire('Error', err.error.message, 'error')
+            }
+            );
+        }
+      });
   }
 
   /**

@@ -52,13 +52,6 @@ export class SidebarService {
       ]
     },
     {
-      titulo: 'Directorio',
-      icono: 'mdi mdi-format-list-bulleted',
-      submenu: [
-        { titulo: 'Lista directorio', url: 'directivos' }
-      ]
-    },
-    {
       titulo: 'Reuniones',
       icono: 'mdi mdi-account-box',
       submenu: [
@@ -66,6 +59,14 @@ export class SidebarService {
         { titulo: 'Lista de reuniones', url: 'listaReunion' }
       ]
     },
+    {
+      titulo: 'Directorio',
+      icono: 'mdi mdi-format-list-bulleted',
+      submenu: [
+        { titulo: 'Lista directorio', url: 'directivos' }
+      ]
+    },
+
   ];
 
   constructor() { }

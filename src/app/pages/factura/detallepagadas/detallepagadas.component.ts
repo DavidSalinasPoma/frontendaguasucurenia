@@ -45,7 +45,7 @@ export class DetallepagadasComponent implements OnInit {
   public mostraDirectivoMenor: boolean = false;
   public mostraDirectivoMayor: boolean = false;
   public facturaDirectivo: any = [];
-
+  public facturaReunion: any;
   constructor(
     private facturaServices: FacturaService,
     private rutaActiva: ActivatedRoute,
@@ -128,6 +128,7 @@ export class DetallepagadasComponent implements OnInit {
                     }
 
                     this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
+                    this.factReunion(item);
                     this.cargando = false;
 
                     // Convertir numeros a letras
@@ -148,6 +149,7 @@ export class DetallepagadasComponent implements OnInit {
                       }
 
                       this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
+                      this.factReunion(item);
                       this.cargando = false;
                       // Convertir numeros a letras
                       this.letras = covertirNumLetras(String(this.total));
@@ -177,6 +179,7 @@ export class DetallepagadasComponent implements OnInit {
                     }
 
                     this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                    this.factReunion(item);
                     this.cargando = false;
 
                     // Convertir numeros a letras
@@ -197,6 +200,7 @@ export class DetallepagadasComponent implements OnInit {
                       }
 
                       this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
+                      this.factReunion(item);
                       this.cargando = false;
                       // Convertir numeros a letras
                       this.letras = covertirNumLetras(String(this.total));
@@ -213,6 +217,27 @@ export class DetallepagadasComponent implements OnInit {
             );
         }
       });
+  }
+
+
+  /**
+   * factReunion
+   */
+  public factReunion(idFactura: number) {
+    this.facturaServices.showFacturaReunion(idFactura)
+      .subscribe(({ facturaReunion }) => {
+        // console.log(facturaReunion);
+        if (facturaReunion.length === 0) {
+          this.facturaReunion = [];
+        } else {
+          this.facturaReunion = facturaReunion;
+          facturaReunion.forEach((element: any) => {
+            this.total = this.total + element.precio;
+            // console.log(this.total);
+          });
+
+        }
+      })
   }
 
   /**

@@ -249,6 +249,7 @@ export class FacturaComponent implements OnInit {
 
         this.facturaServices.buscarFacturas(formDatos)
           .subscribe(({ factura }) => {
+            // console.log(factura);
 
             this.socios2 = factura.data;
             this.total = 0;
@@ -441,27 +442,18 @@ export class FacturaComponent implements OnInit {
             });
 
             this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
-            // console.log(this.totalSaldo);
+            this.totalSaldo = Number(this.totalSaldo);
+            this.factReunion(item, index);
 
-            const formData = {
-              saldo: Number(this.totalSaldo)
-            }
-            // console.log(this.options);
-
-            // return;
-            this.finalOptions = Object.assign(this.options[index], formData);
-            this.cargando = false;
           } else {
             this.facturaServices.retrasoFactura(item)
               .subscribe(({ factura }) => {
                 // console.log(factura);
                 this.socio = factura[0];
                 this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
-                const formData = {
-                  saldo: this.totalSaldo
-                }
-                this.finalOptions = Object.assign(this.options[index], formData);
-                this.cargando = false;
+                this.totalSaldo = Number(this.totalSaldo);
+                this.factReunion(item, index);
+
               })
           }
         } else {
@@ -475,27 +467,16 @@ export class FacturaComponent implements OnInit {
             });
 
             this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
-            // console.log(this.totalSaldo);
-
-            const formData = {
-              saldo: Number(this.totalSaldo)
-            }
-            // console.log(this.options);
-
-            // return;
-            this.finalOptions = Object.assign(this.options[index], formData);
-            this.cargando = false;
+            this.totalSaldo = Number(this.totalSaldo);
+            this.factReunion(item, index);
           } else {
             this.facturaServices.retrasoFactura(item)
               .subscribe(({ factura }) => {
                 // console.log(factura);
                 this.socio = factura[0];
                 this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
-                const formData = {
-                  saldo: this.totalSaldo
-                }
-                this.finalOptions = Object.assign(this.options[index], formData);
-                this.cargando = false;
+                this.totalSaldo = Number(this.totalSaldo);
+                this.factReunion(item, index);
               })
           }
         }
@@ -503,5 +484,39 @@ export class FacturaComponent implements OnInit {
 
 
       });
+  }
+
+  /**
+   * factReunion
+   */
+  public factReunion(item: number, index: number) {
+    this.facturaServices.showFacturaReunion(item)
+      .subscribe(({ facturaReunion }) => {
+        // console.log(facturaReunion);
+        if (facturaReunion.length === 0) {
+          const formData = {
+            saldo: this.totalSaldo
+          }
+          // console.log(this.options);
+
+          // return;
+          this.finalOptions = Object.assign(this.options[index], formData);
+          this.cargando = false;
+        } else {
+
+          facturaReunion.forEach((element: any) => {
+            this.totalSaldo = this.totalSaldo + element.precio;
+            // console.log(this.total);
+          });
+          const formData = {
+            saldo: this.totalSaldo
+          }
+          // console.log(this.options);
+
+          // return;
+          this.finalOptions = Object.assign(this.options[index], formData);
+          this.cargando = false;
+        }
+      })
   }
 }

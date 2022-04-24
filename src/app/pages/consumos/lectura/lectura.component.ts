@@ -10,6 +10,7 @@ import { LecturaService } from 'src/app/services/lectura.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { SociosService } from 'src/app/services/socios.service';
+import { ListasService } from 'src/app/services/listas.service';
 
 @Component({
   selector: 'app-lectura',
@@ -58,9 +59,7 @@ export class LecturaComponent implements OnInit, OnDestroy {
     private consumoServices: ConsumoService,
     private router: Router,
     private facturaServices: FacturaService,
-    private toastr: ToastrService,
-    private socioServices: SociosService
-
+    private listaServices: ListasService
   ) {
     // Recibiendo el parametro
     this.idSocio = this.rutaActiva.snapshot.params.id;
@@ -131,6 +130,8 @@ event:any   */
         text: `La lectura actual no puede ser menor a la lectura anterior`,
       })
     } else {
+
+      // Si esta todo ok guarda
 
       let mesFormat = '';
       let anioFormat = 0;
@@ -218,12 +219,17 @@ event:any   */
           const datosForm = {
             consumo_id: consumo.id,
             precio: consumo.precio,
-            directivo: consumo.directivo
+            directivo: consumo.directivo,
+            socio_id: consumo.socio_id
           }
 
           // Aqui La logica de generar factura
           this.facturaServices.crearFactura(datosForm)
-            .subscribe(() => { });
+            .subscribe((resp) => {
+              // console.log(resp);
+            });
+
+          // Pregunta si consumo esta vacio
 
 
         }, (err) => {
