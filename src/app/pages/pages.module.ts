@@ -52,6 +52,8 @@ import { SociogeneralComponent } from './reportes/sociogeneral/sociogeneral.comp
 import { DetallereunionesComponent } from './reuniones/detallereuniones/detallereuniones.component';
 import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
 import { ListamultasComponent } from './reuniones/listamultas/listamultas.component';
+import { SociocobroComponent } from './reportes/sociocobro/sociocobro.component';
+import { SocionocobroComponent } from './reportes/socionocobro/socionocobro.component';
 
 
 @NgModule({
@@ -92,7 +94,9 @@ import { ListamultasComponent } from './reuniones/listamultas/listamultas.compon
     SociogeneralComponent,
     DetallereunionesComponent,
     CobroxmesComponent,
-    ListamultasComponent
+    ListamultasComponent,
+    SociocobroComponent,
+    SocionocobroComponent
   ],
   imports: [
     CommonModule,
@@ -138,7 +142,9 @@ import { ListamultasComponent } from './reuniones/listamultas/listamultas.compon
     ReportesComponent,
     SociogeneralComponent,
     DetallereunionesComponent,
-    CobroxmesComponent
+    CobroxmesComponent,
+    SociocobroComponent,
+    SocionocobroComponent
   ]
 })
 export class PagesModule { }

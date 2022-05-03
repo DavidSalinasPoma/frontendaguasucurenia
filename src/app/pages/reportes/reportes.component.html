@@ -47,31 +47,40 @@
       </div>
     </a>
   </div>
-  <!-- 
+
+  <!-- Boton reporte  cobro por mes -->
   <div class="col-lg-3">
-    <div class="card bg-primary">
-      <div class="card-body">
-        <div class="d-flex no-block">
-          <div class="m-r-20 align-self-center"><img src="../assets/images/icon/assets-w.png" alt="Income"></div>
-          <div class="align-self-center">
-            <h6 class="text-white m-t-10 m-b-0">Total Assets</h6>
-            <h2 class="m-t-0 text-white">987,563</h2>
+    <a [routerLink]="[ '/dashboard/cobrosocio']">
+      <div class="boton-socio-reporte-mes card bg-danger">
+        <div class="card-body">
+          <div class="d-flex no-block">
+            <div class="m-r-20 align-self-center"><i class="icono-reportes fa fa-list"></i></div>
+            <div class="align-self-center">
+              <h5 class="text-white m-t-10 m-b-0">Cobro de socios por mes</h5>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
   </div>
+
+</div>
+
+<!-- Boton reporte  cobro por mes -->
+<div class="row animated fadeIn fast">
   <div class="col-lg-3">
-    <div class="card bg-danger">
-      <div class="card-body">
-        <div class="d-flex no-block">
-          <div class="m-r-20 align-self-center"><img src="../assets/images/icon/staff-w.png" alt="Income"></div>
-          <div class="align-self-center">
-            <h6 class="text-white m-t-10 m-b-0">Total Staff</h6>
-            <h2 class="m-t-0 text-white">987,563</h2>
+    <a [routerLink]="[ '/dashboard/cobronosocio']">
+      <div class="boton-no-reporte-mes card bg-warning">
+        <div class="card-body">
+          <div class="d-flex no-block">
+            <div class="m-r-20 align-self-center"><i class="icono-reportes fa fa-list"></i></div>
+            <div class="align-self-center">
+              <h5 class="text-white m-t-10 m-b-0">Socios que no pagaron por mes</h5>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div> -->
+    </a>
+  </div>
+
 </div>

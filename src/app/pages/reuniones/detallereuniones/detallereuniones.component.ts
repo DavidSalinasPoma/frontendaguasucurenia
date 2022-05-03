@@ -98,7 +98,6 @@ export class DetallereunionesComponent implements OnInit {
         this.cargarListaSocios();
 
         if (this.totalSocios === 1) {
-
           const formDataLista = {
             estado: 1
           }
@@ -109,7 +108,6 @@ export class DetallereunionesComponent implements OnInit {
               this.toastr.info('Registro de multas completada!', 'Registro');
             }, (err) => {
               console.log(err);
-
               Swal.fire('Error', err.error.message, 'error')
             }
             )

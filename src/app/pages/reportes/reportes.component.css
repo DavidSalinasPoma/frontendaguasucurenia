@@ -12,3 +12,13 @@
   background-color: rgb(64, 60, 122) !important;
   cursor: pointer;
 }
+
+.boton-socio-reporte-mes:hover {
+  background-color: rgb(100, 27, 27) !important;
+  cursor: pointer;
+}
+
+.boton-no-reporte-mes:hover {
+  background-color: rgb(156, 121, 22) !important;
+  cursor: pointer;
+}

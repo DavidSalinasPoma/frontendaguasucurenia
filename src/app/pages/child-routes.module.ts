@@ -1,3 +1,5 @@
+import { SocionocobroComponent } from './reportes/socionocobro/socionocobro.component';
+import { SociocobroComponent } from './reportes/sociocobro/sociocobro.component';
 import { DetallereunionesComponent } from './reuniones/detallereuniones/detallereuniones.component';
 import { SociogeneralComponent } from './reportes/sociogeneral/sociogeneral.component';
 import { SocioxbarrioComponent } from './reportes/socioxbarrio/socioxbarrio.component';
@@ -98,6 +100,10 @@ const childRoute: Routes = [
   { path: 'reportegeneral', component: SociogeneralComponent, data: { titulo: 'Reporte de general de socios' } },
 
   { path: 'cobroxmes', component: CobroxmesComponent, data: { titulo: 'Reporte cobros por mes' } },
+
+  { path: 'cobrosocio', component: SociocobroComponent, data: { titulo: 'Reporte socios que pagaron' } },
+
+  { path: 'cobronosocio', component: SocionocobroComponent, data: { titulo: 'Reporte socios que no pagaron' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]

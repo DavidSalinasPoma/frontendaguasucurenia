@@ -203,123 +203,7 @@ export class FacturaComponent implements OnInit {
     }
   }
 
-  /**
-   * cargarUsuarioBuscar
-   */
-  public buscarFacturas(texto: any, url?: string, band?: number) {
-    // console.log(texto);
 
-
-    if (band) {
-      localStorage.setItem('usuario', texto);
-    }
-
-    if (texto === '' && url === '') {
-      const urlParams = String(localStorage.getItem('paramsUrl'));
-
-      this.cargarFacturas(urlParams)
-
-    } else {
-
-
-
-      let urls;
-
-      if (texto != '' || this.textoBuscar === '') {
-
-        this.textoBuscar = texto
-        urls = `${base_url}/api/ubicar/facturas?page=1`
-
-      }
-      if (url != '') {
-        urls = url;
-        // console.log(url);
-
-      }
-
-      const formDatos = {
-        textos: Number(this.textoBuscar),
-        url: urls
-      }
-
-      if (this.textoBuscar) {
-
-        // console.log(formDatos);
-        this.cargando = true;
-
-        this.facturaServices.buscarFacturas(formDatos)
-          .subscribe(({ factura }) => {
-            // console.log(factura);
-
-            this.socios2 = factura.data;
-            this.total = 0;
-            let count = 0;
-            if (this.socios2.length != 0) {
-
-              this.options = [];
-              // Implementando logica de rxjs
-              let myArrayOf$: Observable<any>;
-              myArrayOf$ = of(...this.socios2);
-              myArrayOf$
-                .pipe(
-                  map(data => {
-                    data.estado = Number(data.estado);
-                    data.directivo = Number(data.directivo);
-                    this.options.push(data);
-                  })
-                )
-                .subscribe();
-              this.socios2 = this.options;
-              this.options = [];
-              this.socios2.forEach((element: any, index) => {
-                if (element.estado_pago === 0 || element.estado_pago === '0') {
-                  this.options.push(element);
-                  this.total = this.total + 1;
-                  // console.log(this.options);
-                  // console.log(index);
-                  this.totalDetalle(Number(element.idFactura), count);
-                  count++;
-                }
-              });
-
-
-
-              this.paginaSiguiente2 = factura.next_page_url;
-              this.paginaAnterior2 = factura.prev_page_url;
-              this.cantPaginas2 = factura.last_page;
-              this.currentPage2 = factura.current_page;
-
-              // Persistencia de pagina
-              localStorage.setItem('urlPagination', `${base_url}/api/ubicar/facturas?page=${this.currentPage2}`);
-
-              if (this.options.length === 0) {
-                this.cargando = false;
-                Swal.fire({
-                  icon: 'info',
-                  title: 'Facturas',
-                  text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
-                })
-              }
-
-            } else {
-              // loading
-              this.options = [];
-              this.total = 0;
-              Swal.fire({
-                icon: 'info',
-                title: 'La factura no exite!',
-                text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
-              })
-              localStorage.removeItem('usuario');
-              const url: any = localStorage.getItem('paramsUrl');
-              this.cargarFacturas(url);
-              // localStorage.setItem('urlPagination', `${base_url}/api/buscar/facturas?page=1`);
-
-            }
-          })
-      }
-    }
-  }
 
   /**
    * cargarUsuario
@@ -421,11 +305,130 @@ export class FacturaComponent implements OnInit {
   }
 
   /**
+  * cargarUsuarioBuscar
+  */
+  public buscarFacturas(texto: any, url?: string, band?: number) {
+    // console.log(texto);
+
+
+    if (band) {
+      localStorage.setItem('usuario', texto);
+    }
+
+    if (texto === '' && url === '') {
+      const urlParams = String(localStorage.getItem('paramsUrl'));
+
+      this.cargarFacturas(urlParams)
+
+    } else {
+
+
+
+      let urls;
+
+      if (texto != '' || this.textoBuscar === '') {
+
+        this.textoBuscar = texto
+        urls = `${base_url}/api/ubicar/facturas?page=1`
+
+      }
+      if (url != '') {
+        urls = url;
+        // console.log(url);
+
+      }
+
+      const formDatos = {
+        textos: Number(this.textoBuscar),
+        url: urls
+      }
+
+      if (this.textoBuscar) {
+
+        // console.log(formDatos);
+        this.cargando = true;
+
+        this.facturaServices.buscarFacturas(formDatos)
+          .subscribe(({ factura }) => {
+            // console.log(factura);
+
+            this.socios2 = factura.data;
+
+            this.total = 0;
+            let count = 0;
+            if (this.socios2.length != 0) {
+
+              this.options = [];
+              // Implementando logica de rxjs
+              let myArrayOf$: Observable<any>;
+              myArrayOf$ = of(...this.socios2);
+              myArrayOf$
+                .pipe(
+                  map(data => {
+                    data.estado = Number(data.estado);
+                    data.directivo = Number(data.directivo);
+                    this.options.push(data);
+                  })
+                )
+                .subscribe();
+              this.socios2 = this.options;
+
+              this.options = [];
+              this.socios2.forEach((element: any, index) => {
+                if (element.estado_pago === 0 || element.estado_pago === '0') {
+                  this.options.push(element);
+                  this.total = this.total + 1;
+                  // console.log(this.options);
+                  // console.log(index);
+                  this.totalDetalle(Number(element.idFactura), count);
+                  count++;
+                }
+              });
+
+
+
+              this.paginaSiguiente2 = factura.next_page_url;
+              this.paginaAnterior2 = factura.prev_page_url;
+              this.cantPaginas2 = factura.last_page;
+              this.currentPage2 = factura.current_page;
+
+              // Persistencia de pagina
+              localStorage.setItem('urlPagination', `${base_url}/api/ubicar/facturas?page=${this.currentPage2}`);
+
+              if (this.options.length === 0) {
+                this.cargando = false;
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Facturas',
+                  text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
+                })
+              }
+
+            } else {
+              // loading
+              this.options = [];
+              this.total = 0;
+              Swal.fire({
+                icon: 'info',
+                title: 'La factura no exite!',
+                text: `El socio con codigo: ${texto} no tiene facturas pendientes!`,
+              })
+              localStorage.removeItem('usuario');
+              const url: any = localStorage.getItem('paramsUrl');
+              this.cargarFacturas(url);
+              // localStorage.setItem('urlPagination', `${base_url}/api/buscar/facturas?page=1`);
+
+            }
+          })
+      }
+    }
+  }
+
+  /**
   * totalDetalle
   */
   public totalDetalle(item: number, index: number) {
-    // console.log(item, ' ', index);
-
+    this.totalSaldo = 0;
     this.facturaServices.showFacturas(item)
       .subscribe(({ detalle }) => {
         // console.log(detalle);
@@ -440,11 +443,9 @@ export class FacturaComponent implements OnInit {
             detalle.forEach((element: any) => {
               suma = suma + Number(element.precioDetalle)
             });
-
             this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
             this.totalSaldo = Number(this.totalSaldo);
-            this.factReunion(item, index);
-
+            this.factReunion(this.totalSaldo, item, index);
           } else {
             this.facturaServices.retrasoFactura(item)
               .subscribe(({ factura }) => {
@@ -452,36 +453,37 @@ export class FacturaComponent implements OnInit {
                 this.socio = factura[0];
                 this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
                 this.totalSaldo = Number(this.totalSaldo);
-                this.factReunion(item, index);
+
+                this.factReunion(this.totalSaldo, item, index);
 
               })
           }
         } else {
+
+          this.totalSaldo = 0;
           let suma = 0;
           if (detalle.length != 0) {
             this.socio = detalle[0];
             this.detalle = detalle;
-            // console.log(detalle);
             detalle.forEach((element: any) => {
               suma = suma + Number(element.precioDetalle)
             });
 
             this.totalSaldo = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
             this.totalSaldo = Number(this.totalSaldo);
-            this.factReunion(item, index);
+
+            this.factReunion(this.totalSaldo, item, index);
           } else {
             this.facturaServices.retrasoFactura(item)
               .subscribe(({ factura }) => {
-                // console.log(factura);
                 this.socio = factura[0];
                 this.totalSaldo = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
                 this.totalSaldo = Number(this.totalSaldo);
-                this.factReunion(item, index);
+                console.log(this.totalSaldo);
+                this.factReunion(this.totalSaldo, item, index);
               })
           }
         }
-
-
 
       });
   }
@@ -489,31 +491,25 @@ export class FacturaComponent implements OnInit {
   /**
    * factReunion
    */
-  public factReunion(item: number, index: number) {
+  public factReunion(totalSaldo: number, item: number, index: number) {
+
     this.facturaServices.showFacturaReunion(item)
       .subscribe(({ facturaReunion }) => {
-        // console.log(facturaReunion);
+
         if (facturaReunion.length === 0) {
           const formData = {
-            saldo: this.totalSaldo
+            saldo: totalSaldo
           }
-          // console.log(this.options);
-
-          // return;
           this.finalOptions = Object.assign(this.options[index], formData);
+
           this.cargando = false;
         } else {
-
           facturaReunion.forEach((element: any) => {
-            this.totalSaldo = this.totalSaldo + element.precio;
-            // console.log(this.total);
+            totalSaldo = totalSaldo + Number(element.precio);
           });
           const formData = {
-            saldo: this.totalSaldo
+            saldo: totalSaldo
           }
-          // console.log(this.options);
-
-          // return;
           this.finalOptions = Object.assign(this.options[index], formData);
           this.cargando = false;
         }

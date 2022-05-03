@@ -1,8 +1,6 @@
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { ReportesService } from 'src/app/services/reportes.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -12,12 +10,13 @@ interface Mes {
   viewValue: string;
 }
 
+
 @Component({
-  selector: 'app-cobroxmes',
-  templateUrl: './cobroxmes.component.html',
-  styleUrls: ['./cobroxmes.component.css']
+  selector: 'app-sociocobro',
+  templateUrl: './sociocobro.component.html',
+  styleUrls: ['./sociocobro.component.css']
 })
-export class CobroxmesComponent implements OnInit {
+export class SociocobroComponent implements OnInit {
 
   public meses: Mes[] = [
     { value: 'enero', viewValue: 'Enero' },
@@ -43,8 +42,8 @@ export class CobroxmesComponent implements OnInit {
 
   public mostrar: boolean = false;
 
-  public totalConsumo: number = 0;
-  public totalConsumoString: any;
+  public totaConsumo: number = 0;
+  public totaConsumoString: any;
   public totalMes: number = 0;
   public totalConvertidoMes: any;
   public totalDirectivos: number = 0;
@@ -88,32 +87,13 @@ export class CobroxmesComponent implements OnInit {
   public onSubmit(event: any) {
     this.cargando = true
     this.reporteServices.cobrosxMes(this.formulario.value)
-      .subscribe((
-        {
-          consumoTotal,
-          facturaTotalMes,
-          facturaTotalDirectivos,
-          facturaTotalRetrasos,
-          agrupados,
-          consumoPrecioTotal,
-          facturaTotal
-        }) => {
+      .subscribe(({ sumaSoloConsumoTotal, facturaTotalMes, facturaTotalDirectivos, facturaTotalRetrasos, agrupados, multaReunion }) => {
+        console.log(multaReunion);
 
-        //Solo el consumo total por cubos
-        console.log(consumoTotal);
+        this.totalDirectivos = facturaTotalDirectivos[0]?.sumaFacturasDirectivos_total || 0;
+        this.totaConsumo = Number(sumaSoloConsumoTotal) + Number(this.totalDirectivos);
 
-
-        console.log(consumoPrecioTotal);
-        console.log(facturaTotal);
-        console.log(facturaTotalMes);
-        console.log(facturaTotalDirectivos);
-        console.log(facturaTotalRetrasos);
-        console.log(agrupados);
-
-        // this.totalDirectivos = facturaTotalDirectivos[0]?.sumaFacturasDirectivos_total || 0;
-        // this.totalConsumo = Number(consumoTotal[0].consumoTotal) + Number(this.totalDirectivos);
-
-        this.totalConsumoString = Number(consumoTotal[0].consumoTotal).toLocaleString('en-US');
+        this.totaConsumoString = Number(this.totaConsumo).toLocaleString('en-US');
 
         this.totalRetrazo = facturaTotalRetrasos[0]?.sumaFacturasRetrasos_total || 0;
 
@@ -153,3 +133,4 @@ export class CobroxmesComponent implements OnInit {
   }
 
 }
+
