@@ -94,6 +94,8 @@ export class DetallepagadasComponent implements OnInit {
         if (Number(directivo) && precioConsumo <= 20) {
 
           this.facturaDirectivo = factura[0];
+          // console.log(this.facturaDirectivo);
+
           this.mostraDirectivoMenor = true;
           this.cargando = false;
           // Convertir numeros a letras

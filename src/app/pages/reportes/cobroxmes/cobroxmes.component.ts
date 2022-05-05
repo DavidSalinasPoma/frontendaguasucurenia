@@ -1,8 +1,6 @@
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { ReportesService } from 'src/app/services/reportes.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -44,12 +42,13 @@ export class CobroxmesComponent implements OnInit {
   public mostrar: boolean = false;
 
   public totalConsumo: number = 0;
-  public totalConsumoString: any;
+  public facturaTotalPago: any;
   public totalMes: number = 0;
   public totalConvertidoMes: any;
   public totalDirectivos: number = 0;
   public totalRetrazo: number = 0;
-  public totalAgrupados: any;
+  public facturaDetalle: any;
+  public multaReunion: any;
 
   // Fecha reporte
   public fechaReporte = new Date();
@@ -90,40 +89,39 @@ export class CobroxmesComponent implements OnInit {
     this.reporteServices.cobrosxMes(this.formulario.value)
       .subscribe((
         {
-          consumoTotal,
-          facturaTotalMes,
-          facturaTotalDirectivos,
+          facturaTotalPagado,
+          consumoDirectivoMenorVeinte,
+          facturaDetalle,
           facturaTotalRetrasos,
-          agrupados,
-          consumoPrecioTotal,
-          facturaTotal
+          multaReunion
         }) => {
 
-        //Solo el consumo total por cubos
-        console.log(consumoTotal);
+        // console.log(facturaTotalPagado);
+        // console.log(consumoDirectivoMenorVeinte);
+        // console.log(facturaDetalle);
+        // console.log(facturaTotalRetrasos);
+        // console.log(multaReunion);
 
+        this.totalDirectivos = Number(consumoDirectivoMenorVeinte[0]?.consumoDirectivoMenorVeinte) || 0;
 
-        console.log(consumoPrecioTotal);
-        console.log(facturaTotal);
-        console.log(facturaTotalMes);
-        console.log(facturaTotalDirectivos);
-        console.log(facturaTotalRetrasos);
-        console.log(agrupados);
+        this.facturaDetalle = facturaDetalle;
+        this.totalRetrazo = Number(facturaTotalRetrasos[0]?.sumaFacturasRetrasos_total) || 0;
 
-        // this.totalDirectivos = facturaTotalDirectivos[0]?.sumaFacturasDirectivos_total || 0;
-        // this.totalConsumo = Number(consumoTotal[0].consumoTotal) + Number(this.totalDirectivos);
+        this.multaReunion = Number(multaReunion[0]?.sumaReunion) || 0;
 
-        this.totalConsumoString = Number(consumoTotal[0].consumoTotal).toLocaleString('en-US');
+        let suma = 0;
+        this.facturaDetalle.forEach((element: any) => {
+          suma = suma + Number(element?.sumaProducto_total || 0);
+        });
 
-        this.totalRetrazo = facturaTotalRetrasos[0]?.sumaFacturasRetrasos_total || 0;
+        this.facturaTotalPago = Number(facturaTotalPagado[0]?.facturaTotalPagado || 0) - suma - this.totalRetrazo - this.multaReunion;
 
-        this.totalAgrupados = agrupados;
+        this.totalMes = Number(this.facturaTotalPago) - Number(this.totalDirectivos) + suma + Number(this.totalRetrazo) + Number(this.multaReunion);
 
-        this.totalMes = (facturaTotalMes[0]?.sumaFacturas_total || 0) - Number(this.totalDirectivos);
+        this.facturaTotalPago = this.facturaTotalPago.toLocaleString('en-US');
 
         this.totalConvertidoMes = Number(this.totalMes).toLocaleString('en-US');
-
-
+        // console.log(this.totalMes);
 
 
         if (this.totalMes === 0) {

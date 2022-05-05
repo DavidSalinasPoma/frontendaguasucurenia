@@ -109,10 +109,6 @@ export class DetalleComponent implements OnInit {
             this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
             this.factReunion(this.total, item);
             this.cargando = false;
-
-            // Convertir numeros a letras
-            // this.letras = covertirNumLetras(String(this.total));
-
             this.mostrarDirectivo = true;
 
           } else {
@@ -130,8 +126,6 @@ export class DetalleComponent implements OnInit {
                 this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo) - 20;
                 this.factReunion(this.total, item);
                 this.cargando = false;
-                // Convertir numeros a letras
-                // this.letras = covertirNumLetras(String(this.total));
                 this.mostrarDirectivo = true;
               })
           }
@@ -157,10 +151,6 @@ export class DetalleComponent implements OnInit {
             this.total = suma + Number(this.socio.retraso) + Number(this.socio.precioConsumo);
             this.factReunion(this.total, item);
             this.cargando = false;
-
-            // Convertir numeros a letras
-            // this.letras = covertirNumLetras(String(this.total));
-
             this.mostrarDirectivo = false;
 
           } else {
@@ -178,9 +168,6 @@ export class DetalleComponent implements OnInit {
                 this.total = Number(this.socio.retraso) + Number(this.socio.precioConsumo);
                 this.factReunion(this.total, item);
                 this.cargando = false;
-                // Convertir numeros a letras
-                // this.letras = covertirNumLetras(String(this.total));
-
                 this.mostrarDirectivo = false;
               })
           }

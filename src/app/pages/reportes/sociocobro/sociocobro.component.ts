@@ -10,7 +10,6 @@ interface Mes {
   viewValue: string;
 }
 
-
 @Component({
   selector: 'app-sociocobro',
   templateUrl: './sociocobro.component.html',
@@ -42,13 +41,7 @@ export class SociocobroComponent implements OnInit {
 
   public mostrar: boolean = false;
 
-  public totaConsumo: number = 0;
-  public totaConsumoString: any;
-  public totalMes: number = 0;
-  public totalConvertidoMes: any;
-  public totalDirectivos: number = 0;
-  public totalRetrazo: number = 0;
-  public totalAgrupados: any;
+  public listaSociosPagaron: any;
 
   // Fecha reporte
   public fechaReporte = new Date();
@@ -86,42 +79,32 @@ export class SociocobroComponent implements OnInit {
    */
   public onSubmit(event: any) {
     this.cargando = true
-    this.reporteServices.cobrosxMes(this.formulario.value)
-      .subscribe(({ sumaSoloConsumoTotal, facturaTotalMes, facturaTotalDirectivos, facturaTotalRetrasos, agrupados, multaReunion }) => {
-        console.log(multaReunion);
+    this.reporteServices.cobrosxMesSocios(this.formulario.value)
+      .subscribe((
+        {
+          // CobroSocioporMes
+          listaSociosPagaron
+        }) => {
 
-        this.totalDirectivos = facturaTotalDirectivos[0]?.sumaFacturasDirectivos_total || 0;
-        this.totaConsumo = Number(sumaSoloConsumoTotal) + Number(this.totalDirectivos);
+        console.log(listaSociosPagaron);
+        this.listaSociosPagaron = listaSociosPagaron
 
-        this.totaConsumoString = Number(this.totaConsumo).toLocaleString('en-US');
-
-        this.totalRetrazo = facturaTotalRetrasos[0]?.sumaFacturasRetrasos_total || 0;
-
-        this.totalAgrupados = agrupados;
-
-        this.totalMes = (facturaTotalMes[0]?.sumaFacturas_total || 0) - Number(this.totalDirectivos);
-
-        this.totalConvertidoMes = Number(this.totalMes).toLocaleString('en-US');
-
-
-
-
-        if (this.totalMes === 0) {
-          this.cargando = false;
-          this.mostrar = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Este reporte no existe!',
-            footer: 'Vuelva a intentarlo..'
-          })
-        } else {
-          this.toastr.success('Reporte encontrado con exito!', 'Sistema de reportes');
-          this.cargando = false;
-          this.mostrar = true;
-        }
-      }, err => {
-        console.log(err);
+        //   if (this.totalMes === 0) {
+        //     this.cargando = false;
+        //     this.mostrar = false;
+        //     Swal.fire({
+        //       icon: 'error',
+        //       title: 'Oops...',
+        //       text: 'Este reporte no existe!',
+        //       footer: 'Vuelva a intentarlo..'
+        //     })
+        //   } else {
+        //     this.toastr.success('Reporte encontrado con exito!', 'Sistema de reportes');
+        this.cargando = false;
+        this.mostrar = true;
+        //   }
+        // }, err => {
+        //   console.log(err);
       })
 
   }
@@ -133,4 +116,3 @@ export class SociocobroComponent implements OnInit {
   }
 
 }
-

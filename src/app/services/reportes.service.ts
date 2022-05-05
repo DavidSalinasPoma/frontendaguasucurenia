@@ -24,14 +24,19 @@ export class ReportesService {
   }
 
   // Reportes cobros por mes
-  /**
- * cargarUsuarios
- */
   public cobrosxMes(formData: any) {
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
     return this.http.post<any>(base_url + `/api/indexreportes/cobroxmes`, formData, { headers: parameters });
+  }
+
+  // Reportes Listas socios cobros por mes
+  public cobrosxMesSocios(formData: any) {
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post<any>(base_url + `/api/indexreportes/cobroxmesocios`, formData, { headers: parameters });
   }
 
 }

@@ -10,7 +10,7 @@
            <div class="card card-body">
              <div class="row">
                <div class="col-8">
-                 <h3 class="box-title m-b-0">Reportes cobros por mes</h3>
+                 <h3 class="box-title m-b-0">Reportes de socios que pagaron por mes</h3>
                  <p class="text-muted m-b-30 font-13"> Sistema de reportes</p>
                </div>
                <div class="col-4 row justify-content-end">
@@ -101,58 +101,56 @@
          </span> Imprimir</button>
      </div>
      <div id="htmlDatas" class="card card-body printableArea">
-       <!-- <h3><b>INVOICE</b> <span class="pull-right">#5669626</span></h3>
-       <hr> -->
-       <div class="row border p-4">
-         <div class="col-md-12">
-           <h4 class="">Reporte cobro por mes</h4>
-           <p class="m-t-30 mb-0">
-             Fecha reporte : {{ this.fechaReporte | date:'longDate'  }} <i class="fa fa-calendar"></i>
-           </p>
-         </div>
-         <div class="col-md-12">
-           <div class="table-responsive m-t-40" style="clear: both;">
-             <table class="table table-hover">
-               <thead>
-                 <tr>
-                   <th class="w100">Descripción</th>
-                   <th class="text-right w100">Total</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
-                   <td>Total consumo</td>
-                   <td class="text-right">{{ this.totaConsumoString }} Bs.</td>
-                 </tr>
-                 <tr>
-                   <td>Total directivos</td>
-                   <td *ngIf="this.totalDirectivos===0; else notShow" class="text-right">{{ this.totalDirectivos }} Bs.
-                   </td>
-                   <ng-template #notShow>
-                     <td class="text-right">- {{ this.totalDirectivos }} Bs.</td>
-                   </ng-template>
-                 </tr>
-                 <tr>
-                   <td>Total Retrasos</td>
-                   <td class="text-right">{{ this.totalRetrazo }} Bs.</td>
-                 </tr>
-                 <tr *ngFor="let item of this.totalAgrupados">
-                   <td>{{ item.producto }}</td>
-                   <td class="text-right">{{ item.sumaProducto_total }} Bs.</td>
-                 </tr>
-               </tbody>
-             </table>
-           </div>
-         </div>
-         <div class="col-md-12">
-           <div class="pull-right m-t-30 text-right">
-             <hr>
-             <h3><b>Total :</b> {{ this.totalConvertidoMes }} Bs.</h3>
-           </div>
-           <div class="clearfix"></div>
+       <div class="table-responsive m-t-40">
+         <table class="table stylish-table">
+           <thead>
+             <tr>
 
-         </div>
+               <th colspan="1">Codigo Socio</th>
+               <th>Socio</th>
+               <th>Carnet</th>
+               <th>Directivo</th>
+               <th>Total consumo</th>
+               <th>Multa retraso</th>
+               <th>Multa reunión</th>
+               <th>Eventos o servicios</th>
+               <th>Total pagado</th>
+
+             </tr>
+           </thead>
+           <tbody>
+             <tr *ngFor="let item of this.listaSociosPagaron" class="active" class="animated fadeIn fast">
+               <td>{{ item.idSocio }}</td>
+               <td>
+                 {{ item.nombres }} {{ item.paterno }}
+                 {{ item.materno }}
+               </td>
+               <td>{{ item.carnet }}</td>
+
+               <td *ngIf="item.directivo; else notShowuno" class="text-right">
+                 Si
+               </td>
+               <ng-template #notShowuno>
+                 <td class="text-right">No</td>
+               </ng-template>
+
+               <td>{{ item.precioConsumo }} Bs.</td>
+               <td>{{ item.retraso }} Bs.</td>
+               <td>{{ item.reunionPrecio }} Bs.</td>
+               <td *ngIf="item.directivo; else notShowDos" class="text-right">
+                 {{ item.total_pagado - item.precioConsumo -item.reunionPrecio + 20 }} Bs.
+               </td>
+               <ng-template #notShowDos>
+                 <td class="text-right">
+                   {{ item.total_pagado - item.precioConsumo -item.reunionPrecio }} Bs.
+                 </td>
+               </ng-template>
+               <td>{{ item.total_pagado }} Bs.</td>
+             </tr>
+           </tbody>
+         </table>
        </div>
+
      </div>
    </div>
  </div>
