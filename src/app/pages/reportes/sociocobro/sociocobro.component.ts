@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReportesService } from 'src/app/services/reportes.service';
 import { ToastrService } from 'ngx-toastr';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 interface Mes {
@@ -41,7 +43,11 @@ export class SociocobroComponent implements OnInit {
 
   public mostrar: boolean = false;
 
-  public listaSociosPagaron: any;
+  public listaSociosPagaron: any = [];
+  public listaDirectivosBeneficiarios: any = [];
+
+  public sumaTotal: number = 0;
+  public sumaTotalBeneficiario: number = 0;
 
   // Fecha reporte
   public fechaReporte = new Date();
@@ -82,29 +88,69 @@ export class SociocobroComponent implements OnInit {
     this.reporteServices.cobrosxMesSocios(this.formulario.value)
       .subscribe((
         {
-          // CobroSocioporMes
-          listaSociosPagaron
+          listaSociosPagaron,
+          listaDirectivosBeneficiarios,
         }) => {
 
-        console.log(listaSociosPagaron);
-        this.listaSociosPagaron = listaSociosPagaron
+        // console.log(listaSociosPagaron);
 
-        //   if (this.totalMes === 0) {
-        //     this.cargando = false;
-        //     this.mostrar = false;
-        //     Swal.fire({
-        //       icon: 'error',
-        //       title: 'Oops...',
-        //       text: 'Este reporte no existe!',
-        //       footer: 'Vuelva a intentarlo..'
-        //     })
-        //   } else {
-        //     this.toastr.success('Reporte encontrado con exito!', 'Sistema de reportes');
-        this.cargando = false;
-        this.mostrar = true;
-        //   }
-        // }, err => {
-        //   console.log(err);
+        // Implementando logica de rxjs
+        let myArrayOf$: Observable<any>;
+
+        myArrayOf$ = of(...listaSociosPagaron);
+        myArrayOf$
+          .pipe(
+            map(data => {
+              // console.log(data);
+              data.directivo = Number(data.directivo);
+              this.listaSociosPagaron.push(data);
+            })
+          )
+          .subscribe();
+
+        // Implementando logica de rxjs
+        let myArrayOf2$: Observable<any>;
+        myArrayOf2$ = of(...listaDirectivosBeneficiarios);
+
+        myArrayOf2$
+          .pipe(
+            map(data => {
+              data.directivo = Number(data.directivo);
+              this.listaDirectivosBeneficiarios.push(data);
+            })
+          )
+          .subscribe();
+        // console.log(this.listaDirectivosBeneficiarios);
+
+        let sumas = 0;
+        let sumaBeneficiarios = 0;
+
+        this.listaSociosPagaron.forEach((element: any) => {
+          sumas = sumas + Number(element.total_pagado);
+        });
+
+        this.sumaTotal = sumas;
+        this.listaDirectivosBeneficiarios.forEach((element: any) => {
+          sumaBeneficiarios = sumaBeneficiarios + Number(element.total_pagado);
+        });
+        this.sumaTotalBeneficiario = sumaBeneficiarios;
+
+        if (this.sumaTotal === 0 || this.sumaTotalBeneficiario === 0) {
+          this.cargando = false;
+          this.mostrar = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Este reporte no existe!',
+            footer: 'Vuelva a intentarlo..'
+          })
+        } else {
+          this.toastr.success('Reporte encontrado con exito!', 'Sistema de reportes');
+          this.cargando = false;
+          this.mostrar = true;
+        }
+      }, err => {
+        console.log(err);
       })
 
   }

@@ -1,8 +1,6 @@
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { ReportesService } from 'src/app/services/reportes.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -44,13 +42,11 @@ export class SocionocobroComponent implements OnInit {
 
   public mostrar: boolean = false;
 
-  public totaConsumo: number = 0;
-  public totaConsumoString: any;
-  public totalMes: number = 0;
-  public totalConvertidoMes: any;
-  public totalDirectivos: number = 0;
-  public totalRetrazo: number = 0;
-  public totalAgrupados: any;
+  public listaSociosPagaron: any;
+  public listaDirectivosBeneficiarios: any;
+
+  public sumaTotal: number = 0;
+  public sumaTotalBeneficiario: number = 0;
 
   // Fecha reporte
   public fechaReporte = new Date();
@@ -88,27 +84,33 @@ export class SocionocobroComponent implements OnInit {
    */
   public onSubmit(event: any) {
     this.cargando = true
-    this.reporteServices.cobrosxMes(this.formulario.value)
-      .subscribe(({ sumaSoloConsumoTotal, facturaTotalMes, facturaTotalDirectivos, facturaTotalRetrasos, agrupados }) => {
+    this.reporteServices.cobrosxMesSocios(this.formulario.value)
+      .subscribe((
+        {
+          // CobroSocioporMes
+          listaSociosPagaron,
+          listaDirectivosBeneficiarios,
+          suma
+        }) => {
 
+        console.log(listaSociosPagaron);
+        console.log(suma);
+        this.listaSociosPagaron = listaSociosPagaron;
+        this.listaDirectivosBeneficiarios = listaDirectivosBeneficiarios;
+        let sumas = 0;
+        let sumaBeneficiarios = 0;
 
-        this.totalDirectivos = facturaTotalDirectivos[0]?.sumaFacturasDirectivos_total || 0;
-        this.totaConsumo = Number(sumaSoloConsumoTotal) + Number(this.totalDirectivos);
+        this.listaSociosPagaron.forEach((element: any) => {
+          sumas = sumas + Number(element.total_pagado);
+        });
+        this.sumaTotal = sumas;
 
-        this.totaConsumoString = Number(this.totaConsumo).toLocaleString('en-US');
+        this.listaDirectivosBeneficiarios.forEach((element: any) => {
+          sumaBeneficiarios = sumaBeneficiarios + Number(element.total_pagado);
+        });
+        this.sumaTotalBeneficiario = sumaBeneficiarios;
 
-        this.totalRetrazo = facturaTotalRetrasos[0]?.sumaFacturasRetrasos_total || 0;
-
-        this.totalAgrupados = agrupados;
-
-        this.totalMes = (facturaTotalMes[0]?.sumaFacturas_total || 0) - Number(this.totalDirectivos);
-
-        this.totalConvertidoMes = Number(this.totalMes).toLocaleString('en-US');
-
-
-
-
-        if (this.totalMes === 0) {
+        if (this.sumaTotal === 0 || this.sumaTotalBeneficiario === 0) {
           this.cargando = false;
           this.mostrar = false;
           Swal.fire({

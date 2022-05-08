@@ -185,15 +185,14 @@ export class DetalleComponent implements OnInit {
         // console.log(facturaReunion);
         if (facturaReunion.length === 0) {
           this.facturaReunion = [];
-          this.letras = covertirNumLetras(String(this.total));
+          this.letras = covertirNumLetras(String(total));
         } else {
           this.facturaReunion = facturaReunion;
           facturaReunion.forEach((element: any) => {
-            total = total + Number(element.precio);
-            this.total = total;
-            this.letras = covertirNumLetras(String(this.total));
+            total = Number(total) + Number(element.precio);
           });
-
+          this.total = Number(total);
+          this.letras = covertirNumLetras(String(total));
         }
       })
   }

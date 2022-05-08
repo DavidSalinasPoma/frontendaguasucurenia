@@ -39,4 +39,12 @@ export class ReportesService {
     return this.http.post<any>(base_url + `/api/indexreportes/cobroxmesocios`, formData, { headers: parameters });
   }
 
+  // Reportes Listas socios cobros por mes
+  public listaDeudores(formData: any) {
+
+    let parameters = new HttpHeaders();
+    parameters = parameters.set('Authorization', "Bearer " + this.token);
+    return this.http.post<any>(base_url + `/api/indexreportes/listaDeudores`, formData, { headers: parameters });
+  }
+
 }

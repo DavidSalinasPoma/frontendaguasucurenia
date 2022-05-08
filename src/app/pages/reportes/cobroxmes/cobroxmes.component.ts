@@ -96,7 +96,7 @@ export class CobroxmesComponent implements OnInit {
           multaReunion
         }) => {
 
-        // console.log(facturaTotalPagado);
+        console.log(facturaTotalPagado);
         // console.log(consumoDirectivoMenorVeinte);
         // console.log(facturaDetalle);
         // console.log(facturaTotalRetrasos);
@@ -114,9 +114,12 @@ export class CobroxmesComponent implements OnInit {
           suma = suma + Number(element?.sumaProducto_total || 0);
         });
 
-        this.facturaTotalPago = Number(facturaTotalPagado[0]?.facturaTotalPagado || 0) - suma - this.totalRetrazo - this.multaReunion;
+        this.facturaTotalPago = Number(facturaTotalPagado[0]?.facturaTotal || 0) - suma - this.totalRetrazo - this.multaReunion;
 
         this.totalMes = Number(this.facturaTotalPago) - Number(this.totalDirectivos) + suma + Number(this.totalRetrazo) + Number(this.multaReunion);
+
+        console.log(this.totalMes);
+
 
         this.facturaTotalPago = this.facturaTotalPago.toLocaleString('en-US');
 
