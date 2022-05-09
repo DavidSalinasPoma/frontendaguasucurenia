@@ -40,6 +40,7 @@ import { CrearReunionesComponent } from './reuniones/crear-reuniones/crear-reuni
 import { ListaReunionesComponent } from './reuniones/lista-reuniones/lista-reuniones.component';
 import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
 import { ListamultasComponent } from './reuniones/listamultas/listamultas.component';
+import { ModalDeudoresComponent } from './reportes/socionocobro/modal-deudores/modal-deudores.component';
 
 const childRoute: Routes = [
   { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
@@ -104,6 +105,8 @@ const childRoute: Routes = [
   { path: 'cobrosocio', component: SociocobroComponent, data: { titulo: 'Reporte socios que pagaron' } },
 
   { path: 'cobronosocio', component: SocionocobroComponent, data: { titulo: 'Reporte socios que no pagaron' } },
+
+  { path: 'modalDeudores/:id', component: ModalDeudoresComponent, data: { titulo: 'Lista de deudas' } },
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]

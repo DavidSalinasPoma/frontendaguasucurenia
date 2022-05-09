@@ -236,6 +236,7 @@ event:any   */
           console.log(err);
 
           Swal.fire('Error', err.error.message, 'error')
+          this.router.navigateByUrl('/dashboard/consumos');
         });
 
     }

@@ -1,0 +1,90 @@
+<!-- Loading -->
+<div *ngIf="this.cargando" class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!this.cargando">
+  <div id="htmlDatasdos" class="printableArea">
+
+    <h2 mat-dialog-title>Lista de socio con deuda al detalle</h2>
+    <mat-dialog-content class="mat-typography">
+
+      <div *ngIf="!this.cargando" class="row animated fadeIn fast">
+        <div class="col-12">
+          <div class="card">
+            <!-- Segunda parte -->
+            <div class="card-body  animated fadeIn fast">
+              <div class="row justify-content-between">
+                <h4 class="card-title text-info">Facturas pendientes de pago</h4>
+                <h4 class="card-title text-capitalize">Total Facturas con Deudas: <span
+                    class="text-danger">({{ this.total }})</span></h4>
+              </div>
+              <!-- Taabla para limpiar y mostrar buscados -->
+              <div class="table-responsive">
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Codigo socio</th>
+                      <th>Codigo factura</th>
+                      <th>Socio</th>
+                      <th>Carnet</th>
+                      <th>Multa</th>
+                      <th>Periodo consumo</th>
+                      <th>Deuda total</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <ng-container *ngFor="let item of this.options">
+                      <tr *ngIf="item.directivo; else notDirectivoDos" class="bg-light-success">
+                        <td>{{ item.idSocio }}</td>
+                        <td>{{ item.idFactura }}</td>
+                        <td>{{ item.nombres }} {{ item.paterno }}
+                          {{ item.materno }} </td>
+                        <td>{{ item.carnet }}</td>
+                        <td>{{ item.retraso }} Bs.</td>
+                        <td>{{ item.mes}} {{ item.anio }}</td>
+                        <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
+                      </tr>
+                      <ng-template #notDirectivoDos>
+                        <tr>
+                          <td>{{ item.idSocio }}</td>
+                          <td>{{ item.idFactura }}</td>
+                          <td>{{ item.nombres }} {{ item.paterno }}
+                            {{ item.materno }} </td>
+                          <td>{{ item.carnet }}</td>
+                          <td>{{ item.retraso }} Bs.</td>
+                          <td>{{ item.mes}} {{ item.anio }}</td>
+                          <td><strong class="text-dark">{{ item.saldo }} Bs.</strong></td>
+                        </tr>
+                      </ng-template>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+
+    </mat-dialog-content>
+  </div>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+    <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
+      printSectionId="htmlDatasdos" ngxPrint><span><i class="fa fa-print"></i>
+      </span> Imprimir</button>
+  </mat-dialog-actions>
+</div>

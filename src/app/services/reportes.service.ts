@@ -40,11 +40,11 @@ export class ReportesService {
   }
 
   // Reportes Listas socios cobros por mes
-  public listaDeudores(formData: any) {
+  public listaDeudores() {
 
     let parameters = new HttpHeaders();
     parameters = parameters.set('Authorization', "Bearer " + this.token);
-    return this.http.post<any>(base_url + `/api/indexreportes/listaDeudores`, formData, { headers: parameters });
+    return this.http.get<any>(base_url + `/api/indexreportes/listaDeudores`, { headers: parameters });
   }
 
 }

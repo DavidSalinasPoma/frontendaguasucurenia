@@ -54,6 +54,7 @@ import { CobroxmesComponent } from './reportes/cobroxmes/cobroxmes.component';
 import { ListamultasComponent } from './reuniones/listamultas/listamultas.component';
 import { SociocobroComponent } from './reportes/sociocobro/sociocobro.component';
 import { SocionocobroComponent } from './reportes/socionocobro/socionocobro.component';
+import { ModalDeudoresComponent } from './reportes/socionocobro/modal-deudores/modal-deudores.component';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import { SocionocobroComponent } from './reportes/socionocobro/socionocobro.comp
     CobroxmesComponent,
     ListamultasComponent,
     SociocobroComponent,
-    SocionocobroComponent
+    SocionocobroComponent,
+    ModalDeudoresComponent
   ],
   imports: [
     CommonModule,

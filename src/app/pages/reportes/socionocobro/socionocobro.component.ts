@@ -1,15 +1,19 @@
+import { FacturaService } from './../../../services/factura.service';
 import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReportesService } from 'src/app/services/reportes.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ModalDeudoresComponent } from './modal-deudores/modal-deudores.component';
+declare var covertirNumLetras: any;
 
 interface Mes {
   value: string;
   viewValue: string;
 }
-
 
 @Component({
   selector: 'app-socionocobro',
@@ -33,17 +37,14 @@ export class SocionocobroComponent implements OnInit {
     { value: 'diciembre', viewValue: 'Diciembre' },
   ];
 
-
-  // Formularios
-  public formulario!: FormGroup;
-
   // Loading
-  public cargando: boolean = false;
+  public cargando: boolean = true;
 
-  public mostrar: boolean = false;
+  public mostrar: boolean = true;
 
   public listaSociosPagaron: any;
   public listaDirectivosBeneficiarios: any;
+  public listaDeudores: any = [];
 
   public sumaTotal: number = 0;
   public sumaTotalBeneficiario: number = 0;
@@ -51,87 +52,73 @@ export class SocionocobroComponent implements OnInit {
   // Fecha reporte
   public fechaReporte = new Date();
 
+  public socio: any = [];
+  public detalle: any = [];
+  public total: number = 0;
+  public retraso: boolean = false;
+  public mostrarDirectivo: boolean = false;
+  public facturaReunion: any = [];
+  public letras: string = '';
+
+
   constructor(
-    private formBuilder: FormBuilder,
     private reporteServices: ReportesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private facturaServices: FacturaService,
+    public dialog: MatDialog
   ) {
 
   }
 
   ngOnInit(): void {
-    this.crearFormulario();
+    this.listaSociosDeudores();
   }
 
   /**
- * formulario
- */
-  public crearFormulario() {
-    this.formulario = this.formBuilder.group({
-      mes: ['', [Validators.required]],
-      anio: ['', Validators.compose([Validators.required, Validators.pattern(/^[0-9]+$/)])],
+   * listaDeudores
+   */
+  public listaSociosDeudores() {
+    this.reporteServices.listaDeudores().subscribe(
+      (
+        { listaCorte }
+      ) => {
+        let sumaTotal = 0;
+        listaCorte.forEach((element: any) => {
+          sumaTotal = sumaTotal + Number(element.cantMeses);
+        });
+        this.total = sumaTotal;
+        // Implementando logica de rxjs
+        let myArrayOf$: Observable<any>;
+        myArrayOf$ = of(...listaCorte);
+        myArrayOf$
+          .pipe(
+            map(data => {
+              // console.log(data);
+              data.cantMeses = Number(data.cantMeses);
+              this.listaDeudores.push(data);
+            })
+          )
+          .subscribe();
+
+        this.cargando = false;
+      }, (err) => {
+        console.log(err);
+
+      }
+    )
+  }
+
+  public openDialog(idSocio: number) {
+
+    const dialogRef = this.dialog.open(ModalDeudoresComponent, {
+      data: { idSocio: idSocio }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
     });
   }
-  get anio() {
-    return this.formulario.get('anio');
-  }
-  get mes() {
-    return this.formulario.get('mes');
-  }
 
-  /**
-   * onSubmit
-   */
-  public onSubmit(event: any) {
-    this.cargando = true
-    this.reporteServices.cobrosxMesSocios(this.formulario.value)
-      .subscribe((
-        {
-          // CobroSocioporMes
-          listaSociosPagaron,
-          listaDirectivosBeneficiarios,
-          suma
-        }) => {
-
-        console.log(listaSociosPagaron);
-        console.log(suma);
-        this.listaSociosPagaron = listaSociosPagaron;
-        this.listaDirectivosBeneficiarios = listaDirectivosBeneficiarios;
-        let sumas = 0;
-        let sumaBeneficiarios = 0;
-
-        this.listaSociosPagaron.forEach((element: any) => {
-          sumas = sumas + Number(element.total_pagado);
-        });
-        this.sumaTotal = sumas;
-
-        this.listaDirectivosBeneficiarios.forEach((element: any) => {
-          sumaBeneficiarios = sumaBeneficiarios + Number(element.total_pagado);
-        });
-        this.sumaTotalBeneficiario = sumaBeneficiarios;
-
-        if (this.sumaTotal === 0 || this.sumaTotalBeneficiario === 0) {
-          this.cargando = false;
-          this.mostrar = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Este reporte no existe!',
-            footer: 'Vuelva a intentarlo..'
-          })
-        } else {
-          this.toastr.success('Reporte encontrado con exito!', 'Sistema de reportes');
-          this.cargando = false;
-          this.mostrar = true;
-        }
-      }, err => {
-        console.log(err);
-      })
-
-  }
-  /**
- * crearPDF
- */
   public crearPDF() {
 
   }
