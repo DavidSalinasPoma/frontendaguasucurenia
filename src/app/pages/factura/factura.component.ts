@@ -428,6 +428,8 @@ export class FacturaComponent implements OnInit {
   * totalDetalle
   */
   public totalDetalle(item: number, index: number) {
+    // console.log(item, index);
+
     this.totalSaldo = 0;
     this.facturaServices.showFacturas(item)
       .subscribe(({ detalle }) => {

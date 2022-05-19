@@ -160,7 +160,7 @@
             <div class="row">
               <div class="col-8">
 
-                <h4 class="card-title text-success">Total de Socios Encontrados: ({{ this.totalSocios2 }})</h4>
+                <h4 class="card-title text-success">Total Socios Encontrados: ({{ this.totalSocios2 }})</h4>
                 <h6 class="card-subtitle">Socios Registrados en el Sistema</h6>
               </div>
               <div class="col text-right">
@@ -205,6 +205,7 @@
                           <div class="label label-table label-danger">Desactivado</div>
                         </td>
                       </ng-template>
+
                       <td>{{ item.created_at | date:'medium' }}</td>
 
                       <td class="text-nowrap text-center">
@@ -232,7 +233,8 @@
                             <div class="label label-table label-danger">Desactivado</div>
                           </td>
                         </ng-template>
-                        <td>{{ item.created_at | date:'medium' }}</td>
+
+                        <td>{{ item.created_at | date:'medium' }} </td>
 
                         <td class="text-nowrap text-center">
                           <a [routerLink]="[ '/dashboard/editarsocios', item.id ]" href="#" data-toggle="tooltip"

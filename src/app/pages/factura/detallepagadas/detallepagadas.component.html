@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-12">
           <div class="row ">
-            <div class="col-8 col-md-8 text-left">
+            <div class="col-12 col-md-8 text-left">
               <div class="row">
 
 
@@ -66,17 +66,16 @@
               </div>
 
             </div>
-            <div class="col-4 col-md-4 text-left">
+            <div class="col-12 mt-4 col-md-4 mt-md-0 text-left">
               <address>
-                <h5 class="w-100">Codigo socio: {{ this.facturaDirectivo.idSocio }}</h5>
-                <h5 class=""><strong>Socio:</strong> {{ this.facturaDirectivo.nombres }}
-                  {{ this.facturaDirectivo.paterno }}
-                  {{ this.facturaDirectivo.materno }}</h5>
-                <p class="text-muted mb-0">Carnet: {{ this.facturaDirectivo.carnet }}
-                  <br>Dirección: {{ this.facturaDirectivo.direccion }}
-                  <br>Barrio: {{ this.facturaDirectivo.barrio }}
+                <h5 class="w-50"><strong>Codigo socio:</strong> {{ this.socio?.idSocio  }}</h5>
+                <h5 class=""><strong>Socio:</strong> {{ this.socio?.nombres }} {{ this.socio?.paterno }}
+                  {{ this.socio?.materno }}</h5>
+                <p class="w-50">
+                  <strong>Carnet:</strong> {{ this.socio?.carnet }}
+                  <br><strong>Dirección: </strong>{{ this.socio?.direccion }}
+                  <br><strong>Barrio:</strong> {{ this.socio?.barrio }}
                 </p>
-
               </address>
             </div>
 
@@ -138,7 +137,7 @@
         <div class="row">
           <div class="col-12">
             <div class="row ">
-              <div class="col-8 col-md-8 text-left">
+              <div class="col-12 col-md-8 text-left">
                 <div class="row">
 
 
@@ -182,16 +181,16 @@
                 </div>
 
               </div>
-              <div class="col-4 col-md-4 text-left">
+              <div class="col-12 mt-4 col-md-4 mt-md-0 text-left">
                 <address>
-                  <h5 class="w-100">Codigo socio: {{ this.socio?.idSocio  }}</h5>
+                  <h5 class="w-50"><strong>Codigo socio:</strong> {{ this.socio?.idSocio  }}</h5>
                   <h5 class=""><strong>Socio:</strong> {{ this.socio?.nombres }} {{ this.socio?.paterno }}
                     {{ this.socio?.materno }}</h5>
-                  <p class="text-muted mb-0">Carnet: {{ this.socio?.carnet }}
-                    <br>Dirección: {{ this.socio?.direccion }}
-                    <br>Barrio: {{ this.socio?.barrio }}
+                  <p class="w-50">
+                    <strong>Carnet:</strong> {{ this.socio?.carnet }}
+                    <br><strong>Dirección: </strong>{{ this.socio?.direccion }}
+                    <br><strong>Barrio:</strong> {{ this.socio?.barrio }}
                   </p>
-
                 </address>
               </div>
 

@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalDeudoresComponent } from './modal-deudores/modal-deudores.component';
+import { SociosService } from 'src/app/services/socios.service';
 declare var covertirNumLetras: any;
 
 interface Mes {
@@ -63,8 +64,7 @@ export class SocionocobroComponent implements OnInit {
 
   constructor(
     private reporteServices: ReportesService,
-    private toastr: ToastrService,
-    private facturaServices: FacturaService,
+    private sociosServices: SociosService,
     public dialog: MatDialog
   ) {
 
@@ -87,7 +87,7 @@ export class SocionocobroComponent implements OnInit {
           sumaTotal = sumaTotal + Number(element.cantMeses);
         });
         this.total = sumaTotal;
-        // Implementando logica de rxjs
+        // Implementando logica de rxjs of es sincrono
         let myArrayOf$: Observable<any>;
         myArrayOf$ = of(...listaCorte);
         myArrayOf$
@@ -95,12 +95,28 @@ export class SocionocobroComponent implements OnInit {
             map(data => {
               // console.log(data);
               data.cantMeses = Number(data.cantMeses);
-              this.listaDeudores.push(data);
+              // console.log(data);
+
+              this.sociosServices.showSocios(data.idSocio)
+                .subscribe(({ socio }) => {
+
+                  console.log(socio);
+
+                  const datosSocio = {
+                    nombre: socio.persona.nombres,
+                    paterno: socio.persona.ap_paterno,
+                    materno: socio.persona.ap_materno,
+                    carnet: socio.persona.carnet,
+                  };
+                  const finalResult = Object.assign(data, datosSocio);
+
+                  this.listaDeudores.push(finalResult);
+                })
             })
           )
           .subscribe();
-
         this.cargando = false;
+
       }, (err) => {
         console.log(err);
 

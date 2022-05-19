@@ -195,7 +195,7 @@ export class SociosComponent implements OnInit, OnDestroy {
               )
               .subscribe();
 
-            // console.log(this.socios2);
+            console.log(this.socios2);
 
 
             this.paginaSiguiente2 = socio.next_page_url;

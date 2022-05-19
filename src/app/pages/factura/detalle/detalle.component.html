@@ -13,14 +13,14 @@
 <!-- Pruebas html -->
 <div *ngIf="!this.cargando" class="row mt-2">
 
-  <div id="htmlDatas" class="col-12 bordeFactura">
+  <div id="htmlDatas" class="col-12 ">
     <div class="card card-body printableArea mb-0">
       <h4 class="m-b-3"><b>Factura</b> <span class="pull-right">Nro. {{ this.socio?.idFactura  }}</span></h4>
       <!-- <hr> -->
       <div class="row">
         <div class="col-12">
           <div class="row ">
-            <div class="col-8 col-md-8 text-left">
+            <div class="col-12 col-md-8 text-left">
               <div class="row">
 
 
@@ -64,14 +64,15 @@
               </div>
 
             </div>
-            <div class="col-4 col-md-4 text-left">
+            <div class="col-12 mt-4 col-md-4 mt-md-0 text-left">
               <address>
-                <h5 class="w-100">Codigo socio: {{ this.socio?.idSocio  }}</h5>
+                <h5 class="w-50"><strong>Codigo socio:</strong> {{ this.socio?.idSocio  }}</h5>
                 <h5 class=""><strong>Socio:</strong> {{ this.socio?.nombres }} {{ this.socio?.paterno }}
                   {{ this.socio?.materno }}</h5>
-                <p class="text-muted mb-0">Carnet: {{ this.socio?.carnet }}
-                  <br>Dirección: {{ this.socio?.direccion }}
-                  <br>Barrio: {{ this.socio?.barrio }}
+                <p class="w-50">
+                  <strong>Carnet:</strong> {{ this.socio?.carnet }}
+                  <br><strong>Dirección: </strong>{{ this.socio?.direccion }}
+                  <br><strong>Barrio:</strong> {{ this.socio?.barrio }}
                 </p>
 
               </address>
@@ -130,14 +131,15 @@
           <div class="row justify-content-between">
 
             <div class="col-6 mt-1">
-              <p class=" mt-2">SON <strong>{{ this.letras }}</strong></p>
+              <p class=" mt-2">SON: <strong>{{ this.letras }}</strong></p>
             </div>
             <div class="col-6 mt-1 text-right">
               <h5 class=" mt-2"><b><span class="text-dark">Total </span>: {{ this.total }} Bs.</b></h5>
             </div>
             <div class="col-12">
               <hr>
-              <p class="mb-0"><span class="text-dark">Nota: </span>Evite recargos e intereses, pague puntualmente</p>
+              <p class="mb-0"><span class="text-dark">Nota: </span>Evite recargos e intereses, pague puntualmente
+              </p>
             </div>
           </div>
           <!-- <div class="clearfix"></div> -->
