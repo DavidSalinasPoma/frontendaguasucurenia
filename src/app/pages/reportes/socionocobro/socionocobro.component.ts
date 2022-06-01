@@ -78,50 +78,27 @@ export class SocionocobroComponent implements OnInit {
    * listaDeudores
    */
   public listaSociosDeudores() {
-    this.reporteServices.listaDeudores().subscribe(
-      (
-        { listaCorte }
-      ) => {
+
+    this.reporteServices.listaDeudores()
+      .subscribe(({ listaCorte }) => {
+
+        // console.log(listaCorte);
+
         let sumaTotal = 0;
         listaCorte.forEach((element: any) => {
           sumaTotal = sumaTotal + Number(element.cantMeses);
         });
         this.total = sumaTotal;
-        // Implementando logica de rxjs of es sincrono
-        let myArrayOf$: Observable<any>;
-        myArrayOf$ = of(...listaCorte);
-        myArrayOf$
-          .pipe(
-            map(data => {
-              // console.log(data);
-              data.cantMeses = Number(data.cantMeses);
-              // console.log(data);
 
-              this.sociosServices.showSocios(data.idSocio)
-                .subscribe(({ socio }) => {
-
-                  console.log(socio);
-
-                  const datosSocio = {
-                    nombre: socio.persona.nombres,
-                    paterno: socio.persona.ap_paterno,
-                    materno: socio.persona.ap_materno,
-                    carnet: socio.persona.carnet,
-                  };
-                  const finalResult = Object.assign(data, datosSocio);
-
-                  this.listaDeudores.push(finalResult);
-                })
-            })
-          )
-          .subscribe();
+        this.listaDeudores = listaCorte;
         this.cargando = false;
+
 
       }, (err) => {
         console.log(err);
 
       }
-    )
+      )
   }
 
   public openDialog(idSocio: number) {
