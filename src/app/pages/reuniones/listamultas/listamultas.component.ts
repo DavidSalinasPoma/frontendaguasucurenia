@@ -6,12 +6,23 @@ import { map } from 'rxjs/operators';
 import { DetalleReuniones } from 'src/app/models/detalleReuniones.models';
 import Swal from 'sweetalert2';
 
+// Formularios
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+
+
 @Component({
   selector: 'app-listamultas',
   templateUrl: './listamultas.component.html',
   styleUrls: ['./listamultas.component.css']
 })
 export class ListamultasComponent implements OnInit {
+
+
+  // Formularios
+  public formulario!: FormGroup;
+
+  public codigo_socio!: number;
 
   public cargando: boolean = true;
   public idReunion: number;
@@ -25,14 +36,49 @@ export class ListamultasComponent implements OnInit {
     private rutaActiva: ActivatedRoute,
     private detalleReunionServices: DetallereunionService,
     private router: Router,
+    private formBuilder: FormBuilder,
   ) {
     this.idReunion = this.rutaActiva.snapshot.params.id;
   }
 
   ngOnInit(): void {
     this.cargarListasDetalles();
+    this.crearFormulario();
   }
 
+  /**
+ * formulario
+ */
+  public crearFormulario() {
+    this.formulario = this.formBuilder.group({
+      tipoMulta: ['', [Validators.required]],
+    });
+  }
+  get tipoMulta() {
+    return this.formulario.get('tipoMulta');
+  }
+
+  /**
+   * onSubmit
+   */
+  public onSubmit(event: any) {
+
+    const data: any = {
+      reunion: this.formulario.value.tipoMulta,
+      socio: this.codigo_socio
+    }
+
+    console.log(data);
+
+
+  }
+
+  /**
+   * codigoSocio
+   */
+  public codigoSocio(socio: string) {
+    this.codigo_socio = Number(socio);
+  }
 
   /**
  * cargarUsuario
@@ -70,7 +116,6 @@ export class ListamultasComponent implements OnInit {
             .subscribe(resp => {
               this.listas = resp;
               // console.log(this.listas);
-
 
             })
           this.cargando = false;

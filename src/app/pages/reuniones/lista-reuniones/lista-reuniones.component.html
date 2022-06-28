@@ -68,7 +68,7 @@
                    <td>{{ item.id }} </td>
                    <td>{{ item.reunion }}</td>
                    <td>{{ item.multa }}</td>
-                   <td>{{ item.fecha | date:'longDate'  }}</td>
+                   <td>{{ item.fecha }}</td>
                    <td *ngIf="item.estado; else notShow">
                      <div class="label label-table label-danger">Completado</div>
                    </td>
@@ -151,7 +151,7 @@
                      <td>{{ item.id }} </td>
                      <td>{{ item.reunion }}</td>
                      <td>{{ item.multa }}</td>
-                     <td>{{ item.fecha | date:'longDate'  }}</td>
+                     <td>{{ item.fecha }}</td>
                      <td *ngIf="item.estado; else notShow">
                        <div class="label label-table label-danger">Completado</div>
                      </td>

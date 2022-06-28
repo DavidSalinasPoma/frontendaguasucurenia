@@ -8,7 +8,6 @@ import { AuthGuard } from './../guards/auth.guard';
 import { PagesComponent } from './pages.component';
 
 
-
 const routes: Routes = [
   // Rutas PROTEGIDAS como hijas de app-routing.module.ts
   {

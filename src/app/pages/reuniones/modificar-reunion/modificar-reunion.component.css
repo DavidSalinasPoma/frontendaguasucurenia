@@ -1,0 +1,10 @@
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.loadin-lista {
+  position: fixed;
+  top: 0;
+  z-index: 9998;
+  width: 100%;
+}

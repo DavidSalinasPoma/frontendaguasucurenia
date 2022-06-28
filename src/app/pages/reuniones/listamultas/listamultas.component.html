@@ -16,14 +16,14 @@
          <div class="card-body  animated fadeIn fast">
 
            <h3 class="box-title m-b-0">Reportes general de multas a reuniones</h3>
-           <p class="text-muted m-b-30 font-13"> Sistema de reportes</p>
+           <p class="text-muted m-b-30"> Sistema de reportes</p>
 
            <div class="d-flex justify-content-between">
              <div class="">
-               <h4>Reunión: <span class="text-muted m-b-30 font-13">{{ this.reunion }}</span>
+               <h4>Reunión: <span class="text-muted m-b-30 ">{{ this.reunion }}</span>
                </h4>
-               <h4>Multa: <span class="text-muted m-b-30 font-13">{{ this.multa }}</span></h4>
-               <h4>Fecha reunión: <span class="text-muted m-b-30 font-13">{{ this.fecha | date:'longDate'}}</span>
+               <h4>Multa: <span class="text-muted m-b-30 ">{{ this.multa }} Bs.</span></h4>
+               <h4>Fecha reunión: <span class="text-muted m-b-30">{{ this.fecha }}</span>
                </h4>
              </div>
              <div class="">
@@ -69,6 +69,7 @@
                      <td>
                        {{ item.opcion }}
                      </td>
+
                    </tr>
                  </tbody>
                </table>

@@ -132,7 +132,6 @@ event:any   */
     } else {
 
       // Si esta todo ok guarda
-
       let mesFormat = '';
       let anioFormat = 0;
 
@@ -405,7 +404,7 @@ event:any   */
         this.consumo = 0;
         this.lectActual = 0;
       }
-      if (this.consumo > 136) {
+      if (this.consumo > 300) {
         Swal.fire({
           icon: 'error',
           title: 'Datos incorrectos!',

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
 // Modulo personalizados 
 import { SharedModule } from '../shared/shared.module';
 // Modulo de rutas
@@ -55,6 +56,7 @@ import { ListamultasComponent } from './reuniones/listamultas/listamultas.compon
 import { SociocobroComponent } from './reportes/sociocobro/sociocobro.component';
 import { SocionocobroComponent } from './reportes/socionocobro/socionocobro.component';
 import { ModalDeudoresComponent } from './reportes/socionocobro/modal-deudores/modal-deudores.component';
+import { ModificarReunionComponent } from './reuniones/modificar-reunion/modificar-reunion.component';
 
 
 @NgModule({
@@ -98,7 +100,8 @@ import { ModalDeudoresComponent } from './reportes/socionocobro/modal-deudores/m
     ListamultasComponent,
     SociocobroComponent,
     SocionocobroComponent,
-    ModalDeudoresComponent
+    ModalDeudoresComponent,
+    ModificarReunionComponent
   ],
   imports: [
     CommonModule,
@@ -146,7 +149,8 @@ import { ModalDeudoresComponent } from './reportes/socionocobro/modal-deudores/m
     DetallereunionesComponent,
     CobroxmesComponent,
     SociocobroComponent,
-    SocionocobroComponent
+    SocionocobroComponent,
+    ModificarReunionComponent
   ]
 })
 export class PagesModule { }

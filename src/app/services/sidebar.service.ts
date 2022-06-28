@@ -56,7 +56,8 @@ export class SidebarService {
       icono: 'mdi mdi-account-box',
       submenu: [
         { titulo: 'Crear reuniones', url: 'reuniones' },
-        { titulo: 'Lista de reuniones', url: 'listaReunion' }
+        { titulo: 'Lista de reuniones', url: 'listaReunion' },
+        { titulo: 'Modificar opción', url: 'modificarReunion' }
       ]
     },
     {

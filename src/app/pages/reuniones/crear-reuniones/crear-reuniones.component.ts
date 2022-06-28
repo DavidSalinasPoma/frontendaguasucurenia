@@ -86,8 +86,11 @@ export class CrearReunionesComponent implements OnInit {
           const formData = {
             reunion: this.nombreReunion?.value,
             multa: this.multaReunion?.value,
-            fecha: this.fechaReunion?.value,
+            fecha: new Date(this.fechaReunion?.value).toLocaleDateString()
           }
+          console.log(formData);
+
+          return;
 
           // console.log(formData);
           this.ocultar = false;

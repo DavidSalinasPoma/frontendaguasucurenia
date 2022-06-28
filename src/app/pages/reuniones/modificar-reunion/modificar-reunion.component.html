@@ -1,0 +1,192 @@
+<!-- ============================================================== -->
+<div class="row animated fadeIn fast ">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body pb-0">
+
+        <div class="col-12 col-xl-8 border">
+
+          <div class="card card-body  mb-0">
+            <div class="row">
+              <div class="col-12 col-md-8">
+                <h3 class="box-title m-b-0">Seleccione una fecha de reunión</h3>
+                <p class="text-muted font-13"> Sistema de cobros de agua potable</p>
+              </div>
+              <div class="col-12 mb-3 mb-md-0 col-md-4 text-md-right">
+                <div class="">
+                  <button routerLink='/dashboard/listaReunion' type="button" class="btn btn-primary"><i
+                      class="fa fa-list-alt"></i>
+                    Regresar</button>
+                </div>
+              </div>
+              <div class="col-12 ">
+                <form [formGroup]="this.formulario" (submit)="this.onSubmit($event)" class="col-12 row">
+                  <div class="row">
+                    <div class="col-12">
+                      <!-- Fecha reunion -->
+                      <h5 class="">Fecha reunión</h5>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Fecha reunión</mat-label>
+                        <input formControlName="fechaReunion" matInput [matDatepicker]="picker" autocomplete="off"
+                          readonly>
+
+                        <br>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <!-- Validacion -->
+                        <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                        <mat-hint
+                          *ngIf="this.fechaReunion?.invalid && (this.fechaReunion?.dirty || this.fechaReunion?.touched)">
+                          <!-- Errores con expresiones regulares -->
+                          <div *ngIf="this.fechaReunion?.hasError('required')" class="animated fadeIn fast text-danger"
+                            id="">
+                            Este campo es requerido.
+                          </div>
+                        </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <!-- Botones -->
+                    <div class="col-12 col-md-6">
+                      <button [disabled]="this.formulario.invalid" type="submit"
+                        class="btn btn-success btn-block waves-effect waves-light">Buscar</button>
+                    </div>
+                    <div class="col-12 mt-2 m-md-0 col-md-6">
+                      <button type="button" class="btn btn-danger btn-block waves-effect waves-light"
+                        (click)="this.limpiar();">Limpiar</button>
+                    </div>
+
+                  </div>
+
+
+
+
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabla de datos -->
+<div class="row">
+  <div class="col-12">
+
+    <div class="card">
+      <div class="card-body pt-0">
+        <h4 class="card-title">Lista Socios a Reunión </h4>
+        <h6 class="card-subtitle">Sistema de cobros de agua potable</h6>
+
+        <!-- Loading -->
+        <div *ngIf="this.cargando" class="row animated fadeIn fast">
+          <div class="col-12">
+            <div class="alert alert-info text-center">
+              <h4 class="alert-heading">Cargando</h4>
+              <i class="fa fa-spin fa-refresh fa-2x"></i>
+              <p class="mb-0">Por favor espere</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div *ngIf="this.tabla" class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Cod_socio</th>
+                <th>Socio</th>
+                <th>Factura</th>
+                <th>Carnet</th>
+                <th>Opcion</th>
+                <th>Multa</th>
+                <th>Estado</th>
+                <th class="text-nowrap">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of this.multas;let i = index ">
+                <td>{{ i+1 }}</td>
+                <td>{{ item.idSocio }}</td>
+                <td>{{ item.nombres }} {{ item.ap_paterno }} {{ item.ap_materno }}</td>
+                <td>{{ item.idFactura }}</td>
+                <td>{{ item.carnet }} {{ item.expedito }}</td>
+                <td>{{ item.opcion }}</td>
+                <td>{{ item.precio }}</td>
+                <td *ngIf="item.estado_pago === 1 || item.estado_pago === '1'; else notPago">
+                  <button type="button"
+                    class="btn btn-block waves-effect waves-light btn-xs btn-success">Pagado</button>
+                </td>
+                <ng-template #notPago>
+                  <td>
+                    <button type="button" class="btn btn-block waves-effect waves-light btn-xs btn-danger">Sin
+                      pago</button>
+                  </td>
+                </ng-template>
+
+                <td class="text-center cursor model_img img-responsive" title="Editar" data-toggle="modal"
+                  data-target="#myModal_editar"
+                  (click)="this.editarMulta(item.idFactReunion, item.idReunion, item.idSocio,item.estado_pago,item.opcion,item.precio,item.multa)">
+                  <i class="fa fa-pencil text-primary" title="Editar"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sample modal content -->
+<div id="myModal_editar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  style="display: none;" aria-hidden="true" #myModaledit>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h4 class="modal-title text-white " id="myModalLabel">Editar Opción Reunion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="this.formularioModal" (submit)="this.onSubmitModal($event)" class="col-12 row">
+          <div class=" col-12">
+            <h5>Opción reunión</h5>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>-Seleccionar-</mat-label>
+              <mat-select formControlName="tipoMulta" name="tipoMulta">
+                <mat-option *ngFor="let opcion of opciones" [value]="opcion.value">
+                  {{opcion.viewValue}}
+                </mat-option>
+              </mat-select>
+              <!-- Validacion -->
+              <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+              <mat-hint *ngIf="this.tipoMulta?.invalid && (this.tipoMulta?.dirty || this.tipoMulta?.touched)">
+                <!-- Errores con expresiones regulares -->
+                <div *ngIf="this.tipoMulta?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                  Este campo es requerido.
+                </div>
+              </mat-hint>
+            </mat-form-field>
+
+          </div>
+
+          <div class="col-12 mt-3">
+            <button [disabled]="this.formularioModal.invalid" type="submit"
+              class="btn btn-success waves-effect waves-light m-r-10" #modificar>Modificar Reunión</button>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

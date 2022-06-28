@@ -1,3 +1,4 @@
+import { ModificarReunionComponent } from './reuniones/modificar-reunion/modificar-reunion.component';
 import { SocionocobroComponent } from './reportes/socionocobro/socionocobro.component';
 import { SociocobroComponent } from './reportes/sociocobro/sociocobro.component';
 import { DetallereunionesComponent } from './reuniones/detallereuniones/detallereuniones.component';
@@ -43,7 +44,7 @@ import { ListamultasComponent } from './reuniones/listamultas/listamultas.compon
 import { ModalDeudoresComponent } from './reportes/socionocobro/modal-deudores/modal-deudores.component';
 
 const childRoute: Routes = [
-  { path: '', component: DashboardComponent, data: { titulo: 'Dashboard' } }, // Path inicial
+  { path: '', component: DashboardComponent, data: { titulo: 'Panel principal - Dashboard' } }, // Path inicial
   { path: 'progress', component: ProgressComponent, data: { titulo: 'ProgressBar' } },
   { path: 'grafica1', component: Grafica1Component, data: { titulo: 'Gráfica' } },
 
@@ -96,6 +97,8 @@ const childRoute: Routes = [
 
   { path: 'detalleReunion/:id', component: DetallereunionesComponent, data: { titulo: 'Registro de reuniones por socio' } },
 
+  { path: 'modificarReunion', component: ModificarReunionComponent, data: { titulo: 'Modificar opción de reunión' } },
+
   { path: 'reportemultas/:id', component: ListamultasComponent, data: { titulo: 'Reporte de multas de reunión' } },
 
   { path: 'reportegeneral', component: SociogeneralComponent, data: { titulo: 'Reporte de general de socios' } },
@@ -107,6 +110,7 @@ const childRoute: Routes = [
   { path: 'cobronosocio', component: SocionocobroComponent, data: { titulo: 'Reporte socios que no pagaron' } },
 
   { path: 'modalDeudores/:id', component: ModalDeudoresComponent, data: { titulo: 'Lista de deudas' } },
+
 
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ]
