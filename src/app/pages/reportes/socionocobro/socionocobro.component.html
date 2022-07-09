@@ -43,16 +43,27 @@
     </div>
 
     <div id="htmlDatas" class="card card-body printableArea border">
-      <div class="col-md-12 bg-primary py-4 text-white">
-        <h3 class="text-white">Lista de socios deudores</h3>
-        <p class="m-t-10 mb-0">
-          Fecha reporte : {{ this.fechaReporte | date:'longDate'  }} <i class="fa fa-calendar"></i>
-        </p>
+      <div class="col-md-12 py-4 text-dark borde-reporte">
+        <div class="row justify-content-between">
+          <div class="col-12 text-center">
+            <img style="width: 60px;" src="./assets/images/logo-aguas-icon.png" alt="homepage" class="light-logo" />
+            <img style="width: 300px;" src="./assets/images/logo-aguas2.png" alt="homepage" class="dark-logo" />
+            <h2 class="text-dark text-center text-uppercase font-bold">Reporte de Socios con Deuda</h2>
+          </div>
+
+          <div class="col-12 text-white">
+            <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+              Fecha reporte : <span class="font-light"><i class="fa fa-calendar"></i>
+                {{ this.fechaReporte | date:'longDate'  }}</span>
+            </p>
+          </div>
+
+        </div>
       </div>
-      <div class="table-responsive m-t-40">
+      <div class="table-responsive m-t-10">
         <table class="table stylish-table">
           <thead>
-            <tr>
+            <tr class="border">
               <th>#</th>
               <th colspan="1">Codigo socio</th>
               <th>Socio</th>

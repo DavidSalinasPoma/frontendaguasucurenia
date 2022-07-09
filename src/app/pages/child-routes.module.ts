@@ -105,7 +105,7 @@ const childRoute: Routes = [
 
   { path: 'cobroxmes', component: CobroxmesComponent, data: { titulo: 'Reporte cobros por mes' } },
 
-  { path: 'cobrosocio', component: SociocobroComponent, data: { titulo: 'Reporte socios que pagaron' } },
+  { path: 'cobrosocio', component: SociocobroComponent, data: { titulo: 'Reporte de Cobro Por Mes al Detalle' } },
 
   { path: 'cobronosocio', component: SocionocobroComponent, data: { titulo: 'Reporte socios que no pagaron' } },
 

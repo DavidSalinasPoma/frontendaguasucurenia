@@ -10,7 +10,7 @@
            <div class="card card-body">
              <div class="row">
                <div class="col-8">
-                 <h3 class="box-title m-b-0">Reportes de socios que pagaron por mes</h3>
+                 <h3 class="box-title m-b-0">Cobro Por Mes al Detalle</h3>
                  <p class="text-muted m-b-30 font-13"> Sistema de reportes</p>
                </div>
                <div class="col-4 row justify-content-end">
@@ -82,6 +82,8 @@
  </div>
 
 
+ <!-- Lista de datos para mostrar -->
+
  <!-- Loading -->
  <div *ngIf="this.cargando" class="row animated fadeIn fast mt-2">
    <div class="col-12">
@@ -95,6 +97,7 @@
 
  <div *ngIf="!this.cargando" class="row animated fadeIn fast">
    <div *ngIf="this.mostrar" class="col-md-12">
+
      <div class="text-left mb-2">
        <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
          printSectionId="htmlDatas" ngxPrint><span><i class="fa fa-print"></i>
@@ -102,25 +105,43 @@
      </div>
 
      <div id="htmlDatas" class="card card-body printableArea border">
-       <div class="col-md-12 bg-primary py-4 text-white">
-         <h3 class="text-white">Lista de socios que pagaron</h3>
-         <p class="m-t-10 mb-0">
-           Fecha reporte : {{ this.fechaReporte | date:'longDate'  }} <i class="fa fa-calendar"></i>
-         </p>
+
+       <div class="col-md-12 py-4 text-dark borde-reporte">
+         <div class="row justify-content-between">
+           <div class="col-12 text-center">
+             <img style="width: 60px;" src="./assets/images/logo-aguas-icon.png" alt="homepage" class="light-logo" />
+             <img style="width: 300px;" src="./assets/images/logo-aguas2.png" alt="homepage" class="dark-logo" />
+             <h2 class="text-dark text-center text-uppercase font-bold">Reporte de Cobro Por Mes al Detalle</h2>
+           </div>
+
+           <div class="col-12 text-white d-flex justify-content-between">
+             <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+               Mes y Año de Cobro : <span class="font-light">{{ this.mesCobro.toUpperCase()}} -
+                 {{ this.yearCobro }}</span>
+             </p>
+             <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+               Fecha reporte : <span class="font-light"><i class="fa fa-calendar"></i>
+                 {{ this.fechaReporte | date:'longDate'  }}</span>
+             </p>
+           </div>
+
+         </div>
        </div>
-       <div class="table-responsive m-t-40">
-         <table class="table stylish-table">
+       <div class="table-responsive ">
+         <table class="tabla-lista">
            <thead>
              <tr>
                <!-- <th>#</th> -->
-               <th colspan="1">Codigo</th>
+               <th colspan="1">Cod. socio</th>
                <th>Socio</th>
-               <th>Carnet</th>
-               <th>Directivo</th>
+               <th>Lect.Ant.</th>
+               <th>Lect.Act.</th>
                <th>Consumo</th>
-               <th>Retraso</th>
-               <th>Reunión</th>
+               <th>Precio</th>
                <th>Servicios</th>
+               <th>Múlta</th>
+               <th>Reunión</th>
+
                <th>Beneficiario</th>
                <th>Periodo</th>
                <th>Total pagado</th>
@@ -129,6 +150,8 @@
            </thead>
            <tbody>
              <ng-container *ngFor="let item of this.listaSociosPagaron; index as i">
+
+               <!-- Beneficiarion -->
                <tr *ngIf="item.directivo; else notShowTres" class="active bg-light-success animated fadeIn fast">
                  <!-- <td>{{ i+1 }}</td> -->
                  <td>{{ item.idSocio }}</td>
@@ -136,18 +159,12 @@
                    {{ item.nombres }} {{ item.paterno }}
                    {{ item.materno }}
                  </td>
-                 <td>{{ item.carnet }}</td>
+                 <td>{{ item.lecturaAnterior }}</td>
+                 <td>{{ item.LecturaActual }}</td>
+                 <td class="text-right">{{ item.consumo }} m3</td>
+                 <td class="text-right">{{ item.precioConsumo }} Bs.</td>
 
-                 <td *ngIf="item.directivo; else notShowuno" class="text-right">
-                   Si
-                 </td>
-                 <ng-template #notShowuno>
-                   <td class="text-right">No</td>
-                 </ng-template>
-
-                 <td>{{ item.precioConsumo }} Bs.</td>
-                 <td>{{ item.retraso }} Bs.</td>
-                 <td>{{ item.reunionPrecio || 0 }} Bs.</td>
+                 <!-- Servicio -->
                  <td *ngIf="item.directivo; else notShowDos" class="text-right">
                    {{ item.total_pagado - item.precioConsumo -item.reunionPrecio + 20 }} Bs.
                  </td>
@@ -156,16 +173,23 @@
                      {{ item.total_pagado - item.precioConsumo -item.reunionPrecio }} Bs.
                    </td>
                  </ng-template>
+                 <!-- Fin servicios -->
+
+                 <td class="text-right">{{ item.retraso }} Bs.</td>
+                 <td class="text-right">{{ item.reunionPrecio || 0}} Bs.</td>
+
                  <td *ngIf="item.directivo; else notShowCuatro" class="text-right">
                    -20 Bs.
                  </td>
                  <ng-template #notShowCuatro>
                    <td class="text-right">0 Bs.</td>
                  </ng-template>
-                 <td>{{ item.mes }}</td>
+
+                 <td class="text-center">{{ item.mes }}</td>
                  <td class="text-right">{{ item.total_pagado }} Bs.</td>
                </tr>
 
+               <!-- NO beneficiarios -->
                <ng-template #notShowTres>
                  <tr class="active" class="animated fadeIn fast">
                    <!-- <td>{{ i+1 }}</td> -->
@@ -174,18 +198,12 @@
                      {{ item.nombres }} {{ item.paterno }}
                      {{ item.materno }}
                    </td>
-                   <td>{{ item.carnet }}</td>
-
-                   <td *ngIf="item.directivo; else notShowuno" class="text-right text-danger">
-                     Si
-                   </td>
-                   <ng-template #notShowuno>
-                     <td class="text-right">No</td>
-                   </ng-template>
-
+                   <td>{{ item.lecturaAnterior }}</td>
+                   <td>{{ item.LecturaActual }}</td>
+                   <td class="text-right">{{ item.consumo }} m3</td>
                    <td class="text-right">{{ item.precioConsumo }} Bs.</td>
-                   <td class="text-right">{{ item.retraso }} Bs.</td>
-                   <td class="text-right">{{ item.reunionPrecio || 0}} Bs.</td>
+
+                   <!-- Servicio -->
                    <td *ngIf="item.directivo; else notShowDos" class="text-right">
                      {{ item.total_pagado - item.precioConsumo -item.reunionPrecio + 20 }} Bs.
                    </td>
@@ -194,16 +212,23 @@
                        {{ item.total_pagado - item.precioConsumo -item.reunionPrecio }} Bs.
                      </td>
                    </ng-template>
+                   <!-- Fin servicios -->
+
+                   <td class="text-right">{{ item.retraso }} Bs.</td>
+                   <td class="text-right">{{ item.reunionPrecio || 0}} Bs.</td>
+
                    <td *ngIf="item.directivo; else notShowCuatro" class="text-right">
                      -20 Bs.
                    </td>
                    <ng-template #notShowCuatro>
                      <td class="text-right">0 Bs.</td>
                    </ng-template>
-                   <td>{{ item.mes }}</td>
+
+                   <td class="text-center">{{ item.mes }}</td>
                    <td class="text-right">{{ item.total_pagado }} Bs.</td>
                  </tr>
                </ng-template>
+
              </ng-container>
 
            </tbody>
@@ -218,7 +243,10 @@
        </div>
      </div>
 
-     <!-- Lista de socios beneficiarios menores a 20Bs -->
+
+
+
+     <!-- Lista de socios beneficiarios menores o igual a 20Bs -->
      <div class="text-left mb-2">
        <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
          printSectionId="htmlDatass" ngxPrint><span><i class="fa fa-print"></i>
@@ -226,25 +254,45 @@
      </div>
 
      <div id="htmlDatass" class="card card-body printableArea border">
-       <div class="col-md-12 bg-primary py-4 text-white">
-         <h3 class="text-white">Lista de directivos beneficiarios menores o igual a 20 Bs.</h3>
-         <p class="m-t-10 mb-0">
-           Fecha reporte : {{ this.fechaReporte | date:'longDate'  }} <i class="fa fa-calendar"></i>
-         </p>
+
+       <div class="col-md-12 py-4 text-dark borde-reporte">
+         <div class="row justify-content-between">
+           <div class="col-12 text-center">
+             <img style="width: 60px;" src="./assets/images/logo-aguas-icon.png" alt="homepage" class="light-logo" />
+             <img style="width: 300px;" src="./assets/images/logo-aguas2.png" alt="homepage" class="dark-logo" />
+             <h2 class="text-dark text-center text-uppercase font-bold">Directivos beneficiarios menores o igual a 20
+               Bs.</h2>
+           </div>
+
+           <div class="col-12 text-white d-flex justify-content-between">
+             <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+               Mes y Año de Cobro : <span class="font-light">{{ this.mesCobro.toUpperCase()}} -
+                 {{ this.yearCobro }}</span>
+             </p>
+             <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+               Fecha reporte : <span class="font-light"><i class="fa fa-calendar"></i>
+                 {{ this.fechaReporte | date:'longDate'  }}</span>
+             </p>
+           </div>
+
+         </div>
        </div>
-       <div class="table-responsive m-t-40">
-         <table class="table stylish-table">
+
+       <div class="table-responsive">
+         <table class="tabla-lista">
            <thead>
              <tr>
                <!-- <th>#</th> -->
-               <th colspan="1">Codigo</th>
+               <th colspan="1">Cod. socio</th>
                <th>Socio</th>
-               <th>Carnet</th>
-               <th>Directivo</th>
+               <th>Lect.Ant.</th>
+               <th>Lect.Act.</th>
                <th>Consumo</th>
-               <th>Retraso</th>
-               <th>Reunión</th>
+               <th>Precio</th>
                <th>Servicios</th>
+               <th>Múlta</th>
+               <th>Reunión</th>
+
                <th>Beneficiario</th>
                <th>Periodo</th>
                <th>Total pagado</th>
@@ -254,32 +302,34 @@
            <tbody>
              <ng-container *ngFor="let item of this.listaDirectivosBeneficiarios; index as i">
                <tr *ngIf="item.directivo; else notShowBenefi" class="active bg-light-success animated fadeIn fast">
+
                  <!-- <td>{{ i+1 }}</td> -->
                  <td>{{ item.idSocio }}</td>
                  <td>
                    {{ item.nombres }} {{ item.paterno }}
                    {{ item.materno }}
                  </td>
-                 <td>{{ item.carnet }}</td>
-
-                 <td *ngIf="item.directivo; else notShowunoBene" class="text-right">
-                   Si
-                 </td>
-                 <ng-template #notShowunoBene>
-                   <td class="text-right">No</td>
-                 </ng-template>
-
+                 <td>{{ item.lecturaAnterior }}</td>
+                 <td>{{ item.LecturaActual }}</td>
+                 <td class="text-right">{{ item.consumo }} m3</td>
                  <td class="text-right">{{ item.precioConsumo }} Bs.</td>
+
+                 <!-- Servicio -->
+                 <td class="text-right">
+                   0 Bs.
+                 </td>
+                 <!-- Fin servicios -->
+
                  <td class="text-right">{{ item.retraso }} Bs.</td>
-                 <td class="text-right">{{ item.reunionPrecio || 0 }} Bs.</td>
+                 <td class="text-right">{{ item.reunionPrecio || 0}} Bs.</td>
+
                  <td class="text-right">
                    0 Bs.
                  </td>
-                 <td class="text-right">
-                   0 Bs.
-                 </td>
-                 <td>{{ item.mes }}</td>
+
+                 <td class="text-center">{{ item.mes }}</td>
                  <td class="text-right">{{ item.total_pagado }} Bs.</td>
+
                </tr>
 
                <ng-template #notShowBenefi>
@@ -290,33 +340,33 @@
                      {{ item.nombres }} {{ item.paterno }}
                      {{ item.materno }}
                    </td>
-                   <td>{{ item.carnet }}</td>
-
-                   <td *ngIf="item.directivo; else notShowunoBene" class="text-right text-danger">
-                     Si
-                   </td>
-                   <ng-template #notShowunoBene>
-                     <td class="text-right">No</td>
-                   </ng-template>
-
+                   <td>{{ item.lecturaAnterior }}</td>
+                   <td>{{ item.LecturaActual }}</td>
+                   <td class="text-right">{{ item.consumo }} m3</td>
                    <td class="text-right">{{ item.precioConsumo }} Bs.</td>
-                   <td class="text-right">{{ item.retraso }} Bs.</td>
-                   <td class="text-right">{{ item.reunionPrecio || 0}} Bs.</td>
-                   <td *ngIf="item.directivo; else notShowDosBene" class="text-right">
+
+                   <!-- Servicio -->
+                   <td *ngIf="item.directivo; else notShowDos" class="text-right">
                      {{ item.total_pagado - item.precioConsumo -item.reunionPrecio + 20 }} Bs.
                    </td>
-                   <ng-template #notShowDosBene>
+                   <ng-template #notShowDos>
                      <td class="text-right">
                        {{ item.total_pagado - item.precioConsumo -item.reunionPrecio }} Bs.
                      </td>
                    </ng-template>
-                   <td *ngIf="item.directivo; else notShowCuatroBene" class="text-right">
+                   <!-- Fin servicios -->
+
+                   <td class="text-right">{{ item.retraso }} Bs.</td>
+                   <td class="text-right">{{ item.reunionPrecio || 0}} Bs.</td>
+
+                   <td *ngIf="item.directivo; else notShowCuatro" class="text-right">
                      -20 Bs.
                    </td>
-                   <ng-template #notShowCuatroBene>
+                   <ng-template #notShowCuatro>
                      <td class="text-right">0 Bs.</td>
                    </ng-template>
-                   <td>{{ item.mes }}</td>
+
+                   <td class="text-center">{{ item.mes }}</td>
                    <td class="text-right">{{ item.total_pagado }} Bs.</td>
                  </tr>
                </ng-template>

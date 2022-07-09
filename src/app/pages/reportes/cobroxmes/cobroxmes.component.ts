@@ -53,6 +53,10 @@ export class CobroxmesComponent implements OnInit {
   // Fecha reporte
   public fechaReporte = new Date();
 
+  // Mes cobro
+  public mesCobro: string = '';
+  public yearCobro: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private reporteServices: ReportesService,
@@ -86,6 +90,9 @@ export class CobroxmesComponent implements OnInit {
    */
   public onSubmit(event: any) {
     this.cargando = true
+
+    this.mesCobro = this.formulario.value.mes;
+    this.yearCobro = this.formulario.value.anio;
     this.reporteServices.cobrosxMes(this.formulario.value)
       .subscribe((
         {

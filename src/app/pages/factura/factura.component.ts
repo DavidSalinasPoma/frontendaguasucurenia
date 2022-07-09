@@ -354,6 +354,9 @@ export class FacturaComponent implements OnInit {
 
             this.socios2 = factura.data;
 
+            console.log(this.socios2);
+
+
             this.total = 0;
             let count = 0;
             if (this.socios2.length != 0) {

@@ -10,7 +10,7 @@
            <div class="card card-body">
              <div class="row">
                <div class="col-8">
-                 <h3 class="box-title m-b-0">Reportes cobros por mes</h3>
+                 <h3 class="box-title m-b-0">Reporte Cobros por Mes</h3>
                  <p class="text-muted m-b-30 font-13"> Sistema de reportes</p>
                </div>
                <div class="col-4 row justify-content-end">
@@ -95,7 +95,7 @@
 
  <div *ngIf="!this.cargando" class="row animated fadeIn fast">
    <div *ngIf="this.mostrar" class="col-md-12">
-     <div class="text-left mb-2">
+     <div class="col-12 text-left mb-2">
        <button (click)="this.crearPDF()" class="btn btn-primary" type="button" [useExistingCss]="true"
          printSectionId="htmlDatas" ngxPrint><span><i class="fa fa-print"></i>
          </span> Imprimir</button>
@@ -103,72 +103,86 @@
      <div id="htmlDatas" class="card card-body printableArea">
        <!-- <h3><b>INVOICE</b> <span class="pull-right">#5669626</span></h3>
        <hr> -->
-       <div class="row border ">
-         <div class="col-md-12 bg-primary py-4 text-white">
-           <h3 class="text-white">Reporte cobro por mes</h3>
-           <p class="m-t-10 mb-0">
-             Fecha reporte : {{ this.fechaReporte | date:'longDate'  }} <i class="fa fa-calendar"></i>
-           </p>
-         </div>
-         <div class="col-md-12">
-           <div class="table-responsive m-t-40" style="clear: both;">
-             <table class="table table-hover">
-               <thead>
-                 <tr>
-                   <th class="w100">Descripción</th>
-                   <th class="text-right w100">Total</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
-                   <td>Sub Total consumo</td>
-                   <td class="text-right">{{ this.facturaTotalPago}} Bs.</td>
-                 </tr>
-                 <tr>
-                   <td>Total directivos menor o igual a 20 Bs.</td>
-                   <td *ngIf="this.totalDirectivos===0; else notShow" class="text-right">{{ this.totalDirectivos }} Bs.
-                   </td>
-                   <ng-template #notShow>
-                     <td class="text-right">- {{ this.totalDirectivos }} Bs.</td>
-                   </ng-template>
-                 </tr>
-                 <tr>
-                   <td>Total retraso</td>
-                   <td *ngIf="this.totalRetrazo || this.totalRetrazo===0; else notShowDos" class="text-right">
-                     {{ this.totalRetrazo }}
-                     Bs.
-                   </td>
-                   <ng-template #notShowDos>
-                     <td class="text-right">- {{ this.totalRetrazo }} Bs.</td>
-                   </ng-template>
-                 </tr>
-                 <tr *ngFor="let item of this.facturaDetalle">
-                   <td>{{ item.producto }}</td>
-                   <td class="text-right">{{ item.sumaProducto_total }} Bs.</td>
-                 </tr>
-                 <tr>
-                   <td>Multa reunión y retraso</td>
-                   <td *ngIf="this.multaReunion || this.multaReunion === 0; else notShowuno" class="text-right">
-                     {{ this.multaReunion }}
-                     Bs.
-                   </td>
-                   <ng-template #notShowuno>
-                     <td class="text-right">- {{ this.multaReunion }} Bs.</td>
-                   </ng-template>
-                 </tr>
-               </tbody>
-             </table>
+       <div class="col-md-12 py-4 text-dark borde-reporte">
+         <div class="row justify-content-between">
+           <div class="col-12 text-center">
+             <img style="width: 60px;" src="./assets/images/logo-aguas-icon.png" alt="homepage" class="light-logo" />
+             <img style="width: 300px;" src="./assets/images/logo-aguas2.png" alt="homepage" class="dark-logo" />
+             <h2 class="text-dark text-center text-uppercase font-bold">Reporte Cobro por Mes</h2>
            </div>
-         </div>
-         <div class="col-md-12">
-           <div class="pull-right m-t-30 text-right">
-             <hr>
-             <h3><b>Total :</b> {{ this.totalConvertidoMes }} Bs.</h3>
+
+           <div class="col-12 text-white d-flex justify-content-between">
+             <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+               Mes y Año de Cobro : <span class="font-light">{{ this.mesCobro.toUpperCase()}} -
+                 {{ this.yearCobro }}</span>
+             </p>
+             <p class="m-t-10 mb-0 text-dark text-uppercase font-bold">
+               Fecha reporte : <span class="font-light"><i class="fa fa-calendar"></i>
+                 {{ this.fechaReporte | date:'longDate'  }}</span>
+             </p>
            </div>
-           <div class="clearfix"></div>
 
          </div>
        </div>
+
+       <div class="table-responsive">
+         <table class="tabla-lista">
+           <thead>
+             <tr>
+               <th class="">Descripción</th>
+               <th class="text-right">Total</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <td>Sub Total consumo</td>
+               <td class="text-right">{{ this.facturaTotalPago}} Bs.</td>
+             </tr>
+             <tr>
+               <td>Total directivos menor o igual a 20 Bs.</td>
+               <td *ngIf="this.totalDirectivos===0; else notShow" class="text-right">{{ this.totalDirectivos }} Bs.
+               </td>
+               <ng-template #notShow>
+                 <td class="text-right">- {{ this.totalDirectivos }} Bs.</td>
+               </ng-template>
+             </tr>
+             <tr>
+               <td>Total retraso</td>
+               <td *ngIf="this.totalRetrazo || this.totalRetrazo===0; else notShowDos" class="text-right">
+                 {{ this.totalRetrazo }}
+                 Bs.
+               </td>
+               <ng-template #notShowDos>
+                 <td class="text-right">- {{ this.totalRetrazo }} Bs.</td>
+               </ng-template>
+             </tr>
+             <tr *ngFor="let item of this.facturaDetalle">
+               <td>{{ item.producto }}</td>
+               <td class="text-right">{{ item.sumaProducto_total }} Bs.</td>
+             </tr>
+             <tr>
+               <td>Multa reunión y retraso</td>
+               <td *ngIf="this.multaReunion || this.multaReunion === 0; else notShowuno" class="text-right">
+                 {{ this.multaReunion }}
+                 Bs.
+               </td>
+               <ng-template #notShowuno>
+                 <td class="text-right">- {{ this.multaReunion }} Bs.</td>
+               </ng-template>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+
+       <div class="col-md-12">
+         <div class="pull-right m-t-30 text-right">
+           <hr>
+           <h3><b>Total :</b> {{ this.totalConvertidoMes }} Bs.</h3>
+         </div>
+         <div class="clearfix"></div>
+
+       </div>
+
      </div>
    </div>
  </div>

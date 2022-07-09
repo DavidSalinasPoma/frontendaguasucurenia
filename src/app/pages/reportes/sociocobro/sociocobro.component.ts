@@ -52,6 +52,10 @@ export class SociocobroComponent implements OnInit {
   // Fecha reporte
   public fechaReporte = new Date();
 
+  // Mes cobro
+  public mesCobro: string = '';
+  public yearCobro: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private reporteServices: ReportesService,
@@ -84,7 +88,12 @@ export class SociocobroComponent implements OnInit {
    * onSubmit
    */
   public onSubmit(event: any) {
-    this.cargando = true
+    this.listaSociosPagaron = [];
+    this.listaDirectivosBeneficiarios = [];
+    this.cargando = true;
+    this.mesCobro = this.formulario.value.mes;
+    this.yearCobro = this.formulario.value.anio;
+
     this.reporteServices.cobrosxMesSocios(this.formulario.value)
       .subscribe((
         {
@@ -107,6 +116,8 @@ export class SociocobroComponent implements OnInit {
             })
           )
           .subscribe();
+        // console.log(this.listaSociosPagaron);
+
 
         // Implementando logica de rxjs
         let myArrayOf2$: Observable<any>;
@@ -120,7 +131,7 @@ export class SociocobroComponent implements OnInit {
             })
           )
           .subscribe();
-        // console.log(this.listaDirectivosBeneficiarios);
+        console.log(this.listaDirectivosBeneficiarios);
 
         let sumas = 0;
         let sumaBeneficiarios = 0;
