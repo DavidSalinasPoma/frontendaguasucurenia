@@ -37,7 +37,6 @@ export class SidebarService {
       submenu: [
         { titulo: 'Socios', url: 'socios' },
         { titulo: 'Personas', url: 'personas' },
-        { titulo: 'Usuarios', url: 'usuarios' },
         // { titulo: 'Empleados', url: 'empleados' },
         { titulo: 'Barrio', url: 'barrios' },
       ]
@@ -65,6 +64,15 @@ export class SidebarService {
       icono: 'mdi mdi-format-list-bulleted',
       submenu: [
         { titulo: 'Lista directorio', url: 'directivos' }
+      ]
+    },
+    {
+      titulo: 'Configuraciónes',
+      icono: 'mdi mdi-account-settings-variant',
+      submenu: [
+        { titulo: 'Permiso', url: 'permisos' },
+        { titulo: 'Roles', url: 'roles' },
+        { titulo: 'Usuarios', url: 'usuarios' },
       ]
     },
 
